@@ -795,9 +795,14 @@ const diagrams: Record<string, DiagramDefinition> = {
 export class MedicalCanvas extends LitElement {
   @property({ type: String }) diagram = '';
   @state() private activeModeId = '';
+  @state() private zoom = 1;
   @query('canvas') private canvasEl!: HTMLCanvasElement;
+  @query('.viewport') private viewportEl!: HTMLDivElement;
 
   private resizeObserver: ResizeObserver | null = null;
+  private static readonly minZoom = 0.75;
+  private static readonly maxZoom = 2.5;
+  private static readonly zoomStep = 0.25;
 
   static override styles = css`
     :host {
@@ -871,24 +876,86 @@ export class MedicalCanvas extends LitElement {
       border-color: #0f172a;
     }
 
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    button:disabled:hover {
+      transform: none;
+      border-color: rgba(148, 163, 184, 0.4);
+    }
+
     .surface {
       position: relative;
+      display: grid;
+      gap: 12px;
+      padding: 12px;
       border-radius: 18px;
       border: 1px solid rgba(148, 163, 184, 0.28);
-      overflow: hidden;
       background:
         linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(248, 250, 252, 0.96)),
         linear-gradient(90deg, rgba(148, 163, 184, 0.1) 1px, transparent 1px),
         linear-gradient(rgba(148, 163, 184, 0.08) 1px, transparent 1px);
       background-size: auto, 22px 22px, 22px 22px;
+      overflow: hidden;
+    }
+
+    .surface-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .surface-label {
+      color: #475569;
+      font: 600 0.8rem/1 ui-sans-serif, -apple-system, BlinkMacSystemFont, sans-serif;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .zoom-controls {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.82);
+      backdrop-filter: blur(10px);
+    }
+
+    .zoom-controls button {
+      min-width: 38px;
+      padding: 8px 10px;
+    }
+
+    .zoom-readout {
+      min-width: 58px;
+      text-align: center;
+      color: #0f172a;
+      font: 700 0.82rem/1 ui-sans-serif, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    .zoom-controls button.active .zoom-readout {
+      color: white;
+    }
+
+    .viewport {
       aspect-ratio: 16 / 9;
-      touch-action: pan-x pan-y pinch-zoom;
+      overflow: auto;
+      border-radius: 14px;
+      scrollbar-gutter: stable both-edges;
+      touch-action: pan-x pan-y;
+      overscroll-behavior: contain;
     }
 
     canvas {
-      width: 100%;
-      height: 100%;
       display: block;
+      max-width: none;
     }
 
     .details {
@@ -920,7 +987,9 @@ export class MedicalCanvas extends LitElement {
 
   override firstUpdated() {
     this.resizeObserver = new ResizeObserver(() => this.draw());
-    this.resizeObserver.observe(this);
+    if (this.viewportEl) {
+      this.resizeObserver.observe(this.viewportEl);
+    }
     this.draw();
   }
 
@@ -950,29 +1019,83 @@ export class MedicalCanvas extends LitElement {
 
   private draw() {
     const definition = diagrams[this.diagram];
-    if (!definition || !this.canvasEl) return;
+    if (!definition || !this.canvasEl || !this.viewportEl) return;
 
-    const rect = this.canvasEl.getBoundingClientRect();
-    const renderWidth = rect.width < 760 ? 920 : Math.max(760, Math.round(rect.width));
-    const renderHeight = Math.round(renderWidth * 9 / 16);
+    const rect = this.viewportEl.getBoundingClientRect();
+    const viewportWidth = Math.max(1, Math.round(rect.width));
+    const logicalWidth = viewportWidth < 760 ? 920 : Math.max(760, viewportWidth);
+    const logicalHeight = Math.round(logicalWidth * 9 / 16);
+    const baseDisplayWidth = viewportWidth;
+    const baseDisplayHeight = Math.round(baseDisplayWidth * 9 / 16);
+    const displayWidth = Math.round(baseDisplayWidth * this.zoom);
+    const displayHeight = Math.round(baseDisplayHeight * this.zoom);
+    const rasterScale = Math.max(1, displayWidth / logicalWidth);
     const dpr = window.devicePixelRatio || 1;
 
-    this.canvasEl.width = Math.floor(renderWidth * dpr);
-    this.canvasEl.height = Math.floor(renderHeight * dpr);
+    this.canvasEl.style.width = `${displayWidth}px`;
+    this.canvasEl.style.height = `${displayHeight}px`;
+    this.canvasEl.width = Math.floor(logicalWidth * dpr * rasterScale);
+    this.canvasEl.height = Math.floor(logicalHeight * dpr * rasterScale);
 
     const ctx = this.canvasEl.getContext('2d');
     if (!ctx) return;
 
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    ctx.clearRect(0, 0, renderWidth, renderHeight);
+    ctx.setTransform(dpr * rasterScale, 0, 0, dpr * rasterScale, 0, 0);
+    ctx.clearRect(0, 0, logicalWidth, logicalHeight);
 
-    const background = ctx.createLinearGradient(0, 0, 0, renderHeight);
+    const background = ctx.createLinearGradient(0, 0, 0, logicalHeight);
     background.addColorStop(0, '#ffffff');
     background.addColorStop(1, '#f8fafc');
     ctx.fillStyle = background;
-    ctx.fillRect(0, 0, renderWidth, renderHeight);
-    definition.render(ctx, renderWidth, renderHeight, this.activeModeId);
+    ctx.fillRect(0, 0, logicalWidth, logicalHeight);
+    definition.render(ctx, logicalWidth, logicalHeight, this.activeModeId);
   }
+
+  private clampZoom(nextZoom: number) {
+    return Math.min(MedicalCanvas.maxZoom, Math.max(MedicalCanvas.minZoom, Number(nextZoom.toFixed(2))));
+  }
+
+  private async setZoom(nextZoom: number, anchor?: { x: number; y: number }) {
+    const viewport = this.viewportEl;
+    const clampedZoom = this.clampZoom(nextZoom);
+    if (!viewport || clampedZoom === this.zoom) {
+      return;
+    }
+
+    const focusX = anchor?.x ?? viewport.clientWidth / 2;
+    const focusY = anchor?.y ?? viewport.clientHeight / 2;
+    const sceneX = (viewport.scrollLeft + focusX) / this.zoom;
+    const sceneY = (viewport.scrollTop + focusY) / this.zoom;
+
+    this.zoom = clampedZoom;
+    await this.updateComplete;
+
+    viewport.scrollLeft = Math.max(0, sceneX * clampedZoom - focusX);
+    viewport.scrollTop = Math.max(0, sceneY * clampedZoom - focusY);
+  }
+
+  private handleZoomStep(direction: 1 | -1) {
+    void this.setZoom(this.zoom + direction * MedicalCanvas.zoomStep);
+  }
+
+  private handleZoomReset = () => {
+    void this.setZoom(1);
+  };
+
+  private handleViewportWheel = (event: WheelEvent) => {
+    if (!event.ctrlKey && !event.metaKey) {
+      return;
+    }
+
+    event.preventDefault();
+    const rect = this.viewportEl.getBoundingClientRect();
+    const anchor = {
+      x: event.clientX - rect.left,
+      y: event.clientY - rect.top,
+    };
+    const zoomFactor = Math.exp(-event.deltaY * 0.0025);
+    void this.setZoom(this.zoom * zoomFactor, anchor);
+  };
 
   override render() {
     const definition = diagrams[this.diagram];
@@ -1000,7 +1123,38 @@ export class MedicalCanvas extends LitElement {
           `)}
         </div>
         <div class="surface">
-          <canvas></canvas>
+          <div class="surface-bar">
+            <div class="surface-label">Canvas Zoom</div>
+            <div class="zoom-controls">
+              <button
+                type="button"
+                @click=${() => this.handleZoomStep(-1)}
+                ?disabled=${this.zoom <= MedicalCanvas.minZoom}
+                aria-label="縮小 Canvas"
+              >
+                -
+              </button>
+              <button
+                type="button"
+                class=${this.zoom === 1 ? 'active' : ''}
+                @click=${this.handleZoomReset}
+                aria-label="重設 Canvas 縮放"
+              >
+                <span class="zoom-readout">${Math.round(this.zoom * 100)}%</span>
+              </button>
+              <button
+                type="button"
+                @click=${() => this.handleZoomStep(1)}
+                ?disabled=${this.zoom >= MedicalCanvas.maxZoom}
+                aria-label="放大 Canvas"
+              >
+                +
+              </button>
+            </div>
+          </div>
+          <div class="viewport" @wheel=${this.handleViewportWheel}>
+            <canvas></canvas>
+          </div>
         </div>
         <div class="details">
           <p>${activeMode.summary}</p>
