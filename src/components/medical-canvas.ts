@@ -513,6 +513,263 @@ function drawGenetics(ctx: CanvasRenderingContext2D, width: number, height: numb
   }
 }
 
+function drawPharmacologyCore(ctx: CanvasRenderingContext2D, width: number, height: number, modeId: string) {
+  if (modeId === 'receptors') {
+    fillCard(ctx, 42, 64, 160, 116, palette.blue, 'Ion channel', '毫秒到秒級，常見於麻醉、鎮靜與神經肌肉傳導');
+    fillCard(ctx, 232, 64, 160, 116, palette.purple, 'GPCR', '第二信使放大效應，臨床藥物最常見靶點');
+    fillCard(ctx, 422, 64, 160, 116, palette.green, 'Enzyme-linked', '生長因子、胰島素與多數標靶治療重點');
+    fillCard(ctx, width - 202, 64, 160, 116, palette.orange, 'Nuclear receptor', '脂溶性配體進核改變轉錄，起效較慢但影響久');
+  } else if (modeId === 'dose-response') {
+    fillCard(ctx, 56, 66, 180, 112, palette.blue, '左移', '較低濃度就有反應，常代表 EC50 較小');
+    fillCard(ctx, width / 2 - 90, 52, 180, 140, palette.green, 'Emax', '曲線頂部代表最大可達效果，不等於安全');
+    fillCard(ctx, width - 236, 66, 180, 112, palette.orange, '右移', '需更高濃度才有同效果，常見於競爭性拮抗或耐受');
+    connector(ctx, [{ x: 236, y: 122 }, { x: width / 2 - 90, y: 122 }], palette.gray);
+    connector(ctx, [{ x: width / 2 + 90, y: 122 }, { x: width - 236, y: 122 }], palette.gray);
+    pill(ctx, width / 2 - 150, height - 84, 'Potency 看左右位置，Efficacy 看最高點', palette.red);
+  } else {
+    fillCard(ctx, 42, 74, 160, 112, palette.green, 'Full agonist', '高固有活性，可達高 Emax');
+    fillCard(ctx, 232, 74, 160, 112, palette.orange, 'Partial agonist', '可活化但有天花板，可能兼具阻斷效果');
+    fillCard(ctx, 422, 74, 160, 112, palette.blue, 'Competitive antagonist', '曲線右移，常可被較高濃度 agonist 克服');
+    fillCard(ctx, width - 202, 74, 160, 112, palette.red, 'Noncompetitive', '降低 Emax，增加 agonist 也難完全恢復');
+  }
+}
+
+function drawPkJourney(ctx: CanvasRenderingContext2D, width: number, height: number, modeId: string) {
+  if (modeId === 'adme') {
+    const cards = [
+      ['口服/給藥', '吸收', palette.blue],
+      ['血中循環', '分布', palette.purple],
+      ['肝與腸壁', '代謝', palette.orange],
+      ['腎/膽汁', '排除', palette.green],
+    ] as const;
+    cards.forEach(([title, subtitle, color], index) => {
+      const x = 42 + index * 190;
+      fillCard(ctx, x, 90, 150, 112, color, title, subtitle);
+      if (index < cards.length - 1) {
+        arrow(ctx, { x: x + 150, y: 146 }, { x: x + 190, y: 146 }, palette.gray);
+      }
+    });
+  } else if (modeId === 'parameters') {
+    circleNode(ctx, width * 0.22, height / 2, 54, palette.blue, 'Vd', '去哪裡');
+    circleNode(ctx, width * 0.5, height / 2, 54, palette.green, 'CL', '清多少');
+    circleNode(ctx, width * 0.78, height / 2, 54, palette.orange, 't1/2', '留多久');
+    arrow(ctx, { x: width * 0.28, y: height / 2 }, { x: width * 0.44, y: height / 2 }, palette.gray);
+    arrow(ctx, { x: width * 0.56, y: height / 2 }, { x: width * 0.72, y: height / 2 }, palette.gray);
+    pill(ctx, width / 2 - 154, 44, 't1/2 = 0.693 x Vd / CL', palette.purple);
+  } else {
+    fillCard(ctx, 54, 70, 180, 118, palette.blue, 'Loading dose', '由 Vd 決定，目標是快速進入治療範圍');
+    fillCard(ctx, width / 2 - 90, 70, 180, 118, palette.green, 'Steady state', '輸入與輸出平衡，固定間隔下仍會有 peak / trough');
+    fillCard(ctx, width - 234, 70, 180, 118, palette.orange, 'Maintenance', '由 CL 決定，維持在目標暴露附近');
+    arrow(ctx, { x: 234, y: 129 }, { x: width / 2 - 90, y: 129 }, palette.gray);
+    arrow(ctx, { x: width / 2 + 90, y: 129 }, { x: width - 234, y: 129 }, palette.gray);
+  }
+}
+
+function drawInteractionRisk(ctx: CanvasRenderingContext2D, width: number, height: number, modeId: string) {
+  if (modeId === 'pk') {
+    fillCard(ctx, 42, 72, 170, 112, palette.blue, 'CYP inhibition', '數天內讓受質濃度上升，窄治療窗藥最危險');
+    fillCard(ctx, 232, 72, 170, 112, palette.orange, 'Enzyme induction', '幾天到幾週後讓暴露下降，療效失敗常被忽略');
+    fillCard(ctx, 422, 72, 170, 112, palette.purple, 'Transporters', 'P-gp / OATP 影響吸收與排除，常被漏看');
+    fillCard(ctx, width - 202, 72, 160, 112, palette.green, 'Organ failure', '器官功能改變會放大任何交互作用');
+  } else if (modeId === 'pd') {
+    circleNode(ctx, width / 2, height / 2, 70, palette.red, 'Risk summation', '藥效學加成');
+    fillCard(ctx, 60, 74, 170, 96, palette.orange, 'QT prolongation', '多藥疊加與低鉀低鎂最危險');
+    fillCard(ctx, width - 230, 74, 170, 96, palette.blue, 'Bleeding', '抗凝、抗血小板、NSAIDs 疊加');
+    fillCard(ctx, 60, height - 170, 170, 96, palette.purple, 'Sedation', 'opioid、benzodiazepine、酒精或 gabapentinoid');
+    fillCard(ctx, width - 230, height - 170, 170, 96, palette.green, 'Serotonin excess', 'SSRI、MAOI、linezolid、triptan 等');
+    connector(ctx, [{ x: 230, y: 122 }, { x: width / 2 - 70, y: height / 2 - 20 }], palette.orange);
+    connector(ctx, [{ x: width - 230, y: 122 }, { x: width / 2 + 70, y: height / 2 - 20 }], palette.blue);
+    connector(ctx, [{ x: 230, y: height - 122 }, { x: width / 2 - 70, y: height / 2 + 20 }], palette.purple);
+    connector(ctx, [{ x: width - 230, y: height - 122 }, { x: width / 2 + 70, y: height / 2 + 20 }], palette.green);
+  } else {
+    fillCard(ctx, 54, 72, 180, 112, palette.blue, 'Type A', '與劑量相關，可預測，先想是否過量或交互作用');
+    fillCard(ctx, width / 2 - 90, 72, 180, 112, palette.red, 'Type B', '免疫或特異體質反應，重點是立即停藥與標註');
+    fillCard(ctx, width - 234, 72, 180, 112, palette.orange, 'Type C-F', '慢性、延遲、停藥後與治療失敗都要分開處理');
+    pill(ctx, width / 2 - 138, height - 82, 'ADR 評估先看時間序列，再看替代解釋', palette.purple);
+  }
+}
+
+function drawDosageDesign(ctx: CanvasRenderingContext2D, width: number, height: number, modeId: string) {
+  if (modeId === 'forms') {
+    fillCard(ctx, 42, 74, 150, 110, palette.blue, 'Tablet / capsule', '常規口服，適合長期但受吸收條件影響');
+    fillCard(ctx, 222, 74, 150, 110, palette.green, 'Injection', '快速高暴露，適合急性與無法口服者');
+    fillCard(ctx, 402, 74, 150, 110, palette.orange, 'Inhalation', '局部濃度高，但技巧決定成敗');
+    fillCard(ctx, width - 192, 74, 150, 110, palette.purple, 'Patch / depot', '長效穩定，但起效慢且受外在條件影響');
+  } else if (modeId === 'biopharm') {
+    circleNode(ctx, width * 0.2, height / 2, 48, palette.blue, 'Solubility', '');
+    circleNode(ctx, width * 0.4, height / 2, 48, palette.orange, 'Permeability', '');
+    circleNode(ctx, width * 0.6, height / 2, 48, palette.green, 'First-pass', '');
+    circleNode(ctx, width * 0.8, height / 2, 48, palette.purple, 'Bioavailability', '');
+    arrow(ctx, { x: width * 0.26, y: height / 2 }, { x: width * 0.34, y: height / 2 }, palette.gray);
+    arrow(ctx, { x: width * 0.46, y: height / 2 }, { x: width * 0.54, y: height / 2 }, palette.gray);
+    arrow(ctx, { x: width * 0.66, y: height / 2 }, { x: width * 0.74, y: height / 2 }, palette.gray);
+  } else {
+    fillCard(ctx, 54, 70, 190, 120, palette.teal, 'Sterility', '環境、清潔、人員與流程共同維持');
+    fillCard(ctx, width / 2 - 95, 70, 190, 120, palette.red, 'Compatibility', '混合、Y-site、容器與 tubing 都可能失敗');
+    fillCard(ctx, width - 244, 70, 190, 120, palette.orange, 'Stability', '光、熱、pH 與材質會影響有效成分');
+  }
+}
+
+function drawMedicationSystem(ctx: CanvasRenderingContext2D, width: number, height: number, modeId: string) {
+  if (modeId === 'prescription') {
+    const steps = [
+      ['開立', '適應症、劑量、途徑'],
+      ['審核', '安全性、交互作用'],
+      ['調劑', '產品與標示核對'],
+      ['交付', '衛教與 teach-back'],
+    ] as const;
+    steps.forEach(([title, subtitle], index) => {
+      const x = 46 + index * 186;
+      fillCard(ctx, x, 92, 144, 112, [palette.blue, palette.orange, palette.green, palette.purple][index], title, subtitle);
+      if (index < steps.length - 1) {
+        arrow(ctx, { x: x + 144, y: 148 }, { x: x + 186, y: 148 }, palette.gray);
+      }
+    });
+  } else if (modeId === 'counseling') {
+    circleNode(ctx, width / 2, height / 2, 68, palette.green, 'Patient', 'teach-back');
+    fillCard(ctx, 60, 78, 180, 104, palette.blue, 'Label', '寫給病人看得懂，不只寫給系統看');
+    fillCard(ctx, width - 240, 78, 180, 104, palette.orange, 'Demonstration', '吸入器、筆針、貼片與分裝都要示範');
+    fillCard(ctx, width / 2 - 110, height - 170, 220, 96, palette.purple, 'Warning signs', '何時停藥、何時回診、何時急診');
+    connector(ctx, [{ x: 240, y: 130 }, { x: width / 2 - 68, y: height / 2 - 18 }], palette.blue);
+    connector(ctx, [{ x: width - 240, y: 130 }, { x: width / 2 + 68, y: height / 2 - 18 }], palette.orange);
+    connector(ctx, [{ x: width / 2, y: height - 170 }, { x: width / 2, y: height / 2 + 68 }], palette.purple);
+  } else {
+    fillCard(ctx, 54, 70, 180, 118, palette.blue, 'Tertiary', '快而廣，適合臨床現場定向');
+    fillCard(ctx, width / 2 - 90, 70, 180, 118, palette.green, 'Secondary', '幫你找到研究，但不替你判讀品質');
+    fillCard(ctx, width - 234, 70, 180, 118, palette.orange, 'Primary', '最接近原始資料，也最需要批判性閱讀');
+    pill(ctx, width / 2 - 138, height - 84, '先定義問題，再選資訊層級', palette.purple);
+  }
+}
+
+function drawMedicationReview(ctx: CanvasRenderingContext2D, width: number, height: number, modeId: string) {
+  if (modeId === 'dtp') {
+    circleNode(ctx, width / 2, height / 2, 70, palette.teal, 'Medication review', 'DTP scan');
+    const nodes = [
+      [width * 0.18, 86, palette.blue, 'Indication'],
+      [width * 0.5, 56, palette.green, 'Effectiveness'],
+      [width * 0.82, 86, palette.orange, 'Safety'],
+      [width * 0.18, height - 86, palette.red, 'Adherence'],
+      [width * 0.5, height - 56, palette.purple, 'Monitoring'],
+      [width * 0.82, height - 86, palette.cyan, 'Patient goal'],
+    ] as const;
+    nodes.forEach(([x, y, color, text]) => {
+      circleNode(ctx, x, y, 40, color, text, '');
+      connector(ctx, [{ x, y }, { x: width / 2, y: height / 2 }], color);
+    });
+  } else if (modeId === 'adherence') {
+    fillCard(ctx, 52, 72, 160, 112, palette.blue, 'Understanding', '病人是否真的知道如何吃、何時停、為何吃');
+    fillCard(ctx, 242, 72, 160, 112, palette.orange, 'Access', '拿得到、付得起、補得上嗎');
+    fillCard(ctx, 432, 72, 160, 112, palette.green, 'Ability', '吞嚥、視力、手部操作、記憶與生活節奏');
+    fillCard(ctx, width - 202, 72, 160, 112, palette.purple, 'Motivation', '信念、恐懼、副作用體驗與價值排序');
+  } else {
+    fillCard(ctx, 54, 70, 180, 118, palette.blue, 'Start', '治療前就定義基線、目標與風險');
+    fillCard(ctx, width / 2 - 90, 70, 180, 118, palette.green, 'Track', '症狀、數值、功能與副作用同時追');
+    fillCard(ctx, width - 234, 70, 180, 118, palette.orange, 'Adjust', '達標、超標、不耐受都要有下一步');
+    arrow(ctx, { x: 234, y: 129 }, { x: width / 2 - 90, y: 129 }, palette.gray);
+    arrow(ctx, { x: width / 2 + 90, y: 129 }, { x: width - 234, y: 129 }, palette.gray);
+  }
+}
+
+function drawSpecialPopulations(ctx: CanvasRenderingContext2D, width: number, height: number, modeId: string) {
+  if (modeId === 'pediatrics') {
+    fillCard(ctx, 42, 70, 170, 112, palette.blue, 'Neonate', '水分比例高、肝腎未成熟、劑量與間隔都要特殊化');
+    fillCard(ctx, width / 2 - 85, 70, 170, 112, palette.green, 'Infant / child', '快速生長，體重與代謝能力變化大');
+    fillCard(ctx, width - 212, 70, 170, 112, palette.orange, 'Adolescent', '藥動接近成人，但依從性與隱私議題上升');
+  } else if (modeId === 'geriatrics') {
+    fillCard(ctx, 42, 64, 160, 118, palette.orange, 'Falls / delirium', '鎮靜、低血壓與抗膽鹼負荷特別危險');
+    fillCard(ctx, 232, 64, 160, 118, palette.blue, 'Polypharmacy', '問題在不必要疊加與目標失焦，不只是數量');
+    fillCard(ctx, 422, 64, 160, 118, palette.green, 'Deprescribing', '找出可停、可減、需追蹤的藥');
+    fillCard(ctx, width - 202, 64, 160, 118, palette.purple, 'Frailty goal', '功能與生活品質常比數值更重要');
+  } else {
+    fillCard(ctx, 50, 62, 150, 118, palette.red, 'Pregnancy', '先比較治療與不治療雙向風險');
+    fillCard(ctx, 230, 62, 150, 118, palette.blue, 'Renal / hepatic', '看清除、活性代謝物與游離分率');
+    fillCard(ctx, 410, 62, 150, 118, palette.green, 'Obesity', 'loading / maintenance 不一定用同一種體重');
+    fillCard(ctx, width - 190, 62, 140, 118, palette.orange, 'Critical illness', 'Vd、CL 與器官支持都在快速變動');
+  }
+}
+
+function drawPharmacogenomicsRoadmap(ctx: CanvasRenderingContext2D, width: number, height: number, modeId: string) {
+  if (modeId === 'gene-flow') {
+    fillCard(ctx, 42, 84, 160, 100, palette.blue, 'DNA variant', '如 CYP、HLA、轉運蛋白或受體變異');
+    fillCard(ctx, width / 2 - 80, 52, 160, 164, palette.purple, 'Phenotype', 'PM / IM / NM / UM 或免疫高風險');
+    fillCard(ctx, width - 202, 84, 160, 100, palette.green, 'Drug response', '療效、毒性、劑量需求與替代藥選擇');
+    arrow(ctx, { x: 202, y: 134 }, { x: width / 2 - 80, y: 134 }, palette.gray);
+    arrow(ctx, { x: width / 2 + 80, y: 134 }, { x: width - 202, y: 134 }, palette.gray);
+  } else if (modeId === 'actionable') {
+    fillCard(ctx, 52, 72, 180, 112, palette.green, 'Strong pair', '結果會改藥、改劑量或加強監測');
+    fillCard(ctx, width / 2 - 90, 72, 180, 112, palette.orange, 'Timing', '能否在決策前拿到結果，常決定檢測價值');
+    fillCard(ctx, width - 232, 72, 180, 112, palette.blue, 'Reuse', '結果是否可未來重複利用，影響 pre-emptive 價值');
+  } else {
+    fillCard(ctx, 56, 70, 180, 118, palette.blue, 'Lab result', '報告若不能進 EHR，很快就會被遺忘');
+    fillCard(ctx, width / 2 - 90, 70, 180, 118, palette.green, 'CDS alert', '在開藥當下提示替代方案與劑量建議');
+    fillCard(ctx, width - 236, 70, 180, 118, palette.purple, 'Long-term record', '基因結果屬長期資產，應跨次就醫可被讀取');
+  }
+}
+
+function drawEvidenceTherapeutics(ctx: CanvasRenderingContext2D, width: number, height: number, modeId: string) {
+  if (modeId === 'pyramid') {
+    fillCard(ctx, width / 2 - 120, 48, 240, 74, palette.green, 'Guideline / systematic review', '高層級摘要，但仍要看來源品質');
+    fillCard(ctx, width / 2 - 160, 132, 320, 74, palette.blue, 'RCT / meta-analysis', '適合問效果，但外部效度要檢查');
+    fillCard(ctx, width / 2 - 200, 216, 400, 74, palette.orange, 'Observational / case-level data', '補足真實世界與特殊族群，但易受混雜影響');
+  } else if (modeId === 'endpoints') {
+    fillCard(ctx, 54, 70, 180, 118, palette.blue, 'Surrogate', '數值變好不一定等於病人真的更好');
+    fillCard(ctx, width / 2 - 90, 70, 180, 118, palette.green, 'Hard outcome', '死亡、住院、中風、骨折等較貼近真實獲益');
+    fillCard(ctx, width - 234, 70, 180, 118, palette.orange, 'Patient-reported', '症狀與生活品質能補上數值看不到的部分');
+    pill(ctx, width / 2 - 106, height - 84, 'NNT / NNH 要和時間範圍一起看', palette.purple);
+  } else {
+    fillCard(ctx, 50, 70, 160, 116, palette.blue, 'Evidence', '證據能說明平均效果');
+    fillCard(ctx, width / 2 - 80, 70, 160, 116, palette.green, 'Context', '腎病、妊娠、高齡、成本與監測能力改變適用性');
+    fillCard(ctx, width - 210, 70, 160, 116, palette.orange, 'Preference', '病人如何排序效益、風險與負擔');
+    arrow(ctx, { x: 210, y: 128 }, { x: width / 2 - 80, y: 128 }, palette.gray);
+    arrow(ctx, { x: width / 2 + 80, y: 128 }, { x: width - 210, y: 128 }, palette.gray);
+  }
+}
+
+function drawTdmSafety(ctx: CanvasRenderingContext2D, width: number, height: number, modeId: string) {
+  if (modeId === 'sampling') {
+    fillCard(ctx, 42, 74, 170, 112, palette.blue, 'Dose time', '先確認最後一次給藥時間');
+    fillCard(ctx, 232, 74, 170, 112, palette.green, 'Sample time', 'peak / trough / random 含義不同');
+    fillCard(ctx, 422, 74, 170, 112, palette.orange, 'Steady state', '尚未達穩態時要用不同方式解讀');
+    fillCard(ctx, width - 202, 74, 160, 112, palette.purple, 'Clinical state', '毒性與療效必須一起讀');
+  } else if (modeId === 'high-alert') {
+    circleNode(ctx, width / 2, height / 2, 68, palette.red, 'High-alert', 'harm if wrong');
+    fillCard(ctx, 60, 84, 170, 96, palette.blue, 'Insulin', '單位與餐次同步');
+    fillCard(ctx, width - 230, 84, 170, 96, palette.green, 'Anticoagulant', '出血與適應症管理');
+    fillCard(ctx, 60, height - 170, 170, 96, palette.orange, 'Opioid', '鎮靜與呼吸抑制');
+    fillCard(ctx, width - 230, height - 170, 170, 96, palette.purple, 'Electrolytes', '濃縮液與泵浦安全');
+    connector(ctx, [{ x: 230, y: 132 }, { x: width / 2 - 68, y: height / 2 - 20 }], palette.blue);
+    connector(ctx, [{ x: width - 230, y: 132 }, { x: width / 2 + 68, y: height / 2 - 20 }], palette.green);
+    connector(ctx, [{ x: 230, y: height - 122 }, { x: width / 2 - 68, y: height / 2 + 20 }], palette.orange);
+    connector(ctx, [{ x: width - 230, y: height - 122 }, { x: width / 2 + 68, y: height / 2 + 20 }], palette.purple);
+  } else {
+    fillCard(ctx, 54, 70, 180, 118, palette.blue, 'Standardize', '濃度、order set、流程與教育');
+    fillCard(ctx, width / 2 - 90, 70, 180, 118, palette.green, 'Detect', '濃度、事件通報、異常值與 near miss');
+    fillCard(ctx, width - 234, 70, 180, 118, palette.orange, 'Improve', '回饋系統設計，而不是只責怪個人');
+    arrow(ctx, { x: 234, y: 129 }, { x: width / 2 - 90, y: 129 }, palette.gray);
+    arrow(ctx, { x: width / 2 + 90, y: 129 }, { x: width - 234, y: 129 }, palette.gray);
+  }
+}
+
+function drawAdvancedTherapies(ctx: CanvasRenderingContext2D, width: number, height: number, modeId: string) {
+  if (modeId === 'platforms') {
+    fillCard(ctx, 42, 72, 160, 112, palette.blue, 'Small molecule', '常可口服、易進細胞、交互作用多走 CYP / transporters');
+    fillCard(ctx, 232, 72, 160, 112, palette.green, 'Monoclonal antibody', '大分子注射藥，常作用於細胞外標靶');
+    fillCard(ctx, 422, 72, 160, 112, palette.orange, 'RNA therapy', '調整訊息層級，如 mRNA、siRNA、ASO');
+    fillCard(ctx, width - 202, 72, 160, 112, palette.purple, 'Cell / gene', '一次性或高度個體化平台，複雜度最高');
+  } else if (modeId === 'antibody-map') {
+    fillCard(ctx, 54, 70, 180, 118, palette.green, 'mAb binding', '中和配體或阻斷受體，重點是 target specificity');
+    fillCard(ctx, width / 2 - 90, 70, 180, 118, palette.orange, 'ADC payload', '抗體把細胞毒藥帶向腫瘤，但仍可能有 off-target toxicity');
+    fillCard(ctx, width - 234, 70, 180, 118, palette.blue, 'Fusion protein', '把不同蛋白模組拼接成新功能與更長半衰期');
+  } else {
+    fillCard(ctx, 42, 80, 170, 104, palette.blue, 'DNA', '基因層級修復或補充');
+    fillCard(ctx, width / 2 - 85, 48, 170, 168, palette.purple, 'RNA', 'mRNA 表達、siRNA / ASO 沉默或調整剪接');
+    fillCard(ctx, width - 212, 80, 170, 104, palette.green, 'Protein / cell output', '最終想改變的是功能蛋白與細胞行為');
+    arrow(ctx, { x: 212, y: 132 }, { x: width / 2 - 85, y: 132 }, palette.gray);
+    arrow(ctx, { x: width / 2 + 85, y: 132 }, { x: width - 212, y: 132 }, palette.gray);
+    pill(ctx, width / 2 - 136, height - 84, '越往上游介入，潛力越大，不確定性也越高', palette.red);
+  }
+}
+
 const diagrams: Record<string, DiagramDefinition> = {
   'clinical-cycle': {
     title: '臨床照護與決策循環',
@@ -788,6 +1045,281 @@ const diagrams: Record<string, DiagramDefinition> = {
       },
     ],
     render: drawGenetics,
+  },
+  'pharmacology-core': {
+    title: '藥效學核心圖解',
+    caption: '把受體類型、劑量反應與致效/拮抗關係放在同一張互動式圖裡，方便把抽象概念接回臨床。',
+    modes: [
+      {
+        id: 'receptors',
+        label: '受體類型',
+        summary: '不同受體家族決定起效速度、訊號放大方式與耐受性地圖。',
+        bullets: ['Ion channel 快、nuclear receptor 慢。', 'GPCR 是臨床藥物最常見靶點。', '標靶治療常鎖定 enzyme-linked 路徑。'],
+      },
+      {
+        id: 'dose-response',
+        label: '劑量反應',
+        summary: 'Potency 看曲線左右位置，Efficacy 看最高點，兩者不能混為一談。',
+        bullets: ['EC50 與 Emax 問的是不同問題。', '右移常見於競爭性拮抗或耐受。', 'Ceiling effect 會限制最大療效。'],
+      },
+      {
+        id: 'agonist-spectrum',
+        label: '致效與拮抗',
+        summary: '完全致效、部分致效、競爭性與非競爭性拮抗的臨床用法不同。',
+        bullets: ['Partial agonist 不是低劑量 full agonist。', 'Competitive antagonist 常可被高濃度 agonist 克服。', 'Noncompetitive antagonist 常讓 Emax 降低。'],
+      },
+    ],
+    render: drawPharmacologyCore,
+  },
+  'pk-journey': {
+    title: '藥動學旅程',
+    caption: '切換 ADME、核心參數與穩態模式，建立藥物在人體內移動與消失的完整直覺。',
+    modes: [
+      {
+        id: 'adme',
+        label: 'ADME',
+        summary: '吸收、分布、代謝、排除不是分離章節，而是一條連續旅程。',
+        bullets: ['給藥途徑會改變起始條件。', '器官功能與交互作用可在每一站改寫暴露量。', '病人狀態變化會讓路徑整體失衡。'],
+      },
+      {
+        id: 'parameters',
+        label: '核心參數',
+        summary: 'Vd、CL 與 t1/2 是設計 loading、maintenance 與採樣時機的最重要三角。',
+        bullets: ['Vd 問去哪裡。', 'CL 問清多少。', 't1/2 是兩者共同結果。'],
+      },
+      {
+        id: 'steady-state',
+        label: '穩態設計',
+        summary: 'Loading dose 負責快，maintenance 負責穩，兩者不能混成一個概念。',
+        bullets: ['Loading 主要看 Vd。', 'Maintenance 主要看 CL。', '4 到 5 個半衰期只是近似規則。'],
+      },
+    ],
+    render: drawPkJourney,
+  },
+  'interaction-risk': {
+    title: '交互作用與 ADR 風險網路',
+    caption: '從酵素、轉運蛋白到藥效學加成與不良反應分類，快速辨認高風險組合。',
+    modes: [
+      {
+        id: 'pk',
+        label: '藥動交互作用',
+        summary: 'CYP、酵素誘導與轉運蛋白會改變濃度，窄治療窗藥物風險最大。',
+        bullets: ['抑制常來得快。', '誘導常來得慢、停得也慢。', '轉運蛋白常被忽略。'],
+      },
+      {
+        id: 'pd',
+        label: '藥效加成',
+        summary: '很多嚴重交互作用不是濃度改變，而是風險往同一方向疊加。',
+        bullets: ['QT、出血、鎮靜與 serotonin excess 是高頻類型。', '器官功能與電解質會放大風險。', '不同類藥也可能在同一風險終點會合。'],
+      },
+      {
+        id: 'adr',
+        label: 'ADR 分類',
+        summary: '先分清楚是 Type A 還是 Type B，再決定停藥、減量、再挑戰與通報。',
+        bullets: ['可預測與不可預測要分開。', '停藥反應與治療失敗也屬 ADR 框架。', '時間序列是判讀核心。'],
+      },
+    ],
+    render: drawInteractionRisk,
+  },
+  'dosage-design': {
+    title: '劑型與製劑設計圖',
+    caption: '比較劑型選擇、吸收設計與無菌調配風險，理解藥物如何被安全送到目標位置。',
+    modes: [
+      {
+        id: 'forms',
+        label: '劑型比較',
+        summary: '同一主成分進不同劑型，代表不同的治療節奏與使用風險。',
+        bullets: ['IR、ER、注射、吸入與貼片問的是不同問題。', '便利性與安全性都受劑型影響。', '技巧型劑型不能只靠口頭說明。'],
+      },
+      {
+        id: 'biopharm',
+        label: '吸收設計',
+        summary: '溶解度、通透性、首渡效應共同決定口服表現，製劑設計在解決這些限制。',
+        bullets: ['不是所有口服藥都追求最高 F。', '前驅藥與奈米載體都在改寫輸送條件。', 'pH 與轉運蛋白同樣重要。'],
+      },
+      {
+        id: 'sterile',
+        label: '無菌與相容',
+        summary: 'Sterility、compatibility 與 stability 缺一不可，這些問題多數發生在系統細節。',
+        bullets: ['透明不等於相容。', '容器與 tubing 也會改變實際到藥量。', '稀釋液、濃度與光熱條件都要守規則。'],
+      },
+    ],
+    render: drawDosageDesign,
+  },
+  'medication-system': {
+    title: '處方、調劑與衛教系統',
+    caption: '從處方開立到病人真正理解用藥，這是一條資訊與責任的接力流程。',
+    modes: [
+      {
+        id: 'prescription',
+        label: '處方流程',
+        summary: '開立、審核、調劑與交付每一站都在攔截不同型態的錯誤。',
+        bullets: ['錯誤若越早攔下，代價越低。', '電子化並不會自動消滅錯誤。', '適應症與劑量邏輯應在前端完成。'],
+      },
+      {
+        id: 'counseling',
+        label: '衛教地圖',
+        summary: '病人是否理解、能否操作與何時求助，決定最後一哩是否真正完成。',
+        bullets: ['Teach-back 比點頭更可靠。', '裝置型藥物要示範。', '警訊教育要具體。'],
+      },
+      {
+        id: 'literature',
+        label: '資訊層級',
+        summary: '不同層級文獻適合回答不同速度與深度的臨床問題。',
+        bullets: ['先問問題，再決定去哪裡找。', '三級文獻快，但不一定夠深。', '高風險決策要追到原始研究。'],
+      },
+    ],
+    render: drawMedicationSystem,
+  },
+  'medication-review': {
+    title: '藥物治療問題掃描圖',
+    caption: '用 DTP 架構把 indication、effectiveness、safety、adherence 與 monitoring 放到同一視野。',
+    modes: [
+      {
+        id: 'dtp',
+        label: 'DTP 架構',
+        summary: '完整的 medication review 不是只看副作用，而是六個面向一起掃描。',
+        bullets: ['Indication 與 patient goal 是起點。', 'Effectiveness 與 safety 要並行。', 'Monitoring 與 adherence 決定計畫能否落地。'],
+      },
+      {
+        id: 'adherence',
+        label: '依從障礙',
+        summary: '依從性問題通常來自理解、可近性、執行能力與動機中的其中一塊。',
+        bullets: ['不要把不遵從簡化成態度問題。', 'Access 與 device skill 常被低估。', '問法要中性才能得到真答案。'],
+      },
+      {
+        id: 'monitoring',
+        label: '監測閉環',
+        summary: '高品質用藥管理要先定義基線、追蹤與調整門檻，而不是事後補救。',
+        bullets: ['沒有 action threshold 的監測價值低。', '療效與毒性都要追。', 'Adjust 是閉環最後一步。'],
+      },
+    ],
+    render: drawMedicationReview,
+  },
+  'special-populations': {
+    title: '特殊族群藥療地圖',
+    caption: '兒科、老年、妊娠與器官功能改變病人都會讓標準劑量失去標準意義。',
+    modes: [
+      {
+        id: 'pediatrics',
+        label: '兒科',
+        summary: '兒科不是縮小版成人；劑量、間隔與風險都跟發育階段一起變。',
+        bullets: ['週齡與日齡都可能重要。', '單位錯誤是高風險來源。', 'off-label 並不罕見。'],
+      },
+      {
+        id: 'geriatrics',
+        label: '老年',
+        summary: '老年藥療的重點是多重用藥、脆弱性與功能結果，不只是腎功能下降。',
+        bullets: ['Falls / delirium 很常和藥相關。', 'Deprescribing 是主動策略。', 'Frailty 會改寫風險收益比。'],
+      },
+      {
+        id: 'complex',
+        label: '妊娠與重症',
+        summary: '妊娠、腎肝病、肥胖與重症都會讓藥動學快速偏離平常規則。',
+        bullets: ['先比較治療與不治療風險。', '肥胖與重症常不是單純減量。', '器官支持治療會改變藥物移除。'],
+      },
+    ],
+    render: drawSpecialPopulations,
+  },
+  'pharmacogenomics-roadmap': {
+    title: '藥物基因體學路徑圖',
+    caption: '把 DNA 變異、代謝表現型、臨床可操作性與 EHR 整合放進同一張圖裡。',
+    modes: [
+      {
+        id: 'gene-flow',
+        label: '基因到反應',
+        summary: 'DNA 變異透過 phenotype 影響暴露量、毒性與療效，但不會消除其他臨床變數。',
+        bullets: ['Genotype 與 phenotype 要分開。', 'HLA 類型多牽涉免疫風險。', 'CYP 類型多牽涉代謝能力。'],
+      },
+      {
+        id: 'actionable',
+        label: '何時值得驗',
+        summary: '是否 actionable、是否來得及回報、是否可重複使用，決定檢測價值。',
+        bullets: ['不是所有藥都值得常規檢測。', '高證據 gene-drug pair 最有價值。', '時效常比理論完美更重要。'],
+      },
+      {
+        id: 'integration',
+        label: '系統整合',
+        summary: '沒有 EHR 與 CDS 支援，再好的基因結果也可能被遺忘在 PDF 報告裡。',
+        bullets: ['結果應長期可讀取。', 'CDS 應提供替代建議。', 'pre-emptive genotyping 需要治理機制。'],
+      },
+    ],
+    render: drawPharmacogenomicsRoadmap,
+  },
+  'evidence-therapeutics': {
+    title: '實證治療學決策圖',
+    caption: '把研究設計、終點判讀與病人偏好放進同一套決策邏輯，避免把指引當成自動駕駛。',
+    modes: [
+      {
+        id: 'pyramid',
+        label: '研究層級',
+        summary: '高層級證據有價值，但仍要檢查來源品質與是否適用到你的病人。',
+        bullets: ['外部效度與內部效度都重要。', 'Meta-analysis 不是自動正確。', '真實世界資料能補足 RCT 缺口。'],
+      },
+      {
+        id: 'endpoints',
+        label: '終點判讀',
+        summary: 'Surrogate、hard outcome 與 patient-reported outcome 問的是不同層次的好處。',
+        bullets: ['不要只看相對風險。', 'NNT / NNH 要加上時間軸。', 'Composite endpoint 要拆開看。'],
+      },
+      {
+        id: 'decision',
+        label: '回到病人',
+        summary: 'Evidence、context 與 preference 缺一不可，這才是真正的治療學決策。',
+        bullets: ['指引是地圖，不是鎖死路線。', '成本與監測能力是臨床變數。', '病人價值排序會改變最佳方案。'],
+      },
+    ],
+    render: drawEvidenceTherapeutics,
+  },
+  'tdm-safety': {
+    title: 'TDM 與高警示藥安全圖',
+    caption: '用互動式圖解看採樣時機、高警示藥品風險與系統性防錯框架。',
+    modes: [
+      {
+        id: 'sampling',
+        label: '採樣時機',
+        summary: '抽對時間、問對臨床問題，濃度數字才有意義。',
+        bullets: ['dose time 與 sample time 同等重要。', '穩態前後解讀不同。', 'clinical state 不能被濃度取代。'],
+      },
+      {
+        id: 'high-alert',
+        label: '高警示藥',
+        summary: '高警示藥一旦錯誤，傷害特別大，因此必須用系統設計降低變異。',
+        bullets: ['Insulin、anticoagulant、opioid、濃縮電解質是高頻核心。', '雙核對要真正獨立。', '智慧泵浦要配合標準藥庫。'],
+      },
+      {
+        id: 'systems',
+        label: '防錯系統',
+        summary: '標準化、偵測與回饋改進三者並行，才能把安全變成系統能力。',
+        bullets: ['只責怪個人無法預防再發。', 'Near miss 同樣有學習價值。', '高價值警示比大量警示更有效。'],
+      },
+    ],
+    render: drawTdmSafety,
+  },
+  'advanced-therapies': {
+    title: '新興治療平台導圖',
+    caption: '比較小分子、生物製劑、核酸藥物與細胞/基因治療的作用層級與系統挑戰。',
+    modes: [
+      {
+        id: 'platforms',
+        label: '平台比較',
+        summary: '不同治療平台在分子大小、給藥方式、交互作用與毒性型態上都很不同。',
+        bullets: ['small molecule 常可口服。', 'biologic 常需注射與冷鏈。', 'cell / gene therapy 複雜度最高。'],
+      },
+      {
+        id: 'antibody-map',
+        label: '抗體平台',
+        summary: 'mAb、fusion protein 與 ADC 都在抗體框架上延伸，但風險與用途不同。',
+        bullets: ['輸注反應與免疫原性要預先準備。', 'ADC 是導引加 payload。', 'biosimilar 不是 generic 的生物版。'],
+      },
+      {
+        id: 'dna-rna',
+        label: 'DNA / RNA 層級',
+        summary: '越往上游介入，理論潛力越大，但遞送、脫靶與長期安全性也越複雜。',
+        bullets: ['mRNA 是暫時性訊息輸入。', 'siRNA / ASO 多半在 RNA 層級調整。', 'gene therapy 可能帶來一次性長期效果，也帶來長期不確定性。'],
+      },
+    ],
+    render: drawAdvancedTherapies,
   },
 };
 
