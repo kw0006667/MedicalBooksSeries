@@ -14,6 +14,9 @@ export class SectionsPanel extends LitElement {
   private _clickSection(slug: string) {
     suppressScrollSync();
     appStore.setState({ sectionSlug: slug });
+    if (window.innerWidth <= 767) {
+      appStore.setState({ mobilePanelState: 'closed' });
+    }
     setTimeout(() => scrollToSection(slug), 50);
   }
 
@@ -43,5 +46,10 @@ export class SectionsPanel extends LitElement {
         </nav>
       </div>
     `;
+  }
+
+  override updated() {
+    const active = this.querySelector('.sections-panel__item.active');
+    active?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
   }
 }

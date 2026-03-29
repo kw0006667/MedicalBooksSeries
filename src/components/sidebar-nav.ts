@@ -24,6 +24,11 @@ export class SidebarNav extends LitElement {
     if (ch && !this._openParts.has(ch.part)) {
       this._openParts = new Set([...this._openParts, ch.part]);
     }
+
+    requestAnimationFrame(() => {
+      const active = this.querySelector('.sidebar-nav__section-btn.active, .sidebar-nav__chapter-btn.active');
+      active?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+    });
   }
 
   private _togglePart(partId: number) {
