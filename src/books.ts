@@ -166,6 +166,7 @@ export const volumes: Volume[] = [
       { id: 1, title: '藥理學核心', chapterIds: ['ch01', 'ch02', 'ch03'] },
       { id: 2, title: '劑型、製劑與給藥', chapterIds: ['ch04', 'ch05'] },
       { id: 3, title: '藥物治療管理', chapterIds: ['ch06', 'ch07', 'ch08'] },
+      { id: 4, title: '實證決策與新型治療', chapterIds: ['ch09', 'ch10', 'ch11', 'ch12'] },
     ],
     chapters: [
       {
@@ -238,6 +239,42 @@ export const volumes: Volume[] = [
           { slug: 'when-testing-has-clinical-value', title: '檢測何時有臨床價值' },
           { slug: 'clinical-cases-limitations', title: '臨床案例與限制' },
           { slug: 'future-directions', title: '未來發展' },
+        ],
+      },
+      {
+        id: 'ch09', title: '實證治療學與臨床指引', part: 4,
+        sections: [
+          { slug: 'evidence-pyramid', title: '證據金字塔與研究設計' },
+          { slug: 'treatment-goals-endpoints', title: '治療目標與終點判讀' },
+          { slug: 'guideline-interpretation', title: '臨床指引如何被正確使用' },
+          { slug: 'benefit-harm-cost', title: '效益、風險與成本的平衡' },
+        ],
+      },
+      {
+        id: 'ch10', title: '治療藥物監測與高警示藥品', part: 4,
+        sections: [
+          { slug: 'tdm-core', title: '治療藥物監測核心原理' },
+          { slug: 'high-alert-medications', title: '高警示藥品' },
+          { slug: 'sampling-interpretation', title: '採樣、解讀與個別化調整' },
+          { slug: 'system-error-prevention', title: '系統性錯誤預防' },
+        ],
+      },
+      {
+        id: 'ch11', title: '減藥、轉銜照護與共享決策', part: 4,
+        sections: [
+          { slug: 'medication-reconciliation', title: '用藥整合 (Medication Reconciliation)' },
+          { slug: 'deprescribing-framework', title: '減藥框架 (Deprescribing Framework)' },
+          { slug: 'shared-decision-making', title: '共享決策 (Shared Decision Making)' },
+          { slug: 'transitions-follow-up', title: '轉銜追蹤與出院後用藥管理' },
+        ],
+      },
+      {
+        id: 'ch12', title: '生物製劑、核酸藥物與新興治療平台', part: 4,
+        sections: [
+          { slug: 'biologics-vs-small-molecules', title: '小分子藥物與生物製劑的差異' },
+          { slug: 'monoclonal-antibodies-fusion-proteins', title: '單株抗體、融合蛋白與抗體藥物複合體' },
+          { slug: 'nucleic-acid-therapies-cell-gene-therapy', title: '核酸藥物、細胞治療與基因治療' },
+          { slug: 'biosimilars-immunogenicity-access', title: '免疫原性、互換性與可近性' },
         ],
       },
     ],
