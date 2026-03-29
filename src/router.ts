@@ -70,14 +70,13 @@ export function scrollToSection(slug: string, behavior: ScrollBehavior = 'smooth
   const el = document.getElementById(slug);
   if (!el) return;
   const contentArea = document.getElementById('content-area');
-  const isMobile = window.innerWidth <= 767;
-  if (isMobile || !contentArea) {
+  if (contentArea) {
+    const y = el.offsetTop - 24;
+    contentArea.scrollTo({ top: y, behavior });
+  } else {
     const topBarH = 52 + 16;
     const y = el.getBoundingClientRect().top + window.scrollY - topBarH;
     window.scrollTo({ top: y, behavior });
-  } else {
-    const y = el.offsetTop - 24;
-    contentArea.scrollTo({ top: y, behavior });
   }
 }
 
@@ -89,8 +88,7 @@ export function setupScrollSync(
   if (!sectionSlugs.length) return () => {};
 
   const contentArea = document.getElementById('content-area');
-  const isMobile = window.innerWidth <= 767;
-  const scroller: Window | HTMLElement | null = isMobile ? window : contentArea;
+  const scroller: Window | HTMLElement | null = contentArea ?? window;
   if (!scroller) return () => {};
 
   let rafId = 0;
@@ -100,11 +98,15 @@ export function setupScrollSync(
     cancelAnimationFrame(rafId);
     rafId = requestAnimationFrame(() => {
       let active: string | null = null;
+      const topAnchor = contentArea
+        ? contentArea.getBoundingClientRect().top + 96
+        : 120;
+
       for (const slug of sectionSlugs) {
         const el = document.getElementById(slug);
         if (!el) continue;
         const rect = el.getBoundingClientRect();
-        if (rect.top <= 120) active = slug;
+        if (rect.top <= topAnchor) active = slug;
       }
       if (active && active !== appStore.state.sectionSlug) {
         appStore.setState({ sectionSlug: active });

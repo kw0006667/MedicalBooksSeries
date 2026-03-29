@@ -177,6 +177,7 @@ med-app {
   background: var(--color-bg-sidebar);
   display: flex;
   flex-direction: column;
+  min-height: 0;
   transition: width var(--transition-base);
 }
 
@@ -185,6 +186,7 @@ med-app {
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  min-height: 0;
 }
 
 /* Sections panel column */
@@ -194,6 +196,7 @@ med-app {
   background: var(--color-bg-sidebar);
   display: flex;
   flex-direction: column;
+  min-height: 0;
 }
 
 /* ── Mobile Layout ────────────────────────────────────────────────────────── */

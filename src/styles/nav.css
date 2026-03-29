@@ -1,5 +1,14 @@
 /* ── Top Bar (Mobile) ────────────────────────────────────────────────────── */
 
+sidebar-nav,
+sections-panel,
+drawer-nav {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  height: 100%;
+}
+
 .topbar {
   display: none;
   height: var(--topbar-height);
@@ -98,6 +107,7 @@
 
 .sidebar-nav {
   flex: 1;
+  min-height: 0;
   overflow-y: auto;
   padding: 8px 0 24px;
   scrollbar-width: thin;
@@ -227,6 +237,7 @@
 
 .sections-panel {
   flex: 1;
+  min-height: 0;
   overflow-y: auto;
   padding: 20px 0;
   scrollbar-width: thin;

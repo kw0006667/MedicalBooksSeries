@@ -770,7 +770,291 @@ function drawAdvancedTherapies(ctx: CanvasRenderingContext2D, width: number, hei
   }
 }
 
+function drawCvHemodynamics(ctx: CanvasRenderingContext2D, width: number, height: number, modeId: string) {
+  if (modeId === 'pressure-axis') {
+    fillCard(ctx, 48, 66, 180, 118, palette.blue, 'Cardiac output', '心輸出量由心率、前負荷與收縮力共同決定，是血壓的一半。');
+    fillCard(ctx, width / 2 - 90, 48, 180, 154, palette.orange, 'Blood pressure', '血壓是 CO 與 SVR 的交會結果，長期設定又回到腎臟與鈉水平衡。');
+    fillCard(ctx, width - 228, 66, 180, 118, palette.red, 'Systemic vascular resistance', '小動脈張力、血管重塑與內皮功能決定另一半。');
+    arrow(ctx, { x: 228, y: 125 }, { x: width / 2 - 90, y: 125 }, palette.gray);
+    arrow(ctx, { x: width / 2 + 90, y: 125 }, { x: width - 228, y: 125 }, palette.gray);
+    pill(ctx, width / 2 - 106, height - 84, 'BP = CO x SVR', palette.purple);
+  } else if (modeId === 'raas-loop') {
+    circleNode(ctx, width * 0.18, height * 0.5, 54, palette.blue, 'Kidney', 'renin');
+    circleNode(ctx, width * 0.42, height * 0.28, 54, palette.orange, 'Ang II', 'vasoconstriction');
+    circleNode(ctx, width * 0.42, height * 0.72, 54, palette.red, 'Aldosterone', 'Na / water');
+    circleNode(ctx, width * 0.72, height * 0.5, 60, palette.purple, 'Target organs', 'heart / vessel / brain');
+    arrow(ctx, { x: width * 0.24, y: height * 0.46 }, { x: width * 0.36, y: height * 0.32 }, palette.gray);
+    arrow(ctx, { x: width * 0.24, y: height * 0.54 }, { x: width * 0.36, y: height * 0.68 }, palette.gray);
+    arrow(ctx, { x: width * 0.48, y: height * 0.3 }, { x: width * 0.66, y: height * 0.46 }, palette.gray);
+    arrow(ctx, { x: width * 0.48, y: height * 0.7 }, { x: width * 0.66, y: height * 0.54 }, palette.gray);
+    pill(ctx, 46, 34, 'ACEi / ARB / MRA 在這裡切斷惡性循環', palette.green);
+  } else {
+    fillCard(ctx, 42, 72, 170, 110, palette.blue, 'Brain', '長期高血壓導致腦小血管病變、中風與認知衰退風險上升。');
+    fillCard(ctx, 232, 72, 170, 110, palette.orange, 'Heart', '左心室肥厚、舒張障礙、心衰與冠心病風險疊加。');
+    fillCard(ctx, 422, 72, 170, 110, palette.green, 'Kidney', '蛋白尿、eGFR 下降與腎小球硬化彼此促進。');
+    fillCard(ctx, width - 202, 72, 160, 110, palette.red, 'Retina', '眼底病變可成為全身微血管傷害窗口。');
+  }
+}
+
+function drawCoronaryIschemia(ctx: CanvasRenderingContext2D, width: number, height: number, modeId: string) {
+  if (modeId === 'territories') {
+    circleNode(ctx, width * 0.5, height * 0.5, 88, palette.red, 'Left ventricle', 'myocardium');
+    fillCard(ctx, 56, 66, 170, 100, palette.orange, 'LAD', '前壁、室間隔、心尖；大範圍病變時風險最高。');
+    fillCard(ctx, width - 226, 66, 170, 100, palette.blue, 'RCA', '下壁、右心室與 AV node 常見供血來源。');
+    fillCard(ctx, width / 2 - 85, height - 154, 170, 100, palette.green, 'LCx', '側壁與後壁部分區域。');
+    connector(ctx, [{ x: 226, y: 118 }, { x: width * 0.43, y: height * 0.4 }], palette.orange);
+    connector(ctx, [{ x: width - 226, y: 118 }, { x: width * 0.58, y: height * 0.44 }], palette.blue);
+    connector(ctx, [{ x: width / 2, y: height - 154 }, { x: width * 0.5, y: height * 0.6 }], palette.green);
+  } else if (modeId === 'acs') {
+    fillCard(ctx, 48, 70, 180, 112, palette.orange, 'Vulnerable plaque', '薄纖維帽、高脂質核心與發炎讓斑塊容易破裂。');
+    fillCard(ctx, width / 2 - 90, 70, 180, 112, palette.red, 'Platelet-rich thrombus', '破裂後血小板迅速黏附與活化，形成 ACS。');
+    fillCard(ctx, width - 228, 70, 180, 112, palette.purple, 'Downstream ischemia', '心肌由 subendocardium 開始受傷，若完全阻塞可進展成 STEMI。');
+    arrow(ctx, { x: 228, y: 126 }, { x: width / 2 - 90, y: 126 }, palette.gray);
+    arrow(ctx, { x: width / 2 + 90, y: 126 }, { x: width - 228, y: 126 }, palette.gray);
+  } else {
+    fillCard(ctx, 54, 70, 180, 118, palette.blue, 'Supply problem', '固定狹窄、痙攣、低血壓、低氧與貧血都可降低供氧。');
+    fillCard(ctx, width / 2 - 90, 70, 180, 118, palette.orange, 'Demand surge', '心跳快、高血壓、發燒、甲亢與壁張力增加讓需氧上升。');
+    fillCard(ctx, width - 234, 70, 180, 118, palette.green, 'Clinical result', 'type 1 MI、type 2 MI 或 angina equivalent 的表現取決於兩者缺口。');
+    pill(ctx, width / 2 - 118, height - 84, '不是每個 troponin 上升都等於 plaque rupture', palette.red);
+  }
+}
+
+function drawHeartFailureCycle(ctx: CanvasRenderingContext2D, width: number, height: number, modeId: string) {
+  if (modeId === 'compensation') {
+    circleNode(ctx, width * 0.22, height * 0.5, 56, palette.red, 'Myocardial injury', 'ischemia / HTN / valve');
+    circleNode(ctx, width * 0.5, height * 0.25, 56, palette.orange, 'Low forward flow', 'perfusion down');
+    circleNode(ctx, width * 0.78, height * 0.5, 56, palette.purple, 'RAAS / SNS', 'compensation');
+    circleNode(ctx, width * 0.5, height * 0.75, 56, palette.blue, 'Congestion', 'pressure up');
+    arrow(ctx, { x: width * 0.28, y: height * 0.46 }, { x: width * 0.44, y: height * 0.31 }, palette.gray);
+    arrow(ctx, { x: width * 0.56, y: height * 0.31 }, { x: width * 0.72, y: height * 0.46 }, palette.gray);
+    arrow(ctx, { x: width * 0.72, y: height * 0.54 }, { x: width * 0.56, y: height * 0.69 }, palette.gray);
+    arrow(ctx, { x: width * 0.44, y: height * 0.69 }, { x: width * 0.28, y: height * 0.54 }, palette.gray);
+  } else if (modeId === 'wet-dry') {
+    fillCard(ctx, 60, 70, 160, 112, palette.blue, 'Warm / dry', '穩定目標區，灌流尚可且無明顯鬱血。');
+    fillCard(ctx, 240, 70, 160, 112, palette.green, 'Warm / wet', '最常見急性失代償型，需要利尿與去鬱血。');
+    fillCard(ctx, 420, 70, 160, 112, palette.orange, 'Cold / dry', '灌流差但不一定明顯腫，需找低輸出或過度利尿。');
+    fillCard(ctx, width - 190, 70, 130, 112, palette.red, 'Cold / wet', '最危險，常接近 cardiogenic shock。');
+  } else {
+    fillCard(ctx, 42, 72, 160, 112, palette.purple, 'ARNI / ACEi / ARB', '抑制 RAAS 與減少後負荷，降低重塑。');
+    fillCard(ctx, 232, 72, 160, 112, palette.blue, 'Beta-blocker', '降低交感毒性與猝死風險。');
+    fillCard(ctx, 422, 72, 160, 112, palette.green, 'MRA', '抑制 aldosterone 相關纖維化與鈉滯留。');
+    fillCard(ctx, width - 202, 72, 160, 112, palette.orange, 'SGLT2i', '跨 HFrEF / HFpEF 均可降低 HF 住院。');
+    pill(ctx, width / 2 - 122, height - 84, '利尿劑處理症狀，四大支柱處理預後', palette.red);
+  }
+}
+
+function drawElectrophysiologyRhythm(ctx: CanvasRenderingContext2D, width: number, height: number, modeId: string) {
+  if (modeId === 'conduction') {
+    circleNode(ctx, width * 0.5, 90, 42, palette.green, 'SA node');
+    circleNode(ctx, width * 0.5, height * 0.36, 42, palette.blue, 'AV node');
+    circleNode(ctx, width * 0.5, height * 0.58, 40, palette.orange, 'His');
+    circleNode(ctx, width * 0.38, height * 0.78, 38, palette.purple, 'L bundle');
+    circleNode(ctx, width * 0.62, height * 0.78, 38, palette.red, 'R bundle');
+    arrow(ctx, { x: width * 0.5, y: 132 }, { x: width * 0.5, y: height * 0.31 }, palette.gray);
+    arrow(ctx, { x: width * 0.5, y: height * 0.4 }, { x: width * 0.5, y: height * 0.53 }, palette.gray);
+    arrow(ctx, { x: width * 0.48, y: height * 0.62 }, { x: width * 0.4, y: height * 0.74 }, palette.gray);
+    arrow(ctx, { x: width * 0.52, y: height * 0.62 }, { x: width * 0.6, y: height * 0.74 }, palette.gray);
+  } else if (modeId === 'tachy-map') {
+    fillCard(ctx, 50, 70, 160, 116, palette.blue, 'Automaticity', 'sinus tachy、ectopic atrial beats 與 catecholamine surge 類型。');
+    fillCard(ctx, width / 2 - 80, 70, 160, 116, palette.orange, 'Triggered activity', 'EAD / DAD 對應 long QT、digoxin 或 Ca overload。');
+    fillCard(ctx, width - 210, 70, 160, 116, palette.red, 'Re-entry', 'AVNRT、AVRT、scar VT 的共同核心。');
+    pill(ctx, width / 2 - 106, height - 84, '治療前先問：這顆心律從哪個機轉來？', palette.green);
+  } else {
+    fillCard(ctx, 48, 72, 180, 112, palette.purple, 'QT prolongation', '藥物、低 K / Mg、先天通道病會提高 torsades 風險。');
+    fillCard(ctx, width / 2 - 90, 72, 180, 112, palette.green, 'Structural substrate', '缺血疤痕、心衰與肥厚讓 arrhythmia 更容易維持。');
+    fillCard(ctx, width - 228, 72, 180, 112, palette.orange, 'Trigger', '發燒、酒精、甲亢、感染、藥物與 stress 讓臨界狀態變成顯性。');
+  }
+}
+
+function drawLipidAtherothrombosis(ctx: CanvasRenderingContext2D, width: number, height: number, modeId: string) {
+  if (modeId === 'lipoproteins') {
+    fillCard(ctx, 48, 72, 170, 112, palette.orange, 'ApoB particles', 'LDL、IDL、VLDL remnant 都可能進入內膜，是主要 atherogenic 負荷。');
+    fillCard(ctx, width / 2 - 85, 72, 170, 112, palette.blue, 'Endothelium', '高血壓、糖尿病、吸菸與發炎讓內皮更易通透。');
+    fillCard(ctx, width - 218, 72, 170, 112, palette.green, 'LDL receptor', '肝臟清除能力決定血中顆粒停留時間與濃度。');
+  } else if (modeId === 'plaque') {
+    fillCard(ctx, 54, 70, 180, 118, palette.blue, 'Entry & oxidation', '脂質進入內膜後被氧化，開啟發炎訊號。');
+    fillCard(ctx, width / 2 - 90, 70, 180, 118, palette.orange, 'Foam cell core', '巨噬細胞吞噬脂質後形成泡沫細胞與脂質核心。');
+    fillCard(ctx, width - 234, 70, 180, 118, palette.red, 'Thin fibrous cap', '斑塊若高發炎又帽薄，破裂風險升高。');
+    arrow(ctx, { x: 234, y: 128 }, { x: width / 2 - 90, y: 128 }, palette.gray);
+    arrow(ctx, { x: width / 2 + 90, y: 128 }, { x: width - 234, y: 128 }, palette.gray);
+  } else {
+    fillCard(ctx, 42, 72, 160, 112, palette.purple, 'Statin', '降 LDL 並穩定斑塊，是治療骨幹。');
+    fillCard(ctx, 232, 72, 160, 112, palette.green, 'Ezetimibe', '抑制腸道吸收，常作為 statin 加成。');
+    fillCard(ctx, 422, 72, 160, 112, palette.blue, 'PCSK9 pathway', '減少 LDL receptor 降解，適合高風險殘餘 LDL。');
+    fillCard(ctx, width - 202, 72, 160, 112, palette.orange, 'TG strategy', '極高 TG 要先防胰臟炎，路徑與 LDL 控制不同。');
+  }
+}
+
+function drawAntithromboticTherapy(ctx: CanvasRenderingContext2D, width: number, height: number, modeId: string) {
+  if (modeId === 'hemostasis') {
+    fillCard(ctx, 50, 72, 170, 112, palette.orange, 'Platelet plug', '高剪應力動脈環境下更重要，ACS 與 stroke 領域核心。');
+    fillCard(ctx, width / 2 - 85, 72, 170, 112, palette.red, 'Thrombin / fibrin', '靜脈血栓與 AF stroke prevention 多由這一路主導。');
+    fillCard(ctx, width - 220, 72, 170, 112, palette.blue, 'Fibrinolysis', '在特定時機下溶解已形成 clot，但代價是高出血風險。');
+  } else if (modeId === 'drug-targets') {
+    fillCard(ctx, 42, 72, 160, 112, palette.orange, 'Aspirin / P2Y12', '在血小板活化階段切入。');
+    fillCard(ctx, 232, 72, 160, 112, palette.green, 'Heparin / LMWH', '透過 antithrombin 抑制 Xa / IIa。');
+    fillCard(ctx, 422, 72, 160, 112, palette.purple, 'Warfarin', '從凝血因子合成源頭降低活性。');
+    fillCard(ctx, width - 202, 72, 160, 112, palette.blue, 'DOAC', '直接卡住 Xa 或 IIa，路徑較短。');
+  } else {
+    fillCard(ctx, 56, 70, 180, 118, palette.red, 'Thrombosis risk', 'AF、recent PCI、cancer、immobility、mechanical valve。');
+    fillCard(ctx, width / 2 - 90, 70, 180, 118, palette.orange, 'Bleeding risk', 'age、CKD、GI lesion、triple therapy、falls。');
+    fillCard(ctx, width - 236, 70, 180, 118, palette.green, 'Dynamic plan', '真正成熟的 antithrombotic strategy 是持續重估，而不是一次決定。');
+    arrow(ctx, { x: 236, y: 129 }, { x: width / 2 - 90, y: 129 }, palette.gray);
+    arrow(ctx, { x: width / 2 + 90, y: 129 }, { x: width - 236, y: 129 }, palette.gray);
+  }
+}
+
 const diagrams: Record<string, DiagramDefinition> = {
+  'cv-hemodynamics': {
+    title: '高血壓與血流動力學圖',
+    caption: '把血壓形成、RAAS 惡性循環與器官傷害放進同一張圖，幫助理解為什麼高血壓是系統性疾病。',
+    modes: [
+      {
+        id: 'pressure-axis',
+        label: '壓力軸',
+        summary: '血壓不是單一數字，而是心輸出量與外周阻力共同構成的動態平衡。',
+        bullets: ['先問 CO 與 SVR 怎麼被推高。', '短期與長期調節不是同一套。', '血壓要接回器官風險理解。'],
+      },
+      {
+        id: 'raas-loop',
+        label: 'RAAS',
+        summary: 'RAAS 不是只有升血壓，也牽涉鈉水滯留、重塑與器官保護失衡。',
+        bullets: ['腎臟是長期設定器。', 'ACEi / ARB / MRA 各切不同節點。', '神經荷爾蒙活化會自我放大。'],
+      },
+      {
+        id: 'organ-damage',
+        label: '器官傷害',
+        summary: '腦、心、腎與眼底是最需要長期監控的高血壓標的器官。',
+        bullets: ['高血壓最怕的是慢性累積傷害。', '沒有症狀也可能已經有器官改變。', '診斷與治療目標都要回到 organ protection。'],
+      },
+    ],
+    render: drawCvHemodynamics,
+  },
+  'coronary-ischemia': {
+    title: '冠狀動脈缺血圖',
+    caption: '用一張互動圖串起灌流區域、ACS 形成與供需失衡，協助區分不同型態的缺血性心臟病。',
+    modes: [
+      {
+        id: 'territories',
+        label: '灌流區域',
+        summary: 'LAD、RCA、LCx 的灌流區域對 ECG、echo 與臨床嚴重度判讀都很重要。',
+        bullets: ['前壁梗塞常牽涉較大心肌量。', '下壁要留意右心室與 AV node。', '後壁與側壁變化最容易被低估。'],
+      },
+      {
+        id: 'acs',
+        label: 'ACS 形成',
+        summary: '斑塊穩定與否，比單純狹窄百分比更能解釋急性冠心症。',
+        bullets: ['薄纖維帽與發炎是關鍵。', '血小板是急性破裂後第一線角色。', '再灌流時鐘比背定義更重要。'],
+      },
+      {
+        id: 'supply-demand',
+        label: '供需失衡',
+        summary: '不是所有缺血都來自完全阻塞；低氧、貧血、頻脈與高血壓都可能造成 demand ischemia。',
+        bullets: ['type 1 與 type 2 MI 要分開。', 'troponin 是傷害標記，不是病因標記。', '治療要瞄準真正的失衡來源。'],
+      },
+    ],
+    render: drawCoronaryIschemia,
+  },
+  'heart-failure-cycle': {
+    title: '心衰竭惡性循環圖',
+    caption: '把補償、鬱血與現代 GDMT 的切入點並排，方便理解急性與慢性 HF 管理其實在不同時間軸上工作。',
+    modes: [
+      {
+        id: 'compensation',
+        label: '惡性循環',
+        summary: '低輸出、RAAS / SNS、鬱血與重塑會彼此放大，這是 HF 難以自發好轉的原因。',
+        bullets: ['短期補償，長期有毒。', '心腎與肺循環一起被捲入。', '治療是在切斷這個環。'],
+      },
+      {
+        id: 'wet-dry',
+        label: '臨床分型',
+        summary: 'warm/cold, wet/dry 是急性處置的語言，能快速連到利尿、inotrope 與 shock 評估。',
+        bullets: ['warm-wet 最常見。', 'cold-wet 最危險。', 'volume 與 perfusion 要分開評估。'],
+      },
+      {
+        id: 'gdmt',
+        label: 'GDMT',
+        summary: '利尿劑處理症狀，四大支柱處理重塑與預後，兩者不是替代關係。',
+        bullets: ['越早上藥越能改變軌跡。', 'SGLT2i 不是只有糖尿病病人才用。', '藥物排序應看 hemodynamic，而非個人偏好。'],
+      },
+    ],
+    render: drawHeartFailureCycle,
+  },
+  'electrophysiology-rhythm': {
+    title: '心電生理與心律圖',
+    caption: '把傳導系統、心搏過速機轉與 QT / 結構性風險放進同一張圖，幫助 ECG 思考不只停在紙面。',
+    modes: [
+      {
+        id: 'conduction',
+        label: '傳導系統',
+        summary: '節律從 SA node 到心室的正常傳導，決定你怎麼理解 block 與 re-entry。',
+        bullets: ['AV node 是保護器也是瓶頸。', 'His-Purkinje 受損會讓 QRS 變寬。', '節律是空間事件，不是平面線條。'],
+      },
+      {
+        id: 'tachy-map',
+        label: '機轉地圖',
+        summary: 'automaticity、triggered activity 與 re-entry 是最實用的三分法。',
+        bullets: ['先問機轉，再選藥或電治療。', 'arrhythmia drug 其實在切不同回路。', '可逆誘因不能跳過。'],
+      },
+      {
+        id: 'qt-risk',
+        label: '致心律風險',
+        summary: '結構病、通道病、電解質與藥物交互作用會把小問題變成惡性心律。',
+        bullets: ['torsades 通常是多因子累積結果。', '結構性心臟病會改寫藥物安全性。', '看 QT 也要看臨床情境。'],
+      },
+    ],
+    render: drawElectrophysiologyRhythm,
+  },
+  'lipid-atherothrombosis': {
+    title: '血脂與斑塊演化圖',
+    caption: '從 ApoB 顆粒、內皮、泡沫細胞到降脂藥物切入點，用同一張圖理解動脈粥樣硬化的自然史。',
+    modes: [
+      {
+        id: 'lipoproteins',
+        label: '脂蛋白',
+        summary: '動脈風險的起點是顆粒負荷與內皮暴露，而不只是單一總膽固醇數字。',
+        bullets: ['ApoB 概念有助理解殘餘風險。', 'LDL receptor 是清除主軸。', '代謝症候群讓 remnant burden 上升。'],
+      },
+      {
+        id: 'plaque',
+        label: '斑塊形成',
+        summary: '斑塊是一段慢性發炎歷程，不是「油卡住血管」這麼簡化。',
+        bullets: ['氧化、吞噬、纖維帽缺一不可。', '穩定與脆弱斑塊風險差很多。', '破裂後就進入血栓病理。'],
+      },
+      {
+        id: 'lowering',
+        label: '降脂治療',
+        summary: 'statin、ezetimibe、PCSK9 類藥物各切不同節點，目標是減少累積 ApoB 暴露與事件。',
+        bullets: ['statin 是骨幹。', 'add-on therapy 對高風險族群很重要。', 'TG 管理與 LDL 管理要分開思考。'],
+      },
+    ],
+    render: drawLipidAtherothrombosis,
+  },
+  'antithrombotic-therapy': {
+    title: '抗血栓治療平衡圖',
+    caption: '把止血生理、藥物靶點與 thrombosis / bleeding 平衡放在同一畫布，協助快速釐清抗凝與抗血小板的差異。',
+    modes: [
+      {
+        id: 'hemostasis',
+        label: '止血生理',
+        summary: '血小板、凝血瀑布與纖維溶解問的是不同層次的止血問題。',
+        bullets: ['動脈與靜脈血栓主角不同。', 'fibrin 與 platelet 不該混成同一件事。', '臨床上常是兩套系統一起出錯。'],
+      },
+      {
+        id: 'drug-targets',
+        label: '藥物靶點',
+        summary: '抗血小板、heparin、warfarin 與 DOAC 在路徑中的位置完全不同，這就是臨床差異的來源。',
+        bullets: ['起效速度與監測需求隨機轉改變。', '同時使用代表風險疊加。', 'reversal strategy 要先想好。'],
+      },
+      {
+        id: 'balance',
+        label: '風險平衡',
+        summary: '抗血栓治療不是一次決定，而是反覆重估 thrombosis 與 bleeding 的動態平衡。',
+        bullets: ['高風險族群需要更細緻的時間規劃。', '三重治療通常求短不求長。', '病人教育會直接影響結果。'],
+      },
+    ],
+    render: drawAntithromboticTherapy,
+  },
   'clinical-cycle': {
     title: '臨床照護與決策循環',
     caption: '切換不同模式，觀察病人照護流程、診斷迴圈與團隊分工如何互相扣連。',
