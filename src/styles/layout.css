@@ -1,0 +1,293 @@
+/* ── App Shell Layout ─────────────────────────────────────────────────────── */
+
+med-app {
+  display: block;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ── Portal Home ──────────────────────────────────────────────────────────── */
+
+.portal-home {
+  height: 100vh;
+  overflow-y: auto;
+  background: var(--color-bg);
+}
+
+.portal-home__header {
+  padding: 64px 24px 48px;
+  text-align: center;
+  background:
+    radial-gradient(circle at top, color-mix(in srgb, var(--color-accent) 8%, transparent) 0%, transparent 38%),
+    linear-gradient(180deg, var(--color-bg-subtle) 0%, var(--color-bg) 100%);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.portal-home__series-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-text-subtle);
+  margin-bottom: 12px;
+}
+
+.portal-home__title {
+  font-family: var(--font-serif);
+  font-size: clamp(2.2rem, 5vw, 4rem);
+  font-weight: 700;
+  letter-spacing: var(--letter-spacing-tight);
+  color: var(--color-text);
+  margin: 0 auto 10px;
+  line-height: 1.08;
+  max-width: 12ch;
+  text-wrap: balance;
+}
+
+.portal-home__subtitle {
+  font-size: 1rem;
+  color: var(--color-reading-muted);
+  max-width: 36rem;
+  margin: 0 auto;
+  line-height: 1.8;
+  text-wrap: balance;
+}
+
+.portal-home__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+  padding: 40px 24px 80px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ── Book Card ────────────────────────────────────────────────────────────── */
+
+.book-card {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-bg);
+  cursor: pointer;
+  transition: box-shadow var(--transition-base), transform var(--transition-base), border-color var(--transition-base);
+  overflow: hidden;
+}
+
+.book-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-3px);
+  border-color: var(--book-color, var(--color-accent));
+}
+
+.book-card__stripe {
+  height: 5px;
+  background: var(--book-color, var(--color-accent));
+}
+
+.book-card__body {
+  padding: 24px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.book-card__vol-badge {
+  display: inline-flex;
+  align-items: center;
+  height: 24px;
+  padding: 0 10px;
+  border-radius: 100px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  background: color-mix(in srgb, var(--book-color, var(--color-accent)) 15%, transparent);
+  color: var(--book-color, var(--color-accent));
+  width: fit-content;
+}
+
+.book-card__title {
+  font-family: var(--font-serif);
+  font-size: 1.28rem;
+  font-weight: 700;
+  color: var(--color-text);
+  line-height: 1.42;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+}
+
+.book-card__subtitle {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--color-text-subtle);
+}
+
+.book-card__description {
+  font-size: 0.92rem;
+  color: var(--color-reading-muted);
+  line-height: 1.8;
+  flex: 1;
+}
+
+.book-card__footer {
+  padding: 16px 24px;
+  border-top: 1px solid var(--color-border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+
+.book-card__cta {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--book-color, var(--color-accent));
+}
+
+/* ── Book Shell (3-column reading layout) ────────────────────────────────── */
+
+.book-shell {
+  display: grid;
+  grid-template-columns: var(--sidebar-width) minmax(0, 1fr) 0;
+  grid-template-rows: 100vh;
+  height: 100vh;
+  overflow: hidden;
+  transition: grid-template-columns var(--transition-base);
+}
+
+.book-shell.sections-open {
+  grid-template-columns: var(--sidebar-width) minmax(0, 1fr) var(--sections-panel-width);
+}
+
+.book-shell.sidebar-collapsed {
+  grid-template-columns: 0 minmax(0, 1fr) var(--sections-panel-width);
+}
+
+.book-shell.sidebar-collapsed.sections-collapsed {
+  grid-template-columns: 0 minmax(0, 1fr) 0;
+}
+
+/* Sidebar column */
+.book-shell__sidebar {
+  overflow: hidden;
+  border-right: 1px solid var(--color-border);
+  background: var(--color-bg-sidebar);
+  display: flex;
+  flex-direction: column;
+  transition: width var(--transition-base);
+}
+
+/* Content column */
+.book-shell__content {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Sections panel column */
+.book-shell__sections {
+  overflow: hidden;
+  border-left: 1px solid var(--color-border);
+  background: var(--color-bg-sidebar);
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Mobile Layout ────────────────────────────────────────────────────────── */
+
+@media (max-width: 767px) {
+  .book-shell {
+    display: flex;
+    flex-direction: column;
+    grid-template-columns: none;
+    height: 100dvh;
+  }
+
+  .book-shell__sidebar,
+  .book-shell__sections {
+    display: none;
+  }
+
+  .book-shell__content {
+    flex: 1;
+    overflow: hidden;
+  }
+
+  .portal-home__grid {
+    grid-template-columns: 1fr;
+    padding: 24px 16px 60px;
+  }
+
+  .portal-home__header {
+    padding: 40px 16px 32px;
+  }
+
+  .portal-home__title {
+    font-size: clamp(1.9rem, 9vw, 2.8rem);
+    max-width: 10ch;
+  }
+
+  .portal-home__subtitle {
+    font-size: 0.95rem;
+  }
+}
+
+/* ── Mobile Overlay ───────────────────────────────────────────────────────── */
+
+.mobile-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: var(--z-overlay);
+  backdrop-filter: blur(2px);
+}
+
+.mobile-overlay.visible {
+  display: block;
+}
+
+/* ── Mobile Drawer ────────────────────────────────────────────────────────── */
+
+.mobile-drawer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: min(320px, 85vw);
+  height: 100dvh;
+  background: var(--color-bg-sidebar);
+  z-index: var(--z-drawer);
+  transform: translateX(-100%);
+  transition: transform var(--transition-base);
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid var(--color-border);
+}
+
+.mobile-drawer.open {
+  transform: translateX(0);
+}
+
+/* ── Mobile Sections Sheet ────────────────────────────────────────────────── */
+
+.mobile-sections-sheet {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: min(280px, 85vw);
+  height: 100dvh;
+  background: var(--color-bg-sidebar);
+  z-index: var(--z-drawer);
+  transform: translateX(100%);
+  transition: transform var(--transition-base);
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid var(--color-border);
+}
+
+.mobile-sections-sheet.open {
+  transform: translateX(0);
+}
