@@ -1172,7 +1172,465 @@ function drawDiureticNephron(ctx: CanvasRenderingContext2D, width: number, heigh
   }
 }
 
+function drawDigestiveBarrierMap(ctx: CanvasRenderingContext2D, width: number, height: number, modeId: string) {
+  if (modeId === 'anatomy') {
+    fillCard(ctx, 44, 64, 160, 110, palette.blue, '食道與 LES', '下食道括約肌與橫膈腳決定胃食道交界的逆流阻力。');
+    fillCard(ctx, 232, 46, 180, 146, palette.orange, '胃腔與酸池', '胃酸、胃蛋白酶、胃排空與胃底壓力共同改寫症狀。');
+    fillCard(ctx, 452, 64, 160, 110, palette.green, '十二指腸球部', '膽汁、胰液與碳酸氫鹽是近端小腸重要保護層。');
+    fillCard(ctx, width - 214, 112, 160, 110, palette.teal, '黏膜屏障', '黏液、碳酸氫鹽、血流與上皮緊密連結共同保護黏膜。');
+    arrow(ctx, { x: 204, y: 118 }, { x: 232, y: 118 }, palette.gray);
+    arrow(ctx, { x: 412, y: 118 }, { x: 452, y: 118 }, palette.gray);
+    connector(ctx, [{ x: 612, y: 166 }, { x: width - 214, y: 166 }], palette.gray);
+  } else if (modeId === 'reflux') {
+    circleNode(ctx, 124, height / 2, 48, palette.orange, '胃酸', 'Acid + pepsin');
+    fillCard(ctx, 232, height / 2 - 70, 186, 140, palette.red, '逆流閘門失守', '暫時性 LES 鬆弛、裂孔疝氣、腹壓上升或胃排空延遲都會讓酸性內容物上衝。');
+    fillCard(ctx, 472, 72, 170, 104, palette.blue, '食道症狀', '火燒心、逆流、胸口灼熱、吞嚥痛與夜間症狀');
+    fillCard(ctx, 472, 214, 170, 104, palette.purple, '食道外表現', '咳嗽、聲音沙啞、喉球感與牙蝕不是每次都來自 GERD。');
+    arrow(ctx, { x: 172, y: height / 2 }, { x: 232, y: height / 2 }, palette.gray);
+    arrow(ctx, { x: 418, y: height / 2 - 12 }, { x: 472, y: 124 }, palette.gray);
+    arrow(ctx, { x: 418, y: height / 2 + 12 }, { x: 472, y: 266 }, palette.gray);
+    pill(ctx, 42, 40, '症狀相近不代表都是 GERD，ACS 與膽胰疾病要排除', palette.red);
+  } else {
+    fillCard(ctx, 42, 72, 170, 112, palette.blue, 'H. pylori', '尿素酶、黏膜黏附與慢性發炎讓菌在胃黏膜環境長住。');
+    fillCard(ctx, 242, 72, 170, 112, palette.orange, 'NSAID', '抑制 COX 後 prostaglandin 下降，黏膜血流與保護黏液一起下滑。');
+    fillCard(ctx, 442, 72, 170, 112, palette.red, '酸-pepsin 傷害', '當攻擊力超過黏膜防禦，胃與十二指腸就可能形成潰瘍。');
+    fillCard(ctx, width - 202, 72, 160, 112, palette.green, '結果', '出血、穿孔、胃出口阻塞與慢性缺鐵性貧血');
+    arrow(ctx, { x: 212, y: 128 }, { x: 242, y: 128 }, palette.gray);
+    arrow(ctx, { x: 412, y: 128 }, { x: 442, y: 128 }, palette.gray);
+    arrow(ctx, { x: 612, y: 128 }, { x: width - 202, y: 128 }, palette.gray);
+    pill(ctx, width / 2 - 116, height - 82, 'PPI 抑酸能加速癒合，但 H. pylori 要確認 eradication', palette.purple);
+  }
+}
+
+function drawIbdImmuneMap(ctx: CanvasRenderingContext2D, width: number, height: number, modeId: string) {
+  if (modeId === 'barrier-break') {
+    fillCard(ctx, 50, 68, 170, 114, palette.blue, '上皮屏障', '緊密連結、黏液層與 Paneth cell 防線失衡後，細菌產物更容易穿入黏膜。');
+    fillCard(ctx, width / 2 - 90, 52, 180, 146, palette.orange, '基因與菌相', 'NOD2、IL23R、ATG16L1 等易感背景與菌相失衡把免疫警報門檻下修。');
+    fillCard(ctx, width - 220, 68, 170, 114, palette.red, '免疫放大', 'TNF、IL-12/23、整合素與 JAK 訊號讓局部發炎變成慢性迴圈。');
+    arrow(ctx, { x: 220, y: 125 }, { x: width / 2 - 90, y: 125 }, palette.gray);
+    arrow(ctx, { x: width / 2 + 90, y: 125 }, { x: width - 220, y: 125 }, palette.gray);
+    pill(ctx, width / 2 - 122, height - 82, 'IBD 是宿主、菌相與免疫互相放大的疾病，不是單純感染', palette.purple);
+  } else if (modeId === 'uc-cd') {
+    fillCard(ctx, 54, 66, 220, 126, palette.blue, '潰瘍性結腸炎 UC', '從直腸往近端連續擴展，主要侷限黏膜與黏膜下層，常見血便、急迫感與 tenesmus。');
+    fillCard(ctx, width - 274, 66, 220, 126, palette.orange, '克隆氏症 Crohn', '跳躍性分布，從口到肛都可能受累，偏向全層發炎、狹窄、瘻管與肛門周邊病變。');
+    connector(ctx, [{ x: 274, y: 130 }, { x: width - 274, y: 130 }], palette.gray);
+    fillCard(ctx, width / 2 - 126, 228, 252, 96, palette.green, '共同點', '都可能造成貧血、體重下降、營養缺乏、VTE 風險與關節、皮膚、眼部等腸外表現。');
+  } else {
+    circleNode(ctx, 118, height / 2, 48, palette.green, '5-ASA', '較偏 UC');
+    circleNode(ctx, 264, height / 2, 48, palette.orange, 'Steroid', 'Induction');
+    circleNode(ctx, 410, height / 2, 48, palette.blue, 'Biologic', 'TNF / integrin / IL');
+    circleNode(ctx, 556, height / 2, 48, palette.purple, 'Small molecule', 'JAK / S1P');
+    arrow(ctx, { x: 166, y: height / 2 }, { x: 216, y: height / 2 }, palette.gray);
+    arrow(ctx, { x: 312, y: height / 2 }, { x: 362, y: height / 2 }, palette.gray);
+    arrow(ctx, { x: 458, y: height / 2 }, { x: 508, y: height / 2 }, palette.gray);
+    pill(ctx, 42, 44, '先分 induction 與 maintenance，再談 escalate 或 de-escalate', palette.red);
+  }
+}
+
+function drawHepatologyPortalMap(ctx: CanvasRenderingContext2D, width: number, height: number, modeId: string) {
+  if (modeId === 'lobule') {
+    fillCard(ctx, 42, 72, 170, 112, palette.red, '肝動脈', '提供高氧血流，是急性缺血與休克時的最後保底之一。');
+    fillCard(ctx, width / 2 - 90, 48, 180, 156, palette.orange, '肝小葉與竇狀隙', '門脈血與肝動脈血在竇狀隙混合，肝細胞在這裡完成代謝、解毒、蛋白製造與膽汁生成。');
+    fillCard(ctx, width - 212, 72, 170, 112, palette.blue, '門靜脈', '帶來腸道與脾臟回流血，是營養與內毒素同時進入肝臟的高速公路。');
+    fillCard(ctx, width / 2 - 120, 228, 240, 96, palette.green, '膽汁系統', '膽小管、膽管與膽汁酸循環連結脂肪吸收、膽汁鬱積與黃疸。');
+  } else if (modeId === 'portal-hypertension') {
+    circleNode(ctx, 120, height / 2, 50, palette.purple, '纖維化', 'Resistance');
+    circleNode(ctx, 296, height / 2, 50, palette.blue, '門脈高壓', 'Portal pressure');
+    circleNode(ctx, 472, height / 2 - 76, 50, palette.red, '食道胃靜脈曲張', 'Bleeding');
+    circleNode(ctx, 472, height / 2 + 76, 50, palette.teal, '腹水 / HRS', 'Decompensation');
+    arrow(ctx, { x: 170, y: height / 2 }, { x: 246, y: height / 2 }, palette.gray);
+    arrow(ctx, { x: 346, y: height / 2 - 10 }, { x: 422, y: height / 2 - 60 }, palette.gray);
+    arrow(ctx, { x: 346, y: height / 2 + 10 }, { x: 422, y: height / 2 + 60 }, palette.gray);
+    pill(ctx, 42, 44, 'NSBB、內視鏡、限鹽與 albumin 都是在不同節點降低失代償風險', palette.orange);
+  } else {
+    fillCard(ctx, 42, 62, 170, 122, palette.blue, '代償期', '病人可能只有血小板下降、脾大或影像粗糙，但臨床上還沒出現腹水或出血。');
+    fillCard(ctx, 244, 62, 170, 122, palette.orange, '失代償期', '腹水、肝腦病變、靜脈曲張出血、自發性腹膜炎或黃疸代表病程轉折。');
+    fillCard(ctx, 446, 62, 170, 122, palette.green, '監測', 'HCC 監測、營養狀態、肌少症、感染與腎功能必須持續追蹤。');
+    fillCard(ctx, width / 2 - 110, 228, 220, 98, palette.red, '轉植評估', '一旦反覆失代償、MELD-Na 上升或生活品質持續下降，就要提早思考肝移植路徑。');
+    arrow(ctx, { x: 212, y: 124 }, { x: 244, y: 124 }, palette.gray);
+    arrow(ctx, { x: 414, y: 124 }, { x: 446, y: 124 }, palette.gray);
+  }
+}
+
+function drawPancreatitisEnzymeMap(ctx: CanvasRenderingContext2D, width: number, height: number, modeId: string) {
+  if (modeId === 'autodigestion') {
+    fillCard(ctx, 42, 72, 170, 112, palette.orange, '膽石 / 酒精 / TG', '膽道阻塞、酒精毒性、超高三酸甘油酯與藥物等都是常見誘因。');
+    fillCard(ctx, width / 2 - 90, 56, 180, 144, palette.red, 'trypsinogen 提前活化', '酵素在胰內提早啟動後，自體消化與局部發炎就開始放大。');
+    fillCard(ctx, width - 212, 72, 170, 112, palette.blue, '局部後腹腔傷害', '水腫、脂肪壞死、壞死與液體外滲是疼痛與併發症來源。');
+    arrow(ctx, { x: 212, y: 128 }, { x: width / 2 - 90, y: 128 }, palette.gray);
+    arrow(ctx, { x: width / 2 + 90, y: 128 }, { x: width - 212, y: 128 }, palette.gray);
+  } else if (modeId === 'severity') {
+    circleNode(ctx, 120, height / 2, 48, palette.orange, '局部發炎', 'Pain + edema');
+    circleNode(ctx, 292, height / 2, 48, palette.red, 'SIRS', 'Systemic spillover');
+    circleNode(ctx, 464, height / 2, 48, palette.purple, '器官衰竭', 'Shock / AKI / ARDS');
+    circleNode(ctx, 612, height / 2, 40, palette.blue, '壞死感染', 'Late phase');
+    arrow(ctx, { x: 168, y: height / 2 }, { x: 244, y: height / 2 }, palette.gray);
+    arrow(ctx, { x: 340, y: height / 2 }, { x: 416, y: height / 2 }, palette.gray);
+    arrow(ctx, { x: 512, y: height / 2 }, { x: 572, y: height / 2 }, palette.gray);
+    pill(ctx, 44, 44, '重症與否主要看器官衰竭與持續時間，而不是 lipase 高低', palette.red);
+  } else {
+    fillCard(ctx, 42, 62, 170, 122, palette.green, '急性期', '早期重點是適度輸液、止痛、早期 enteral nutrition 與處理病因。');
+    fillCard(ctx, 244, 62, 170, 122, palette.blue, '中期', '觀察壞死、感染、膽道阻塞與營養風險，影像常在 48 到 72 小時後更有意義。');
+    fillCard(ctx, 446, 62, 170, 122, palette.orange, '慢性化', '反覆發炎後可能進入慢性胰臟炎、外分泌不足、糖尿病與慢性疼痛。');
+    fillCard(ctx, width / 2 - 112, 228, 224, 96, palette.purple, '關鍵提醒', '預防性抗生素不是 routine；有膽管炎或持續阻塞時才積極考慮 ERCP。');
+  }
+}
+
+function drawBowelSymptomTriage(ctx: CanvasRenderingContext2D, width: number, height: number, modeId: string) {
+  if (modeId === 'diarrhea') {
+    fillCard(ctx, 42, 72, 150, 112, palette.blue, '滲透性', '吃進去的溶質留在腸腔拉水，禁食後常改善。');
+    fillCard(ctx, 222, 72, 150, 112, palette.orange, '分泌性', '腸道主動分泌水分與電解質，夜間與禁食時也可能持續。');
+    fillCard(ctx, 402, 72, 150, 112, palette.red, '發炎性', '血便、發燒、黏液、calprotectin 升高與腸黏膜破壞常一起出現。');
+    fillCard(ctx, width - 192, 72, 150, 112, palette.green, '脂肪吸收不良', '脂肪便、體重下降與脂溶性維生素缺乏提示吸收問題。');
+    pill(ctx, width / 2 - 132, height - 82, '先分危險度，再分機轉，最後才選止瀉藥', palette.purple);
+  } else if (modeId === 'constipation') {
+    circleNode(ctx, 120, height / 2, 48, palette.blue, '纖維 / 水分不足', '');
+    circleNode(ctx, 274, height / 2, 48, palette.orange, '慢傳輸', '');
+    circleNode(ctx, 428, height / 2, 48, palette.green, '出口協調障礙', '');
+    fillCard(ctx, 542, height / 2 - 60, 130, 120, palette.red, '藥物與糞便嵌塞', 'opioid、抗膽鹼、鐵劑、鈣離子與臥床常把便秘推向惡性循環。');
+    arrow(ctx, { x: 168, y: height / 2 }, { x: 226, y: height / 2 }, palette.gray);
+    arrow(ctx, { x: 322, y: height / 2 }, { x: 380, y: height / 2 }, palette.gray);
+    arrow(ctx, { x: 476, y: height / 2 }, { x: 542, y: height / 2 }, palette.gray);
+  } else {
+    fillCard(ctx, 42, 70, 180, 118, palette.red, '紅旗', '血便、黑便、體重下降、夜間痛醒、發燒、貧血、脫水、腹膜刺激或新發年長症狀。');
+    fillCard(ctx, width / 2 - 90, 70, 180, 118, palette.orange, '藥物盤點', '瀉藥、metformin、PPI、magnesium、antibiotics、opioid、鐵劑與草藥是高頻原因。');
+    fillCard(ctx, width - 222, 70, 180, 118, palette.blue, '先做的事', 'hydration、停危險藥、排除感染或阻塞、再選擇對症藥物。');
+    fillCard(ctx, width / 2 - 110, 228, 220, 96, palette.green, '最常被漏掉', '糞便嵌塞造成的 overflow diarrhea、C. difficile、IBD 與大腸癌警訊。');
+  }
+}
+
+function drawEndocrineGlucoseMap(ctx: CanvasRenderingContext2D, width: number, height: number, modeId: string) {
+  if (modeId === 'insulin-axis') {
+    circleNode(ctx, 118, height / 2, 48, palette.orange, '胰島 β 細胞', 'Insulin');
+    circleNode(ctx, 294, height / 2 - 66, 48, palette.green, '肝臟', 'Hepatic glucose output');
+    circleNode(ctx, 294, height / 2 + 66, 48, palette.red, '骨骼肌', 'GLUT4 uptake');
+    circleNode(ctx, 492, height / 2, 54, palette.purple, '脂肪組織', 'Lipolysis / adipokines');
+    fillCard(ctx, width - 224, height / 2 - 60, 170, 120, palette.blue, '腎臟 SGLT2', '近端小管會回收大部分濾過葡萄糖，SGLT2 抑制劑就是在這一站切入。');
+    arrow(ctx, { x: 166, y: height / 2 - 8 }, { x: 246, y: height / 2 - 56 }, palette.gray);
+    arrow(ctx, { x: 166, y: height / 2 + 8 }, { x: 246, y: height / 2 + 56 }, palette.gray);
+    arrow(ctx, { x: 342, y: height / 2 - 42 }, { x: 438, y: height / 2 - 8 }, palette.gray);
+    arrow(ctx, { x: 342, y: height / 2 + 42 }, { x: 438, y: height / 2 + 8 }, palette.gray);
+    arrow(ctx, { x: 546, y: height / 2 }, { x: width - 224, y: height / 2 }, palette.gray);
+    pill(ctx, 42, 44, '糖尿病是器官間燃料分工失衡，不只是胰臟單點故障', palette.orange);
+  } else if (modeId === 'decompensation') {
+    fillCard(ctx, 42, 68, 172, 118, palette.red, '胰島素不足', '絕對缺乏偏向 DKA；相對缺乏合併嚴重脫水與感染時可走向 HHS。');
+    fillCard(ctx, width / 2 - 86, 48, 172, 158, palette.orange, '反調節荷爾蒙上升', '升糖素、皮質醇、兒茶酚胺與生長激素一起拉高肝糖輸出與脂解。');
+    fillCard(ctx, width - 214, 68, 172, 118, palette.purple, '代謝崩解', '高血糖、滲透壓上升、酮酸中毒、脫水與電解質流失彼此放大。');
+    arrow(ctx, { x: 214, y: 127 }, { x: width / 2 - 86, y: 127 }, palette.gray);
+    arrow(ctx, { x: width / 2 + 86, y: 127 }, { x: width - 214, y: 127 }, palette.gray);
+    fillCard(ctx, width / 2 - 112, 230, 224, 96, palette.blue, '臨床決策', 'DKA / HHS 處理重點是液體、胰島素、鉀離子與誘因控制，不能只盯住血糖數字。');
+  } else {
+    fillCard(ctx, 42, 70, 156, 112, palette.blue, 'Metformin', '先壓低肝糖輸出，是多數 type 2 diabetes 常見起點。');
+    fillCard(ctx, 228, 70, 156, 112, palette.green, 'GLP-1 RA / tirzepatide', '增加 glucose-dependent insulin、抑制胃排空與食慾。');
+    fillCard(ctx, 414, 70, 156, 112, palette.orange, 'SGLT2 inhibitor', '把葡萄糖與鈉一起送出尿中，並帶來心腎保護。');
+    fillCard(ctx, width - 194, 70, 152, 112, palette.red, 'Insulin', '當 catabolic symptoms、很高 A1C 或 type 1 diabetes 出現時直接補回。');
+    pill(ctx, width / 2 - 140, height - 84, '選藥先看 ASCVD、HF、CKD、體重與低血糖風險，再看 A1C', palette.purple);
+  }
+}
+
+function drawEndocrineThyroidMap(ctx: CanvasRenderingContext2D, width: number, height: number, modeId: string) {
+  if (modeId === 'hpt-axis') {
+    circleNode(ctx, width * 0.16, height / 2, 46, palette.purple, '下視丘', 'TRH');
+    circleNode(ctx, width * 0.38, height / 2, 48, palette.blue, '垂體前葉', 'TSH');
+    circleNode(ctx, width * 0.62, height / 2, 54, palette.orange, '甲狀腺', 'T4 / T3');
+    fillCard(ctx, width - 216, height / 2 - 60, 164, 120, palette.green, '周邊組織', 'deiodinase 把 T4 轉成較活躍的 T3，讓心血管、腸胃、神經與骨骼系統一起感受到「代謝速度」。');
+    arrow(ctx, { x: width * 0.22, y: height / 2 }, { x: width * 0.32, y: height / 2 }, palette.gray);
+    arrow(ctx, { x: width * 0.44, y: height / 2 }, { x: width * 0.56, y: height / 2 }, palette.gray);
+    arrow(ctx, { x: width * 0.68, y: height / 2 }, { x: width - 216, y: height / 2 }, palette.gray);
+    arrow(ctx, { x: width * 0.62, y: height / 2 + 66 }, { x: width * 0.38, y: height / 2 + 66 }, palette.red);
+    arrow(ctx, { x: width * 0.38, y: height / 2 + 90 }, { x: width * 0.16, y: height / 2 + 90 }, palette.red);
+    pill(ctx, 42, 44, 'TSH 高低常是第一個定位線索，但必須放回 free T4 / T3 與臨床情境', palette.orange);
+  } else if (modeId === 'hypo-hyper') {
+    fillCard(ctx, 42, 62, 190, 122, palette.blue, '甲狀腺低下', '怕冷、便秘、浮腫、疲倦、心跳慢、月經變化與 LDL 上升常一起出現。');
+    fillCard(ctx, width / 2 - 95, 62, 190, 122, palette.orange, '甲狀腺亢進', '怕熱、心悸、手抖、體重下降、腹瀉、焦躁與骨流失風險增加。');
+    fillCard(ctx, width - 232, 62, 190, 122, palette.purple, '甲狀腺炎 / 結節', 'thyrotoxicosis 不一定代表 Graves；破壞性釋放、毒性結節與藥物也都可能。');
+    fillCard(ctx, width / 2 - 124, 228, 248, 96, palette.red, '危急情境', '甲狀腺風暴 (Thyroid storm) 與黏液性昏迷 (Myxedema coma) 都是全身代謝失控，不是單純數值異常。');
+  } else {
+    fillCard(ctx, 50, 70, 164, 112, palette.green, 'Levothyroxine', '補回 T4，需注意空腹服用與鐵鈣製劑干擾吸收。');
+    fillCard(ctx, 244, 70, 164, 112, palette.orange, 'Methimazole / PTU', '減少新荷爾蒙合成；PTU 還能抑制周邊 T4 -> T3。');
+    fillCard(ctx, 438, 70, 164, 112, palette.blue, 'Beta-blocker / iodine', '前者先處理症狀，後者在特定時機暫時阻斷釋放。');
+    fillCard(ctx, width / 2 - 114, 228, 228, 96, palette.purple, 'RAI / 手術', '當 Graves、毒性結節或大型甲狀腺腫需要 definitive therapy 時，才會進到放射碘或甲狀腺切除。');
+  }
+}
+
+function drawEndocrineHpaMap(ctx: CanvasRenderingContext2D, width: number, height: number, modeId: string) {
+  if (modeId === 'cortisol-axis') {
+    circleNode(ctx, width * 0.18, height / 2, 46, palette.purple, '下視丘', 'CRH');
+    circleNode(ctx, width * 0.4, height / 2, 50, palette.blue, '垂體', 'ACTH');
+    circleNode(ctx, width * 0.66, height * 0.36, 50, palette.orange, '腎上腺皮質', 'Cortisol');
+    circleNode(ctx, width * 0.66, height * 0.68, 50, palette.green, '球狀帶', 'Aldosterone');
+    fillCard(ctx, width - 214, height / 2 - 70, 164, 140, palette.red, '終端效應', 'cortisol 影響血壓、葡萄糖、免疫與壓力耐受；aldosterone 主要改寫鈉鉀與容量。');
+    arrow(ctx, { x: width * 0.24, y: height / 2 }, { x: width * 0.34, y: height / 2 }, palette.gray);
+    arrow(ctx, { x: width * 0.46, y: height / 2 - 10 }, { x: width * 0.6, y: height * 0.4 }, palette.gray);
+    arrow(ctx, { x: width * 0.46, y: height / 2 + 10 }, { x: width * 0.6, y: height * 0.64 }, palette.gray);
+    arrow(ctx, { x: width * 0.66, y: height * 0.28 }, { x: width * 0.4, y: height * 0.18 }, palette.red);
+    arrow(ctx, { x: width * 0.4, y: height * 0.18 }, { x: width * 0.18, y: height * 0.18 }, palette.red);
+    pill(ctx, 42, 42, 'cortisol 有負回饋，aldosterone 主要看 renin-angiotensin 與 K+', palette.orange);
+  } else if (modeId === 'hypertension-endocrine') {
+    fillCard(ctx, 42, 62, 174, 122, palette.orange, '原發性醛固酮增多症', '高血壓、低鉀、代謝性鹼中毒與早發心血管事件風險增加。');
+    fillCard(ctx, width / 2 - 87, 62, 174, 122, palette.red, '嗜鉻細胞瘤', '陣發性頭痛、盜汗、心悸與劇烈血壓波動來自 catecholamine surge。');
+    fillCard(ctx, width - 216, 62, 174, 122, palette.blue, '庫欣症候群', '脂肪重分布、高血糖、肌無力、皮膚脆弱與高血壓其實來自慢性 cortisol 過量。');
+    fillCard(ctx, width / 2 - 124, 228, 248, 96, palette.green, '共同決策點', '內分泌性高血壓不是比誰數字高，而是看有無低鉀、陣發性症狀、典型外觀與多藥難治。');
+  } else {
+    fillCard(ctx, 42, 70, 150, 112, palette.green, 'Hydrocortisone', '腎上腺危象先給；在 primary adrenal insufficiency 長期補回缺乏的 cortisol。');
+    fillCard(ctx, 222, 70, 150, 112, palette.orange, 'Fludrocortisone / MRA', '前者補礦物皮質素，後者阻斷 aldosterone 對 resistant hypertension 的作用。');
+    fillCard(ctx, 402, 70, 150, 112, palette.blue, 'Alpha blockade', 'pheochromocytoma 術前先 α 再 β，順序錯了可能讓高血壓失控。');
+    fillCard(ctx, width - 192, 70, 150, 112, palette.purple, 'Cabergoline / somatostatin analog', '垂體腫瘤常先走藥物或手術，依 prolactin、GH 與影像型態決定。');
+    pill(ctx, width / 2 - 120, height - 84, '先定位哪一條軸線失衡，再談手術或藥物', palette.red);
+  }
+}
+
+function drawEndocrineAdiposityMap(ctx: CanvasRenderingContext2D, width: number, height: number, modeId: string) {
+  if (modeId === 'visceral-fat') {
+    circleNode(ctx, 122, height / 2, 48, palette.orange, '內臟脂肪', 'Visceral fat');
+    circleNode(ctx, 304, height / 2 - 64, 48, palette.green, '肝臟脂肪化', 'MASLD');
+    circleNode(ctx, 304, height / 2 + 64, 48, palette.blue, '胰島阻抗', 'Hyperinsulinemia');
+    circleNode(ctx, 510, height / 2, 56, palette.red, '發炎 / RAAS / SNS', 'Metabolic stress');
+    fillCard(ctx, width - 212, height / 2 - 64, 160, 128, palette.purple, '系統結果', '高血壓、高三酸甘油酯、低 HDL、OSA、PCOS 與動脈粥樣硬化風險會從這張地圖分流出去。');
+    arrow(ctx, { x: 170, y: height / 2 - 10 }, { x: 256, y: height / 2 - 54 }, palette.gray);
+    arrow(ctx, { x: 170, y: height / 2 + 10 }, { x: 256, y: height / 2 + 54 }, palette.gray);
+    arrow(ctx, { x: 352, y: height / 2 - 42 }, { x: 454, y: height / 2 - 8 }, palette.gray);
+    arrow(ctx, { x: 352, y: height / 2 + 42 }, { x: 454, y: height / 2 + 8 }, palette.gray);
+  } else if (modeId === 'syndrome-cluster') {
+    fillCard(ctx, 42, 70, 148, 112, palette.red, '腰圍增加', '中央肥胖是常見入口，但不是唯一軸線。');
+    fillCard(ctx, 220, 70, 148, 112, palette.orange, 'TG 高 / HDL 低', '脂質譜改變代表肝胰脂質處理已經失衡。');
+    fillCard(ctx, 398, 70, 148, 112, palette.blue, '血壓升高', '交感、RAAS、血管硬化與睡眠呼吸中止一起參與。');
+    fillCard(ctx, width - 188, 70, 148, 112, palette.green, '空腹血糖上升', '通常不是突然發生，而是 β 細胞補償逐步掉隊。');
+    pill(ctx, width / 2 - 142, height - 84, '代謝症候群不是單一病，而是一組共享風險的聚落', palette.purple);
+  } else {
+    fillCard(ctx, 42, 62, 174, 122, palette.green, '生活型態基座', '營養、運動、睡眠、壓力與行為治療仍是所有路徑的底板。');
+    fillCard(ctx, width / 2 - 87, 62, 174, 122, palette.orange, '減重藥物', 'GLP-1 RA、tirzepatide、phentermine-topiramate、naltrexone-bupropion、orlistat 等依病人條件選擇。');
+    fillCard(ctx, width - 216, 62, 174, 122, palette.blue, '代謝手術', '當重度肥胖或合併糖尿病、OSA、脂肪肝等風險高時，手術可能帶來病程改變。');
+    fillCard(ctx, width / 2 - 124, 228, 248, 96, palette.red, '臨床衡量', '真正該追的是腰圍、A1C、血壓、脂質、睡眠品質、肝腎功能與生活功能，不是只有體重。');
+  }
+}
+
 const diagrams: Record<string, DiagramDefinition> = {
+  'endocrine-glucose-map': {
+    title: '胰島素阻抗與高血糖整合圖',
+    caption: '把胰臟、肝臟、骨骼肌、脂肪與腎臟的葡萄糖處理放進同一張圖，幫助理解 type 1、type 2、DKA 與現代降糖藥物切點。',
+    modes: [
+      {
+        id: 'insulin-axis',
+        label: '穩態軸線',
+        summary: '血糖穩態靠胰臟分泌、肝糖輸出、肌肉攝糖與腎臟再吸收同步協調。',
+        bullets: ['空腹血糖常先被肝糖輸出拉高。', '骨骼肌是餐後葡萄糖去路主力。', 'SGLT2 在腎近端小管切入。'],
+      },
+      {
+        id: 'decompensation',
+        label: '失代償',
+        summary: '當胰島素不足與反調節荷爾蒙一起偏向升糖端，病人就可能從高血糖一路掉進 DKA 或 HHS。',
+        bullets: ['感染、停藥、MI、類固醇都可能觸發。', '鉀離子管理和胰島素一樣重要。', '滲透壓與脫水決定病情嚴重度。'],
+      },
+      {
+        id: 'therapy-nodes',
+        label: '治療節點',
+        summary: '不同降糖藥其實是在不同器官節點切入，而不是單純「降糖強弱」比較。',
+        bullets: ['Metformin 多從肝臟著手。', 'GLP-1 RA / tirzepatide 兼顧血糖與體重。', 'SGLT2 inhibitor 常先看心腎共病。'],
+      },
+    ],
+    render: drawEndocrineGlucoseMap,
+  },
+  'endocrine-thyroid-map': {
+    title: '甲狀腺軸與甲低甲亢整合圖',
+    caption: '用 HPT axis 串起 TSH、T4/T3、周邊轉換與典型症候群，方便理解 Graves、Hashimoto、thyroiditis 與治療順序。',
+    modes: [
+      {
+        id: 'hpt-axis',
+        label: 'HPT 軸',
+        summary: '甲狀腺不是獨立作業，必須放在下視丘與垂體的負回饋中理解。',
+        bullets: ['TSH 是高敏感定位點。', 'T4 分泌多，T3 活性高。', '藥物與重症狀態都可干擾判讀。'],
+      },
+      {
+        id: 'hypo-hyper',
+        label: '症候群',
+        summary: '甲低與甲亢其實是全身代謝速度被向下或向上重設，影響的不只心跳而已。',
+        bullets: ['症狀方向常相反。', 'thyrotoxicosis 不等於一定是 Graves。', '危重症是全身系統失衡。'],
+      },
+      {
+        id: 'treatment',
+        label: '治療工具',
+        summary: '補回缺乏、壓低合成、阻斷釋放與 definitive treatment 各自對應不同情境。',
+        bullets: ['Levothyroxine 要注意吸收。', 'Methimazole 通常優於 PTU，孕早期除外。', 'RAI / 手術是 definitive therapy。'],
+      },
+    ],
+    render: drawEndocrineThyroidMap,
+  },
+  'endocrine-hpa-map': {
+    title: '垂體-腎上腺與內分泌性高血壓圖',
+    caption: '整合 CRH-ACTH-cortisol、aldosterone 與 catecholamine 三條高頻臨床軸線，方便連結 Addison、Cushing、primary aldosteronism 與 pheochromocytoma。',
+    modes: [
+      {
+        id: 'cortisol-axis',
+        label: 'Cortisol 軸',
+        summary: '垂體與腎上腺的回饋是診斷 adrenal insufficiency 與 Cushing syndrome 的核心。',
+        bullets: ['ACTH 有助分 primary vs secondary。', 'Aldosterone 不是單看 ACTH。', 'stress dose steroid 是救命觀念。'],
+      },
+      {
+        id: 'hypertension-endocrine',
+        label: '內分泌高血壓',
+        summary: '碰到多藥難治高血壓、低鉀或陣發性症狀時，應主動把內分泌病因拉進鑑別。',
+        bullets: ['低鉀要想到 aldosterone excess。', '頭痛盜汗心悸要想 pheo。', '紫紋與肌無力要想到 Cushing。'],
+      },
+      {
+        id: 'treatment',
+        label: '治療順序',
+        summary: '這一章很多錯誤不是藥名背錯，而是順序錯，例如 adrenal crisis 沒先補 steroid，或 pheo 先上 β-blocker。',
+        bullets: ['先救命，再定位。', '藥物與手術常是搭配而非互斥。', '垂體腫瘤治療取決於 hormone phenotype。'],
+      },
+    ],
+    render: drawEndocrineHpaMap,
+  },
+  'endocrine-adiposity-map': {
+    title: '肥胖、內臟脂肪與代謝症候群圖',
+    caption: '把內臟脂肪、脂肪肝、胰島阻抗與代謝症候群聚落畫在一起，讓減重不再只被理解成「意志力管理」。',
+    modes: [
+      {
+        id: 'visceral-fat',
+        label: '內臟脂肪',
+        summary: '真正代謝危險的常不是總脂肪量，而是內臟脂肪與異位脂肪的分布。',
+        bullets: ['腰圍常比 BMI 更貼近代謝風險。', '脂肪肝是高價值警訊。', 'adipokines 會改寫胰島素敏感性。'],
+      },
+      {
+        id: 'syndrome-cluster',
+        label: '症候群聚落',
+        summary: '代謝症候群是多個風險因子共享底層病理，所以常成群出現。',
+        bullets: ['腰圍、TG、HDL、血壓、血糖互相拉高風險。', '不是每個胖的人都有相同代謝風險。', '睡眠與用藥也會參與。'],
+      },
+      {
+        id: 'treatment',
+        label: '介入階梯',
+        summary: '治療已從單純衛教走向生活型態、藥物與代謝手術的慢性病策略。',
+        bullets: ['先做基座行為治療。', 'BMI 30 或 BMI 27 合併共病可考慮藥物。', '手術是代謝治療，不只是體重手術。'],
+      },
+    ],
+    render: drawEndocrineAdiposityMap,
+  },
+  'digestive-barrier-map': {
+    title: '上消化道防禦與潰瘍圖',
+    caption: '把食道胃交界、胃酸、黏膜防禦、H. pylori 與 NSAID 放進同一張圖，幫助區分 GERD 與 PUD 雖相關卻不相同。',
+    modes: [
+      {
+        id: 'anatomy',
+        label: '解剖防線',
+        summary: '食道、胃與十二指腸不是單純一條管子，而是不同防禦邏輯接在一起。',
+        bullets: ['LES 是逆流閘門。', '胃酸是生理工具，也是黏膜壓力源。', '黏膜屏障靠血流與黏液維持。'],
+      },
+      {
+        id: 'reflux',
+        label: '逆流',
+        summary: 'GERD 問的是酸性內容物上衝與食道暴露，而不是任何上腹灼熱都直接叫逆流。',
+        bullets: ['裂孔疝氣與肥胖會推高逆流風險。', '夜間症狀通常代表暴露時間更長。', '胸痛一定要記得鑑別心血管疾病。'],
+      },
+      {
+        id: 'ulcer',
+        label: '潰瘍',
+        summary: 'PUD 問的是酸-pepsin 與黏膜防禦失衡，H. pylori 與 NSAID 是最常見兩條路。',
+        bullets: ['出血與穿孔是重要轉折。', 'PPI 治癒潰瘍，eradication 根治 H. pylori。', 'testing after treatment 很重要。'],
+      },
+    ],
+    render: drawDigestiveBarrierMap,
+  },
+  'ibd-immune-map': {
+    title: 'IBD 屏障、免疫與治療圖',
+    caption: '串起腸道屏障破口、UC/Crohn 差異與現代免疫治療階梯，讓病理層次與藥理節點對起來。',
+    modes: [
+      {
+        id: 'barrier-break',
+        label: '屏障破口',
+        summary: 'IBD 的起點不是單一病菌，而是腸道屏障、菌相與易感免疫系統彼此放大的結果。',
+        bullets: ['基因易感改變閾值。', '菌相失衡讓警報更容易被拉響。', '上皮不是被動受害者。'],
+      },
+      {
+        id: 'uc-cd',
+        label: 'UC vs Crohn',
+        summary: '辨認受累層次與分布型態，比背定義更能幫助臨床決策。',
+        bullets: ['UC 偏黏膜連續。', 'Crohn 偏全層跳躍。', '併發症因此不同。'],
+      },
+      {
+        id: 'treat-to-target',
+        label: '治療節點',
+        summary: 'IBD 治療不是止瀉而已，而是把腸黏膜發炎與病程進展壓下來。',
+        bullets: ['steroid 不該是長期 maintenance。', 'biologic 前要先做感染篩檢。', '客觀黏膜與生化指標要追蹤。'],
+      },
+    ],
+    render: drawIbdImmuneMap,
+  },
+  'hepatology-portal-map': {
+    title: '肝炎、肝硬化與門脈高壓圖',
+    caption: '把肝小葉功能、門脈壓力與失代償併發症整合成同一畫面，便於理解 cirrhosis 其實是血流與代謝雙重重寫。',
+    modes: [
+      {
+        id: 'lobule',
+        label: '肝小葉',
+        summary: '先知道正常肝流入、代謝與膽汁輸出，才知道慢性肝病到底破壞了什麼。',
+        bullets: ['門脈與肝動脈共同供應肝臟。', '肝細胞承擔代謝與合成功能。', '膽汁鬱積與肝細胞傷害不是同一件事。'],
+      },
+      {
+        id: 'portal-hypertension',
+        label: '門脈高壓',
+        summary: '肝硬化後真正危險的不只是酵素，而是血流阻力與側枝循環重建。',
+        bullets: ['靜脈曲張與腹水同根同源。', '腎功能惡化常是 hemodynamic 結果。', '藥物與內視鏡各切不同節點。'],
+      },
+      {
+        id: 'decompensation',
+        label: '失代償',
+        summary: '一旦進入腹水、出血、肝腦病變或感染，照護重心就不再只是追 AST/ALT。',
+        bullets: ['每次失代償都會改變預後。', '移植評估不該等到最後一刻。', '營養與肌少症要一起處理。'],
+      },
+    ],
+    render: drawHepatologyPortalMap,
+  },
+  'pancreatitis-enzyme-map': {
+    title: '胰臟炎酵素與嚴重度圖',
+    caption: '把誘因、酵素提前活化、局部壞死與全身反應做成同一張圖，幫助理解為何胰臟炎常從局部痛變成系統病。',
+    modes: [
+      {
+        id: 'autodigestion',
+        label: '自體消化',
+        summary: '胰臟炎的共同語言是消化酵素在錯的時間、錯的地點被打開。',
+        bullets: ['膽石與酒精是最常見起點。', '高 TG 與藥物不可漏。', '感染通常不是最早事件。'],
+      },
+      {
+        id: 'severity',
+        label: '嚴重度',
+        summary: '真正的重症評估要看器官衰竭、持續時間與局部壞死，而不是只看 lipase 倍數。',
+        bullets: ['早期 SIRS 是壞訊號。', '器官衰竭比影像更先改變處置。', '無菌壞死不等於一定要抗生素。'],
+      },
+      {
+        id: 'clinical-course',
+        label: '病程',
+        summary: '從急性期支撐、營養、疼痛到慢性化後的外分泌不足與糖尿病，管理時間軸不同。',
+        bullets: ['enteral feeding 越早越好。', 'ERCP 只給適應症明確者。', '慢性疼痛管理不能只靠反覆住院止痛。'],
+      },
+    ],
+    render: drawPancreatitisEnzymeMap,
+  },
+  'bowel-symptom-triage': {
+    title: '便秘、腹瀉與 GI 症狀分流圖',
+    caption: '把便秘與腹瀉的生理分型、藥物地雷與 red flags 放進同一張圖，讓常見症狀管理不再只是經驗口訣。',
+    modes: [
+      {
+        id: 'diarrhea',
+        label: '腹瀉機轉',
+        summary: '先分清機轉，才知道什麼時候可以對症止瀉、什麼時候必須立刻找病因。',
+        bullets: ['血便與發燒會改變整張策略。', '滲透性與分泌性腹瀉對禁食反應不同。', '藥物與感染是高頻原因。'],
+      },
+      {
+        id: 'constipation',
+        label: '便秘機轉',
+        summary: '便秘不是單一病名，常是纖維不足、慢傳輸、出口協調障礙與藥物堆疊的結果。',
+        bullets: ['糞便嵌塞常偽裝成腹瀉。', 'stimulant 與 osmotic laxative 角色不同。', '出口問題要想到骨盆底。'],
+      },
+      {
+        id: 'alarm-features',
+        label: '警訊',
+        summary: '真正高風險的 GI 症狀管理，是在下藥前先看見哪些人不能只做 symptom relief。',
+        bullets: ['大腸癌與 IBD 警訊不能漏。', 'C. difficile 不適合隨便用止瀉。', '脫水與電解質風險常先決定處置。'],
+      },
+    ],
+    render: drawBowelSymptomTriage,
+  },
   'renal-nephron-map': {
     title: '腎臟與腎元基礎圖',
     caption: '把巨觀腎臟構造、腎元流向與髓質脆弱性放在一起，作為 AKI、CKD、電解質與利尿劑章節的共同底圖。',

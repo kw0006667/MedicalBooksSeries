@@ -103,6 +103,8 @@ export const diagram = (name: string) => `<medical-canvas diagram="${name}"></me
 export const viewer = (initialScene: string) => `<medical-3d-viewer initial-scene="${initialScene}"></medical-3d-viewer>`;
 export const pulmonaryViewer = (initialScene: string) => `<pulmonary-3d-viewer initial-scene="${initialScene}"></pulmonary-3d-viewer>`;
 export const renalViewer = (initialScene: string) => `<renal-3d-viewer initial-scene="${initialScene}"></renal-3d-viewer>`;
+export const digestiveViewer = (initialScene: string) => `<digestive-3d-viewer initial-scene="${initialScene}"></digestive-3d-viewer>`;
+export const endocrineViewer = (initialScene: string) => `<endocrine-3d-viewer initial-scene="${initialScene}"></endocrine-3d-viewer>`;
 
 export const spotlight = (title: string, text: string) => `
   <div class="spotlight">
