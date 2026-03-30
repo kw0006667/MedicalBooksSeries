@@ -102,6 +102,7 @@ export const tags = (items: string[]) => `
 export const diagram = (name: string) => `<medical-canvas diagram="${name}"></medical-canvas>`;
 export const viewer = (initialScene: string) => `<medical-3d-viewer initial-scene="${initialScene}"></medical-3d-viewer>`;
 export const pulmonaryViewer = (initialScene: string) => `<pulmonary-3d-viewer initial-scene="${initialScene}"></pulmonary-3d-viewer>`;
+export const renalViewer = (initialScene: string) => `<renal-3d-viewer initial-scene="${initialScene}"></renal-3d-viewer>`;
 
 export const spotlight = (title: string, text: string) => `
   <div class="spotlight">

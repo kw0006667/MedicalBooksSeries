@@ -1059,7 +1059,245 @@ function drawMechanicalVentilation(ctx: CanvasRenderingContext2D, width: number,
   }
 }
 
+function drawRenalNephronMap(ctx: CanvasRenderingContext2D, width: number, height: number, modeId: string) {
+  if (modeId === 'macro-anatomy') {
+    fillCard(ctx, 44, 70, 176, 114, palette.red, '腎皮質 Cortex', '腎小球密集區，過濾起點與蛋白尿訊號來源。');
+    fillCard(ctx, width / 2 - 88, 70, 176, 114, palette.orange, '腎髓質 Medulla', '粗上行支與濃縮梯度所在地，低氧脆弱區。');
+    fillCard(ctx, width - 220, 70, 176, 114, palette.amber, '腎盂 / 輸尿管', '把形成後尿液帶出，任何阻塞都可能把壓力倒灌。');
+    arrow(ctx, { x: 220, y: 126 }, { x: width / 2 - 88, y: 126 }, palette.gray);
+    arrow(ctx, { x: width / 2 + 88, y: 126 }, { x: width - 220, y: 126 }, palette.gray);
+    pill(ctx, width / 2 - 108, height - 82, '先分清濾過、回收、排出各在哪裡發生', palette.indigo);
+  } else if (modeId === 'micro-flow') {
+    circleNode(ctx, width * 0.16, height / 2, 48, palette.blue, '腎小球', 'Filter');
+    circleNode(ctx, width * 0.34, height / 2, 48, palette.teal, '近端小管', 'Bulk reabsorption');
+    circleNode(ctx, width * 0.52, height / 2, 48, palette.orange, '亨利氏環', 'Countercurrent');
+    circleNode(ctx, width * 0.7, height / 2, 48, palette.purple, '遠端 / 集尿管', 'Fine tuning');
+    circleNode(ctx, width * 0.88, height / 2, 48, palette.green, '尿液排出', 'Excretion');
+    arrow(ctx, { x: width * 0.2, y: height / 2 }, { x: width * 0.28, y: height / 2 }, palette.gray);
+    arrow(ctx, { x: width * 0.38, y: height / 2 }, { x: width * 0.46, y: height / 2 }, palette.gray);
+    arrow(ctx, { x: width * 0.56, y: height / 2 }, { x: width * 0.64, y: height / 2 }, palette.gray);
+    arrow(ctx, { x: width * 0.74, y: height / 2 }, { x: width * 0.82, y: height / 2 }, palette.gray);
+  } else {
+    fillCard(ctx, 44, 70, 180, 116, palette.blue, '腎元儲備 Reserve', '大量腎元流失前，病人仍可能沒有明顯症狀。');
+    fillCard(ctx, width / 2 - 90, 70, 180, 116, palette.red, '髓質低氧風險', '缺血、敗血症、造影劑與低血壓常先打在脆弱區。');
+    fillCard(ctx, width - 224, 70, 180, 116, palette.green, '腎臟是整合器官', '鈉、水、鉀、酸鹼、骨礦物與造血全都跟腎有關。');
+    arrow(ctx, { x: 224, y: 128 }, { x: width / 2 - 90, y: 128 }, palette.gray);
+    arrow(ctx, { x: width / 2 + 90, y: 128 }, { x: width - 224, y: 128 }, palette.gray);
+  }
+}
+
+function drawAkiDecisionMap(ctx: CanvasRenderingContext2D, width: number, height: number, modeId: string) {
+  if (modeId === 'triple-bucket') {
+    fillCard(ctx, 40, 68, 190, 118, palette.blue, '前腎性 Prerenal', '真正的過濾壓不夠，多半與灌流、容量或有效動脈血量有關。');
+    fillCard(ctx, width / 2 - 95, 68, 190, 118, palette.orange, '腎實質 Intrinsic', 'ATN、AIN、GN、TMA 等直接打在腎小球、間質或小管。');
+    fillCard(ctx, width - 230, 68, 190, 118, palette.red, '後腎性 Postrenal', '尿流受阻讓壓力回頭壓壞過濾系統。');
+    arrow(ctx, { x: 230, y: 127 }, { x: width / 2 - 95, y: 127 }, palette.gray);
+    arrow(ctx, { x: width / 2 + 95, y: 127 }, { x: width - 230, y: 127 }, palette.gray);
+  } else if (modeId === 'urine-clues') {
+    fillCard(ctx, 44, 70, 180, 116, palette.amber, '顆粒管型', 'muddy brown cast 支持 ATN，但沒有看到不代表排除。');
+    fillCard(ctx, width / 2 - 90, 70, 180, 116, palette.green, '血尿 / 蛋白尿', '要想到 glomerular disease、vasculitis、TMA。');
+    fillCard(ctx, width - 224, 70, 180, 116, palette.purple, '白血球 / eosinophil 線索', 'AIN 可由藥物、感染、自體免疫觸發，尿沉渣只能輔助。');
+    pill(ctx, width / 2 - 126, height - 84, '尿液顯微鏡是 AKI 的 bedside pathology', palette.red);
+  } else {
+    fillCard(ctx, 42, 66, 150, 112, palette.red, 'Acidosis', '難治代謝性酸中毒');
+    fillCard(ctx, 212, 66, 150, 112, palette.orange, 'Electrolyte', '難治高血鉀與毒性電解質異常');
+    fillCard(ctx, 382, 66, 150, 112, palette.blue, 'Intoxication', '可透析毒物依情境考慮');
+    fillCard(ctx, width - 192, 66, 150, 112, palette.green, 'Overload / Uremia', '肺水腫、心包炎、腦病、出血傾向');
+    pill(ctx, width / 2 - 118, height - 84, '透析是支持治療，不是把診斷工作外包給機器', palette.indigo);
+  }
+}
+
+function drawElectrolyteBalance(ctx: CanvasRenderingContext2D, width: number, height: number, modeId: string) {
+  if (modeId === 'sodium-water') {
+    circleNode(ctx, width * 0.22, height * 0.48, 58, palette.blue, '滲透壓', 'Tonicity');
+    circleNode(ctx, width * 0.5, height * 0.28, 58, palette.teal, 'ADH', 'Water retention');
+    circleNode(ctx, width * 0.5, height * 0.72, 58, palette.orange, '口渴', 'Water intake');
+    circleNode(ctx, width * 0.78, height * 0.48, 58, palette.purple, '尿液濃縮', 'Urine osmolality');
+    arrow(ctx, { x: width * 0.28, y: height * 0.44 }, { x: width * 0.43, y: height * 0.32 }, palette.gray);
+    arrow(ctx, { x: width * 0.28, y: height * 0.52 }, { x: width * 0.43, y: height * 0.68 }, palette.gray);
+    arrow(ctx, { x: width * 0.57, y: height * 0.32 }, { x: width * 0.71, y: height * 0.44 }, palette.gray);
+    arrow(ctx, { x: width * 0.57, y: height * 0.68 }, { x: width * 0.71, y: height * 0.52 }, palette.gray);
+  } else if (modeId === 'potassium-risk') {
+    fillCard(ctx, 44, 70, 180, 116, palette.red, '高血鉀來源', '腎排鉀下降、RAASi、MRA、細胞外移、組織崩解。');
+    fillCard(ctx, width / 2 - 90, 70, 180, 116, palette.orange, '心電圖風險', '尖 T 波、PR 延長、QRS 變寬到 sine wave。');
+    fillCard(ctx, width - 224, 70, 180, 116, palette.green, '處置順序', '先穩膜，再移鉀，最後排鉀。');
+    pill(ctx, width / 2 - 114, height - 84, '正常 ECG 不能完全排除危險高血鉀', palette.red);
+  } else {
+    fillCard(ctx, 40, 68, 190, 118, palette.blue, '鈣 Ca', '神經肌肉穩定、心肌收縮、骨礦物平衡。');
+    fillCard(ctx, width / 2 - 95, 68, 190, 118, palette.purple, '鎂 Mg', '鉀與鈣的安靜協作者，缺了就常補不回來。');
+    fillCard(ctx, width - 230, 68, 190, 118, palette.green, '磷 P', 'ATP、細胞膜與腎病骨礦物代謝核心。');
+    arrow(ctx, { x: 230, y: 127 }, { x: width / 2 - 95, y: 127 }, palette.gray);
+    arrow(ctx, { x: width / 2 + 95, y: 127 }, { x: width - 230, y: 127 }, palette.gray);
+  }
+}
+
+function drawAcidBaseRoadmap(ctx: CanvasRenderingContext2D, width: number, height: number, modeId: string) {
+  if (modeId === 'stepwise') {
+    fillCard(ctx, 44, 70, 150, 112, palette.red, 'Step 1', '先看 pH：acidemia 還是 alkalemia。');
+    fillCard(ctx, 214, 70, 150, 112, palette.orange, 'Step 2', '判斷主要是 PaCO2 還是 HCO3- 在帶頭。');
+    fillCard(ctx, 384, 70, 150, 112, palette.blue, 'Step 3', '算 expected compensation。');
+    fillCard(ctx, width - 194, 70, 150, 112, palette.green, 'Step 4', '看 anion gap / delta gap / 混合性失衡。');
+  } else if (modeId === 'anion-gap') {
+    fillCard(ctx, 52, 70, 190, 118, palette.purple, 'AG = Na - (Cl + HCO3)', '高陰離子間隙代表有未測陰離子進場。');
+    fillCard(ctx, width / 2 - 95, 70, 190, 118, palette.orange, '高 AG 常見病因', 'lactate、ketone、uremia、toxins。');
+    fillCard(ctx, width - 242, 70, 190, 118, palette.blue, '正常 AG 酸中毒', 'GI HCO3 loss、RTA、輸液性高氯。');
+    pill(ctx, width / 2 - 108, height - 84, '別忘了先校正 albumin 對 anion gap 的影響', palette.indigo);
+  } else {
+    fillCard(ctx, 40, 68, 190, 118, palette.green, '代謝性酸中毒', 'Winter formula：預測呼吸代償是否合理');
+    fillCard(ctx, width / 2 - 95, 68, 190, 118, palette.red, '代謝性鹼中毒', '尿氯常比單純尿鈉更有分類價值');
+    fillCard(ctx, width - 230, 68, 190, 118, palette.blue, '呼吸性失衡', '先分急性或慢性，再判讀腎代償');
+    arrow(ctx, { x: 230, y: 127 }, { x: width / 2 - 95, y: 127 }, palette.gray);
+    arrow(ctx, { x: width / 2 + 95, y: 127 }, { x: width - 230, y: 127 }, palette.gray);
+  }
+}
+
+function drawDiureticNephron(ctx: CanvasRenderingContext2D, width: number, height: number, modeId: string) {
+  if (modeId === 'sites') {
+    circleNode(ctx, width * 0.18, height / 2, 48, palette.blue, '近端', 'Acetazolamide');
+    circleNode(ctx, width * 0.38, height / 2, 48, palette.orange, '粗上行支', 'Loop diuretics');
+    circleNode(ctx, width * 0.6, height / 2, 48, palette.green, '遠曲小管', 'Thiazides');
+    circleNode(ctx, width * 0.82, height / 2, 48, palette.purple, '集尿管', 'MRA / ENaC blocker');
+    arrow(ctx, { x: width * 0.23, y: height / 2 }, { x: width * 0.33, y: height / 2 }, palette.gray);
+    arrow(ctx, { x: width * 0.43, y: height / 2 }, { x: width * 0.55, y: height / 2 }, palette.gray);
+    arrow(ctx, { x: width * 0.65, y: height / 2 }, { x: width * 0.77, y: height / 2 }, palette.gray);
+  } else if (modeId === 'combination') {
+    fillCard(ctx, 44, 70, 180, 116, palette.orange, 'Sequential blockade', 'loop + thiazide-like 可在遠端代償打開時重新拉出利尿反應。');
+    fillCard(ctx, width / 2 - 90, 70, 180, 116, palette.green, 'MRA 角色', '在心衰竭、肝硬化、原發性醛固酮增多與抗藥性高血壓都有位置。');
+    fillCard(ctx, width - 224, 70, 180, 116, palette.blue, 'Acetazolamide', '矯正鹼中毒、搭配鬱血利尿或特殊情境時很有價值。');
+  } else {
+    fillCard(ctx, 44, 70, 180, 116, palette.red, '利尿阻抗', '腸胃吸收差、腎灌流差、白蛋白低、遠端代償、NSAID 介入。');
+    fillCard(ctx, width / 2 - 90, 70, 180, 116, palette.orange, '監測重點', '體重、尿量、尿鈉、血壓、creatinine、Na、K、Mg。');
+    fillCard(ctx, width - 224, 70, 180, 116, palette.green, '真正目標', '去鬱血、改善症狀與器官灌流，不是只追求尿量漂亮。');
+    pill(ctx, width / 2 - 108, height - 84, '沒有監測的利尿，等於把病人交給運氣', palette.red);
+  }
+}
+
 const diagrams: Record<string, DiagramDefinition> = {
+  'renal-nephron-map': {
+    title: '腎臟與腎元基礎圖',
+    caption: '把巨觀腎臟構造、腎元流向與髓質脆弱性放在一起，作為 AKI、CKD、電解質與利尿劑章節的共同底圖。',
+    modes: [
+      {
+        id: 'macro-anatomy',
+        label: '巨觀構造',
+        summary: '先分清腎皮質、腎髓質、腎盂與輸尿管，後面的病理才有空間座標。',
+        bullets: ['蛋白尿多半從皮質端開始被注意。', '缺血常先打在髓質。', '阻塞要想到腎盂與輸尿路。'],
+      },
+      {
+        id: 'micro-flow',
+        label: '腎元流向',
+        summary: '過濾、回收、濃縮與排泄沿著腎元接力，任何一站都可能成為藥物或疾病切入點。',
+        bullets: ['近端是大宗回收區。', '亨利氏環建立濃縮梯度。', '集尿管是最後微調站。'],
+      },
+      {
+        id: 'renal-reserve',
+        label: '功能儲備',
+        summary: '腎臟平常有很大儲備，因此數值晚變化不代表結構傷害晚開始。',
+        bullets: ['剩餘腎元會先代償。', '結構破壞與症狀常不同步。', '這也是 CKD 常晚期才被發現的原因。'],
+      },
+    ],
+    render: drawRenalNephronMap,
+  },
+  'aki-decision-map': {
+    title: 'AKI 診斷與處置圖',
+    caption: '把 prerenal / intrinsic / postrenal、尿液線索與 AEIOU 透析指徵整理成一張圖，幫助建立實戰流程。',
+    modes: [
+      {
+        id: 'triple-bucket',
+        label: '三大桶',
+        summary: 'AKI 的第一步仍是先問灌流、腎實質還是阻塞，而不是先背 FENa。',
+        bullets: ['同一位病人可同時跨兩桶以上。', '敗血症 AKI 不只是一桶。', '問時間軸很重要。'],
+      },
+      {
+        id: 'urine-clues',
+        label: '尿液線索',
+        summary: '尿沉渣與尿蛋白/血尿型態常比單次影像更快把機轉縮小。',
+        bullets: ['顯微鏡是高價值工具。', '藥物性 AIN 線索常被低估。', 'GN 看到血尿蛋白尿要快。'],
+      },
+      {
+        id: 'aeiou',
+        label: '透析指徵',
+        summary: '真正需要透析的是失去生理控制的場景，而不是 creatinine 數字本身。',
+        bullets: ['AEIOU 是支持性框架。', 'RRT 時機要結合整體病況。', '別把透析當成延後決策的藉口。'],
+      },
+    ],
+    render: drawAkiDecisionMap,
+  },
+  'electrolyte-balance': {
+    title: '電解質與體液平衡圖',
+    caption: '把鈉水軸、鉀風險與鈣鎂磷關係放在同一畫布，避免把每個電解質當成互不相干的獨立題庫。',
+    modes: [
+      {
+        id: 'sodium-water',
+        label: '鈉水軸',
+        summary: '血鈉主要反映水相對於溶質的關係，不是單純總鈉多寡。',
+        bullets: ['先看 tonicity。', 'ADH 與口渴共同控制水。', '尿滲透壓是分類核心。'],
+      },
+      {
+        id: 'potassium-risk',
+        label: '鉀風險',
+        summary: '高血鉀最怕的是致命心律風險，處置順序比病因學名更重要。',
+        bullets: ['先穩膜，再移鉀，再排鉀。', 'ECG 正常不保證安全。', 'Mg 與酸中毒常一起干擾判讀。'],
+      },
+      {
+        id: 'ca-mg-phos',
+        label: '鈣鎂磷',
+        summary: '鈣、鎂、磷與 PTH、維生素 D、ATP 與腎排泄連成一張網，常一個出錯帶著另一個一起亂。',
+        bullets: ['低鎂會讓低鉀難補。', '高磷常與 CKD 捆在一起。', '症狀要連到神經肌肉與 ECG。'],
+      },
+    ],
+    render: drawElectrolyteBalance,
+  },
+  'acid-base-roadmap': {
+    title: '酸鹼失衡判讀圖',
+    caption: '用步驟化圖像把 pH、陰離子間隙、代償與混合性失衡的判讀順序固定下來。',
+    modes: [
+      {
+        id: 'stepwise',
+        label: '步驟化',
+        summary: '酸鹼判讀最怕跳步，固定順序會大幅降低漏掉混合性失衡的機率。',
+        bullets: ['pH 永遠是第一步。', '主要失衡與代償分開看。', '最後才看 gap 與 delta。'],
+      },
+      {
+        id: 'anion-gap',
+        label: 'Anion Gap',
+        summary: '高陰離子間隙與正常陰離子間隙代謝性酸中毒問的是不同病因世界。',
+        bullets: ['別忘了 albumin 校正。', 'lactate 與 ketone 很常見。', '高氯性酸中毒也很常出現在住院病人。'],
+      },
+      {
+        id: 'compensation',
+        label: '代償',
+        summary: '代償永遠不會把 pH 完全帶回正常；若超出預期，就要主動找第二個失衡。',
+        bullets: ['Winter formula 很實用。', '呼吸性失衡要分急慢性。', '混合性失衡比想像中常見。'],
+      },
+    ],
+    render: drawAcidBaseRoadmap,
+  },
+  'diuretic-nephron': {
+    title: '利尿劑與腎小管靶點圖',
+    caption: '把各類利尿劑打在哪一段、何時併用以及為何會失效整理在同一張圖上。',
+    modes: [
+      {
+        id: 'sites',
+        label: '作用部位',
+        summary: '利尿劑不是一類藥，而是一群在不同腎小管段改寫鈉與水流向的工具。',
+        bullets: ['loop 最強，但不是萬能。', 'thiazide-like 常在遠端補刀。', 'MRA 問的是醛固酮驅動。'],
+      },
+      {
+        id: 'combination',
+        label: '併用策略',
+        summary: 'Sequential nephron blockade 在鬱血、利尿阻抗與高醛固酮狀態常很關鍵。',
+        bullets: ['加藥前先問病人是否真的有到藥。', '併用通常也等於電解質風險上升。', '藥理互補比盲目加量更重要。'],
+      },
+      {
+        id: 'resistance',
+        label: '利尿阻抗',
+        summary: '利尿失敗常來自藥沒進去、腎沒看到藥、遠端代償或驅動因子根本沒被處理。',
+        bullets: ['尿鈉能幫助你看見反應。', 'NSAID 是常見暗樁。', '目標是去鬱血，不是追求空泛的高尿量。'],
+      },
+    ],
+    render: drawDiureticNephron,
+  },
   'resp-airway-defense': {
     title: '呼吸道防禦與氣體交換圖',
     caption: '把導氣區、宿主防線與肺泡交換放進同一張圖，建立呼吸系統疾病最重要的共同底圖。',
