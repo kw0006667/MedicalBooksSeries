@@ -8,6 +8,10 @@ import type { ChapterContent, Section } from '../types.js';
 import './nav-footer.js';
 import './medical-canvas.js';
 import './medical-3d-viewer.js';
+import './pulmonary-3d-viewer.js';
+import './renal-3d-viewer.js';
+import './digestive-3d-viewer.js';
+import './endocrine-3d-viewer.js';
 
 // ── Vite glob imports (statically analyzable → proper code splitting) ──────
 

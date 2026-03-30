@@ -429,6 +429,10 @@
   margin-top: 28px;
 }
 
+.chapter-body endocrine-3d-viewer + medical-canvas {
+  margin-top: 42px;
+}
+
 .chapter-body .figure-note {
   margin-top: -8px;
   font-size: 0.94rem;

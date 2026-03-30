@@ -904,7 +904,1008 @@ function drawAntithromboticTherapy(ctx: CanvasRenderingContext2D, width: number,
   }
 }
 
+function drawRespAirwayDefense(ctx: CanvasRenderingContext2D, width: number, height: number, modeId: string) {
+  if (modeId === 'airway-tree') {
+    circleNode(ctx, width * 0.18, height / 2, 48, palette.blue, '氣管', 'Trachea');
+    circleNode(ctx, width * 0.38, height / 2, 48, palette.teal, '支氣管', 'Bronchi');
+    circleNode(ctx, width * 0.58, height / 2, 48, palette.green, '細支氣管', 'Bronchioles');
+    circleNode(ctx, width * 0.8, height / 2, 54, palette.purple, '肺泡', 'Gas exchange');
+    arrow(ctx, { x: width * 0.24, y: height / 2 }, { x: width * 0.32, y: height / 2 }, palette.gray);
+    arrow(ctx, { x: width * 0.44, y: height / 2 }, { x: width * 0.52, y: height / 2 }, palette.gray);
+    arrow(ctx, { x: width * 0.64, y: height / 2 }, { x: width * 0.73, y: height / 2 }, palette.gray);
+    pill(ctx, 40, 46, '導氣區 -> 交換區', palette.indigo);
+  } else if (modeId === 'airway-defense') {
+    fillCard(ctx, 54, 62, 190, 118, palette.blue, '上呼吸道過濾', '鼻腔、會厭與咳嗽反射先攔下大顆粒與誤吸。');
+    fillCard(ctx, width / 2 - 95, 62, 190, 118, palette.green, '黏液纖毛清除', '纖毛把沾附病原的黏液一路往上推。');
+    fillCard(ctx, width - 244, 62, 190, 118, palette.purple, '肺泡巨噬細胞', '在終端交換區吞噬病原並啟動局部免疫。');
+    arrow(ctx, { x: 244, y: 121 }, { x: width / 2 - 95, y: 121 }, palette.gray);
+    arrow(ctx, { x: width / 2 + 95, y: 121 }, { x: width - 244, y: 121 }, palette.gray);
+    fillCard(ctx, width / 2 - 120, 228, 240, 102, palette.orange, '防線失衡後', '病毒、菸害、脫水、抽痰、插管與免疫缺陷都會讓下呼吸道更容易被突破。');
+  } else {
+    fillCard(ctx, 46, 70, 180, 110, palette.teal, '通氣', '空氣進得去，肺泡才有原料做交換。');
+    fillCard(ctx, width / 2 - 90, 70, 180, 110, palette.blue, '肺泡膜', '交換面要夠薄、夠完整、面積夠大。');
+    fillCard(ctx, width - 226, 70, 180, 110, palette.green, '灌流', '血液要送得到交換面，氧才能真正進入循環。');
+    arrow(ctx, { x: 226, y: 125 }, { x: width / 2 - 90, y: 125 }, palette.gray);
+    arrow(ctx, { x: width / 2 + 90, y: 125 }, { x: width - 226, y: 125 }, palette.gray);
+    fillCard(ctx, width / 2 - 130, 226, 260, 104, palette.red, '低氧常見來源', '肺炎、肺水腫、ARDS、誤吸與肺栓塞，都是從不同角度打斷這條鏈。');
+  }
+}
+
+function drawAsthmaInflammatory(ctx: CanvasRenderingContext2D, width: number, height: number, modeId: string) {
+  if (modeId === 'type2-cascade') {
+    circleNode(ctx, width * 0.16, height / 2, 44, palette.orange, '觸發', 'Allergen / virus');
+    circleNode(ctx, width * 0.36, height / 2, 48, palette.blue, '上皮 / 樹突細胞', 'TSLP / IL-33');
+    circleNode(ctx, width * 0.58, height / 2, 50, palette.purple, 'Th2 軸線', 'IL-4 / IL-5 / IL-13');
+    circleNode(ctx, width * 0.82, height / 2, 54, palette.green, 'IgE / Eosinophil', 'Airway inflammation');
+    arrow(ctx, { x: width * 0.22, y: height / 2 }, { x: width * 0.3, y: height / 2 }, palette.gray);
+    arrow(ctx, { x: width * 0.42, y: height / 2 }, { x: width * 0.52, y: height / 2 }, palette.gray);
+    arrow(ctx, { x: width * 0.64, y: height / 2 }, { x: width * 0.75, y: height / 2 }, palette.gray);
+  } else if (modeId === 'bronchospasm') {
+    fillCard(ctx, 54, 70, 170, 112, palette.orange, '平滑肌收縮', '幾分鐘內縮小氣道半徑，快速造成喘鳴與胸悶。');
+    fillCard(ctx, width / 2 - 85, 70, 170, 112, palette.blue, '黏膜水腫', '血管通透性與發炎讓管壁變厚。');
+    fillCard(ctx, width - 224, 70, 170, 112, palette.green, '黏液栓塞', '尤其在重度發作時，黏液會讓部分氣道近乎堵死。');
+    arrow(ctx, { x: 224, y: 126 }, { x: width / 2 - 85, y: 126 }, palette.gray);
+    arrow(ctx, { x: width / 2 + 85, y: 126 }, { x: width - 224, y: 126 }, palette.gray);
+    fillCard(ctx, width / 2 - 125, 228, 250, 104, palette.red, '臨床結果', '呼氣延長、air trapping、喘鳴、講話斷句，嚴重時可出現 silent chest 與高碳酸血症。');
+  } else {
+    fillCard(ctx, 44, 70, 180, 112, palette.blue, 'Reliever', '優先考慮含 ICS-formoterol 的 reliever 架構，而不是單純 SABA-only。');
+    fillCard(ctx, width / 2 - 90, 70, 180, 112, palette.green, 'Controller', 'ICS 與 ICS-LABA 負責長期壓低發炎與急性惡化風險。');
+    fillCard(ctx, width - 224, 70, 180, 112, palette.purple, 'Add-on', 'LAMA、LTRA、biologic 依表型與未控制風險加入。');
+    arrow(ctx, { x: 224, y: 126 }, { x: width / 2 - 90, y: 126 }, palette.gray);
+    arrow(ctx, { x: width / 2 + 90, y: 126 }, { x: width - 224, y: 126 }, palette.gray);
+    pill(ctx, width / 2 - 132, height - 82, '先檢查吸入技巧，再升藥', palette.orange);
+  }
+}
+
+function drawCopdRemodeling(ctx: CanvasRenderingContext2D, width: number, height: number, modeId: string) {
+  if (modeId === 'phenotypes') {
+    fillCard(ctx, 52, 66, 200, 122, palette.blue, '慢性支氣管炎', '咳痰與黏液分泌上升，氣道壁發炎厚化。');
+    fillCard(ctx, width - 252, 66, 200, 122, palette.red, '肺氣腫', '肺泡隔與彈性纖維破壞，回縮力下降。');
+    fillCard(ctx, width / 2 - 120, 226, 240, 104, palette.purple, '真實世界', '多數病人兩條軸線同時存在，只是比例不同。');
+    connector(ctx, [{ x: 252, y: 127 }, { x: width / 2, y: 226 }], palette.gray);
+    connector(ctx, [{ x: width - 252, y: 127 }, { x: width / 2, y: 226 }], palette.gray);
+  } else if (modeId === 'air-trapping') {
+    circleNode(ctx, width * 0.24, height / 2, 48, palette.orange, '小氣道狹窄', '');
+    circleNode(ctx, width * 0.5, height / 2, 50, palette.red, '呼氣塌陷', '');
+    circleNode(ctx, width * 0.78, height / 2, 54, palette.purple, '氣體滯留', 'Dynamic hyperinflation');
+    arrow(ctx, { x: width * 0.3, y: height / 2 }, { x: width * 0.44, y: height / 2 }, palette.gray);
+    arrow(ctx, { x: width * 0.56, y: height / 2 }, { x: width * 0.71, y: height / 2 }, palette.gray);
+    pill(ctx, 40, 48, '病人最累的是每一口呼吸都要從高肺容積開始', palette.red);
+  } else {
+    fillCard(ctx, 46, 64, 170, 112, palette.green, '感染 / 污染', '常是 exacerbation 觸發點，但不是唯一原因。');
+    fillCard(ctx, 242, 64, 170, 112, palette.orange, '發炎增強', '痰量增加、氣道更窄、支氣管反應性上升。');
+    fillCard(ctx, 438, 64, 170, 112, palette.red, '做功暴增', '病人開始 tachypnea、air trapping、CO2 retention。');
+    fillCard(ctx, width - 212, 64, 170, 112, palette.purple, '呼吸衰竭', '若不卸載通氣與處理病因，就會快速失代償。');
+    arrow(ctx, { x: 216, y: 122 }, { x: 242, y: 122 }, palette.gray);
+    arrow(ctx, { x: 412, y: 122 }, { x: 438, y: 122 }, palette.gray);
+    arrow(ctx, { x: 608, y: 122 }, { x: width - 212, y: 122 }, palette.gray);
+  }
+}
+
+function drawPneumoniaGasExchange(ctx: CanvasRenderingContext2D, width: number, height: number, modeId: string) {
+  if (modeId === 'entry-routes') {
+    fillCard(ctx, 44, 72, 180, 112, palette.blue, '微吸入', '最常見路徑之一，吞嚥與意識狀態是關鍵。');
+    fillCard(ctx, width / 2 - 90, 72, 180, 112, palette.teal, '飛沫 / 氣溶膠', '病毒與部分細菌病原沿空氣進入下呼吸道。');
+    fillCard(ctx, width - 224, 72, 180, 112, palette.orange, '血行播散', '較少見，但在特定重症與免疫抑制病人重要。');
+    arrow(ctx, { x: 224, y: 128 }, { x: width / 2 - 90, y: 128 }, palette.gray);
+    arrow(ctx, { x: width / 2 + 90, y: 128 }, { x: width - 224, y: 128 }, palette.gray);
+  } else if (modeId === 'consolidation') {
+    fillCard(ctx, 56, 64, 190, 118, palette.green, '肺泡充滿滲出液', '原本可交換的空氣空間被液體與發炎細胞占據。');
+    fillCard(ctx, width / 2 - 95, 64, 190, 118, palette.blue, '局部 shunt-like physiology', '血流到了，但通氣明顯不足。');
+    fillCard(ctx, width - 246, 64, 190, 118, palette.red, '低氧與呼吸做功上升', '病人需要更快呼吸才能維持氧合。');
+    arrow(ctx, { x: 246, y: 123 }, { x: width / 2 - 95, y: 123 }, palette.gray);
+    arrow(ctx, { x: width / 2 + 95, y: 123 }, { x: width - 246, y: 123 }, palette.gray);
+  } else {
+    fillCard(ctx, 44, 72, 180, 112, palette.blue, '病人在哪個場景', '門診 CAP、住院 CAP、HAP、VAP 或免疫抑制。');
+    fillCard(ctx, width / 2 - 90, 72, 180, 112, palette.purple, '嚴重度多高', '需不需要住院、ICU、器官支持。');
+    fillCard(ctx, width - 224, 72, 180, 112, palette.green, '耐藥風險在哪', 'MRSA / Pseudomonas 不是每個人都要覆蓋。');
+    arrow(ctx, { x: 224, y: 128 }, { x: width / 2 - 90, y: 128 }, palette.gray);
+    arrow(ctx, { x: width / 2 + 90, y: 128 }, { x: width - 224, y: 128 }, palette.gray);
+    pill(ctx, width / 2 - 140, height - 84, '抗生素廣度要跟風險走，不要跟焦慮走', palette.orange);
+  }
+}
+
+function drawTbGranuloma(ctx: CanvasRenderingContext2D, width: number, height: number, modeId: string) {
+  if (modeId === 'latent-active') {
+    circleNode(ctx, width * 0.18, height / 2, 48, palette.blue, '吸入', 'Droplet nuclei');
+    circleNode(ctx, width * 0.42, height / 2, 50, palette.purple, '肉芽腫', 'Containment');
+    circleNode(ctx, width * 0.68, height / 2, 50, palette.orange, '潛伏', 'Latent TB');
+    circleNode(ctx, width * 0.86, height / 2, 54, palette.red, '活化 / 空洞', 'Active TB');
+    arrow(ctx, { x: width * 0.24, y: height / 2 }, { x: width * 0.35, y: height / 2 }, palette.gray);
+    arrow(ctx, { x: width * 0.49, y: height / 2 }, { x: width * 0.61, y: height / 2 }, palette.gray);
+    arrow(ctx, { x: width * 0.74, y: height / 2 }, { x: width * 0.8, y: height / 2 }, palette.gray);
+  } else if (modeId === 'diagnostics') {
+    fillCard(ctx, 48, 70, 170, 112, palette.blue, '臨床與影像', '慢性咳嗽、夜汗、體重下降、空洞或 tree-in-bud。');
+    fillCard(ctx, width / 2 - 85, 70, 170, 112, palette.green, '痰檢體', 'AFB smear、NAAT、culture 是活動性 TB 核心。');
+    fillCard(ctx, width - 218, 70, 170, 112, palette.orange, '藥敏與追蹤', '最終要靠 culture / susceptibility 重新校正策略。');
+    arrow(ctx, { x: 218, y: 126 }, { x: width / 2 - 85, y: 126 }, palette.gray);
+    arrow(ctx, { x: width / 2 + 85, y: 126 }, { x: width - 218, y: 126 }, palette.gray);
+    pill(ctx, width / 2 - 128, height - 82, 'IGRA / TST 主要回答 latent，不是 active', palette.red);
+  } else {
+    fillCard(ctx, 42, 66, 160, 116, palette.green, '強化期', 'RIPE 多藥先快速壓低菌量與耐藥風險。');
+    fillCard(ctx, 232, 66, 160, 116, palette.blue, '續治期', '依藥敏、反應與病灶型態延續療程。');
+    fillCard(ctx, 422, 66, 160, 116, palette.orange, 'LTBI', '3HP、4R、3HR 等短程方案在合適病人很有價值。');
+    fillCard(ctx, width - 202, 66, 160, 116, palette.red, '交互作用', 'rifamycin 會把整張藥單重寫一次。');
+  }
+}
+
+function drawMechanicalVentilation(ctx: CanvasRenderingContext2D, width: number, height: number, modeId: string) {
+  if (modeId === 'failure-types') {
+    fillCard(ctx, 52, 70, 200, 118, palette.blue, 'Type 1 低氧性', '常見於肺炎、肺水腫、ARDS、肺出血與部分肺栓塞。');
+    fillCard(ctx, width - 252, 70, 200, 118, palette.red, 'Type 2 高碳酸性', '常見於 COPD、氣喘、鎮靜、中樞抑制與神經肌肉病。');
+    fillCard(ctx, width / 2 - 120, 226, 240, 100, palette.purple, '臨床上可重疊', '同一位病人完全可能同時低氧、高碳酸又高做功。');
+    connector(ctx, [{ x: 252, y: 129 }, { x: width / 2 - 60, y: 226 }], palette.gray);
+    connector(ctx, [{ x: width - 252, y: 129 }, { x: width / 2 + 60, y: 226 }], palette.gray);
+  } else if (modeId === 'support-ladder') {
+    const steps = [
+      ['低流量氧氣', palette.blue],
+      ['HFNC', palette.teal],
+      ['NIV', palette.green],
+      ['插管通氣', palette.red],
+    ] as const;
+    steps.forEach(([labelText, color], index) => {
+      const x = 42 + index * 190;
+      fillCard(ctx, x, 92, 150, 112, color, labelText, index === 0 ? 'Mild support' : index === 1 ? 'High flow oxygenation' : index === 2 ? 'Unload work of breathing' : 'Full ventilatory support');
+      if (index < steps.length - 1) {
+        arrow(ctx, { x: x + 150, y: 148 }, { x: x + 190, y: 148 }, palette.gray);
+      }
+    });
+  } else {
+    fillCard(ctx, 42, 66, 160, 116, palette.blue, 'Vt', '依 predicted body weight 設定，不用實際體重。');
+    fillCard(ctx, 232, 66, 160, 116, palette.green, 'PEEP', '招募肺泡、影響氧合，也會影響血流動力。');
+    fillCard(ctx, 422, 66, 160, 116, palette.orange, 'FiO2', '是立即拉高氧合的工具，不是長期唯一解法。');
+    fillCard(ctx, width - 202, 66, 160, 116, palette.red, 'Plateau / Auto-PEEP', '一個保護肺，一個提醒你是否困氣。');
+    pill(ctx, width / 2 - 142, height - 84, '漂亮的 ABG 不值得拿肺傷害去交換', palette.purple);
+  }
+}
+
+function drawRenalNephronMap(ctx: CanvasRenderingContext2D, width: number, height: number, modeId: string) {
+  if (modeId === 'macro-anatomy') {
+    fillCard(ctx, 44, 70, 176, 114, palette.red, '腎皮質 Cortex', '腎小球密集區，過濾起點與蛋白尿訊號來源。');
+    fillCard(ctx, width / 2 - 88, 70, 176, 114, palette.orange, '腎髓質 Medulla', '粗上行支與濃縮梯度所在地，低氧脆弱區。');
+    fillCard(ctx, width - 220, 70, 176, 114, palette.amber, '腎盂 / 輸尿管', '把形成後尿液帶出，任何阻塞都可能把壓力倒灌。');
+    arrow(ctx, { x: 220, y: 126 }, { x: width / 2 - 88, y: 126 }, palette.gray);
+    arrow(ctx, { x: width / 2 + 88, y: 126 }, { x: width - 220, y: 126 }, palette.gray);
+    pill(ctx, width / 2 - 108, height - 82, '先分清濾過、回收、排出各在哪裡發生', palette.indigo);
+  } else if (modeId === 'micro-flow') {
+    circleNode(ctx, width * 0.16, height / 2, 48, palette.blue, '腎小球', 'Filter');
+    circleNode(ctx, width * 0.34, height / 2, 48, palette.teal, '近端小管', 'Bulk reabsorption');
+    circleNode(ctx, width * 0.52, height / 2, 48, palette.orange, '亨利氏環', 'Countercurrent');
+    circleNode(ctx, width * 0.7, height / 2, 48, palette.purple, '遠端 / 集尿管', 'Fine tuning');
+    circleNode(ctx, width * 0.88, height / 2, 48, palette.green, '尿液排出', 'Excretion');
+    arrow(ctx, { x: width * 0.2, y: height / 2 }, { x: width * 0.28, y: height / 2 }, palette.gray);
+    arrow(ctx, { x: width * 0.38, y: height / 2 }, { x: width * 0.46, y: height / 2 }, palette.gray);
+    arrow(ctx, { x: width * 0.56, y: height / 2 }, { x: width * 0.64, y: height / 2 }, palette.gray);
+    arrow(ctx, { x: width * 0.74, y: height / 2 }, { x: width * 0.82, y: height / 2 }, palette.gray);
+  } else {
+    fillCard(ctx, 44, 70, 180, 116, palette.blue, '腎元儲備 Reserve', '大量腎元流失前，病人仍可能沒有明顯症狀。');
+    fillCard(ctx, width / 2 - 90, 70, 180, 116, palette.red, '髓質低氧風險', '缺血、敗血症、造影劑與低血壓常先打在脆弱區。');
+    fillCard(ctx, width - 224, 70, 180, 116, palette.green, '腎臟是整合器官', '鈉、水、鉀、酸鹼、骨礦物與造血全都跟腎有關。');
+    arrow(ctx, { x: 224, y: 128 }, { x: width / 2 - 90, y: 128 }, palette.gray);
+    arrow(ctx, { x: width / 2 + 90, y: 128 }, { x: width - 224, y: 128 }, palette.gray);
+  }
+}
+
+function drawAkiDecisionMap(ctx: CanvasRenderingContext2D, width: number, height: number, modeId: string) {
+  if (modeId === 'triple-bucket') {
+    fillCard(ctx, 40, 68, 190, 118, palette.blue, '前腎性 Prerenal', '真正的過濾壓不夠，多半與灌流、容量或有效動脈血量有關。');
+    fillCard(ctx, width / 2 - 95, 68, 190, 118, palette.orange, '腎實質 Intrinsic', 'ATN、AIN、GN、TMA 等直接打在腎小球、間質或小管。');
+    fillCard(ctx, width - 230, 68, 190, 118, palette.red, '後腎性 Postrenal', '尿流受阻讓壓力回頭壓壞過濾系統。');
+    arrow(ctx, { x: 230, y: 127 }, { x: width / 2 - 95, y: 127 }, palette.gray);
+    arrow(ctx, { x: width / 2 + 95, y: 127 }, { x: width - 230, y: 127 }, palette.gray);
+  } else if (modeId === 'urine-clues') {
+    fillCard(ctx, 44, 70, 180, 116, palette.amber, '顆粒管型', 'muddy brown cast 支持 ATN，但沒有看到不代表排除。');
+    fillCard(ctx, width / 2 - 90, 70, 180, 116, palette.green, '血尿 / 蛋白尿', '要想到 glomerular disease、vasculitis、TMA。');
+    fillCard(ctx, width - 224, 70, 180, 116, palette.purple, '白血球 / eosinophil 線索', 'AIN 可由藥物、感染、自體免疫觸發，尿沉渣只能輔助。');
+    pill(ctx, width / 2 - 126, height - 84, '尿液顯微鏡是 AKI 的 bedside pathology', palette.red);
+  } else {
+    fillCard(ctx, 42, 66, 150, 112, palette.red, 'Acidosis', '難治代謝性酸中毒');
+    fillCard(ctx, 212, 66, 150, 112, palette.orange, 'Electrolyte', '難治高血鉀與毒性電解質異常');
+    fillCard(ctx, 382, 66, 150, 112, palette.blue, 'Intoxication', '可透析毒物依情境考慮');
+    fillCard(ctx, width - 192, 66, 150, 112, palette.green, 'Overload / Uremia', '肺水腫、心包炎、腦病、出血傾向');
+    pill(ctx, width / 2 - 118, height - 84, '透析是支持治療，不是把診斷工作外包給機器', palette.indigo);
+  }
+}
+
+function drawElectrolyteBalance(ctx: CanvasRenderingContext2D, width: number, height: number, modeId: string) {
+  if (modeId === 'sodium-water') {
+    circleNode(ctx, width * 0.22, height * 0.48, 58, palette.blue, '滲透壓', 'Tonicity');
+    circleNode(ctx, width * 0.5, height * 0.28, 58, palette.teal, 'ADH', 'Water retention');
+    circleNode(ctx, width * 0.5, height * 0.72, 58, palette.orange, '口渴', 'Water intake');
+    circleNode(ctx, width * 0.78, height * 0.48, 58, palette.purple, '尿液濃縮', 'Urine osmolality');
+    arrow(ctx, { x: width * 0.28, y: height * 0.44 }, { x: width * 0.43, y: height * 0.32 }, palette.gray);
+    arrow(ctx, { x: width * 0.28, y: height * 0.52 }, { x: width * 0.43, y: height * 0.68 }, palette.gray);
+    arrow(ctx, { x: width * 0.57, y: height * 0.32 }, { x: width * 0.71, y: height * 0.44 }, palette.gray);
+    arrow(ctx, { x: width * 0.57, y: height * 0.68 }, { x: width * 0.71, y: height * 0.52 }, palette.gray);
+  } else if (modeId === 'potassium-risk') {
+    fillCard(ctx, 44, 70, 180, 116, palette.red, '高血鉀來源', '腎排鉀下降、RAASi、MRA、細胞外移、組織崩解。');
+    fillCard(ctx, width / 2 - 90, 70, 180, 116, palette.orange, '心電圖風險', '尖 T 波、PR 延長、QRS 變寬到 sine wave。');
+    fillCard(ctx, width - 224, 70, 180, 116, palette.green, '處置順序', '先穩膜，再移鉀，最後排鉀。');
+    pill(ctx, width / 2 - 114, height - 84, '正常 ECG 不能完全排除危險高血鉀', palette.red);
+  } else {
+    fillCard(ctx, 40, 68, 190, 118, palette.blue, '鈣 Ca', '神經肌肉穩定、心肌收縮、骨礦物平衡。');
+    fillCard(ctx, width / 2 - 95, 68, 190, 118, palette.purple, '鎂 Mg', '鉀與鈣的安靜協作者，缺了就常補不回來。');
+    fillCard(ctx, width - 230, 68, 190, 118, palette.green, '磷 P', 'ATP、細胞膜與腎病骨礦物代謝核心。');
+    arrow(ctx, { x: 230, y: 127 }, { x: width / 2 - 95, y: 127 }, palette.gray);
+    arrow(ctx, { x: width / 2 + 95, y: 127 }, { x: width - 230, y: 127 }, palette.gray);
+  }
+}
+
+function drawAcidBaseRoadmap(ctx: CanvasRenderingContext2D, width: number, height: number, modeId: string) {
+  if (modeId === 'stepwise') {
+    fillCard(ctx, 44, 70, 150, 112, palette.red, 'Step 1', '先看 pH：acidemia 還是 alkalemia。');
+    fillCard(ctx, 214, 70, 150, 112, palette.orange, 'Step 2', '判斷主要是 PaCO2 還是 HCO3- 在帶頭。');
+    fillCard(ctx, 384, 70, 150, 112, palette.blue, 'Step 3', '算 expected compensation。');
+    fillCard(ctx, width - 194, 70, 150, 112, palette.green, 'Step 4', '看 anion gap / delta gap / 混合性失衡。');
+  } else if (modeId === 'anion-gap') {
+    fillCard(ctx, 52, 70, 190, 118, palette.purple, 'AG = Na - (Cl + HCO3)', '高陰離子間隙代表有未測陰離子進場。');
+    fillCard(ctx, width / 2 - 95, 70, 190, 118, palette.orange, '高 AG 常見病因', 'lactate、ketone、uremia、toxins。');
+    fillCard(ctx, width - 242, 70, 190, 118, palette.blue, '正常 AG 酸中毒', 'GI HCO3 loss、RTA、輸液性高氯。');
+    pill(ctx, width / 2 - 108, height - 84, '別忘了先校正 albumin 對 anion gap 的影響', palette.indigo);
+  } else {
+    fillCard(ctx, 40, 68, 190, 118, palette.green, '代謝性酸中毒', 'Winter formula：預測呼吸代償是否合理');
+    fillCard(ctx, width / 2 - 95, 68, 190, 118, palette.red, '代謝性鹼中毒', '尿氯常比單純尿鈉更有分類價值');
+    fillCard(ctx, width - 230, 68, 190, 118, palette.blue, '呼吸性失衡', '先分急性或慢性，再判讀腎代償');
+    arrow(ctx, { x: 230, y: 127 }, { x: width / 2 - 95, y: 127 }, palette.gray);
+    arrow(ctx, { x: width / 2 + 95, y: 127 }, { x: width - 230, y: 127 }, palette.gray);
+  }
+}
+
+function drawDiureticNephron(ctx: CanvasRenderingContext2D, width: number, height: number, modeId: string) {
+  if (modeId === 'sites') {
+    circleNode(ctx, width * 0.18, height / 2, 48, palette.blue, '近端', 'Acetazolamide');
+    circleNode(ctx, width * 0.38, height / 2, 48, palette.orange, '粗上行支', 'Loop diuretics');
+    circleNode(ctx, width * 0.6, height / 2, 48, palette.green, '遠曲小管', 'Thiazides');
+    circleNode(ctx, width * 0.82, height / 2, 48, palette.purple, '集尿管', 'MRA / ENaC blocker');
+    arrow(ctx, { x: width * 0.23, y: height / 2 }, { x: width * 0.33, y: height / 2 }, palette.gray);
+    arrow(ctx, { x: width * 0.43, y: height / 2 }, { x: width * 0.55, y: height / 2 }, palette.gray);
+    arrow(ctx, { x: width * 0.65, y: height / 2 }, { x: width * 0.77, y: height / 2 }, palette.gray);
+  } else if (modeId === 'combination') {
+    fillCard(ctx, 44, 70, 180, 116, palette.orange, 'Sequential blockade', 'loop + thiazide-like 可在遠端代償打開時重新拉出利尿反應。');
+    fillCard(ctx, width / 2 - 90, 70, 180, 116, palette.green, 'MRA 角色', '在心衰竭、肝硬化、原發性醛固酮增多與抗藥性高血壓都有位置。');
+    fillCard(ctx, width - 224, 70, 180, 116, palette.blue, 'Acetazolamide', '矯正鹼中毒、搭配鬱血利尿或特殊情境時很有價值。');
+  } else {
+    fillCard(ctx, 44, 70, 180, 116, palette.red, '利尿阻抗', '腸胃吸收差、腎灌流差、白蛋白低、遠端代償、NSAID 介入。');
+    fillCard(ctx, width / 2 - 90, 70, 180, 116, palette.orange, '監測重點', '體重、尿量、尿鈉、血壓、creatinine、Na、K、Mg。');
+    fillCard(ctx, width - 224, 70, 180, 116, palette.green, '真正目標', '去鬱血、改善症狀與器官灌流，不是只追求尿量漂亮。');
+    pill(ctx, width / 2 - 108, height - 84, '沒有監測的利尿，等於把病人交給運氣', palette.red);
+  }
+}
+
+function drawDigestiveBarrierMap(ctx: CanvasRenderingContext2D, width: number, height: number, modeId: string) {
+  if (modeId === 'anatomy') {
+    fillCard(ctx, 44, 64, 160, 110, palette.blue, '食道與 LES', '下食道括約肌與橫膈腳決定胃食道交界的逆流阻力。');
+    fillCard(ctx, 232, 46, 180, 146, palette.orange, '胃腔與酸池', '胃酸、胃蛋白酶、胃排空與胃底壓力共同改寫症狀。');
+    fillCard(ctx, 452, 64, 160, 110, palette.green, '十二指腸球部', '膽汁、胰液與碳酸氫鹽是近端小腸重要保護層。');
+    fillCard(ctx, width - 214, 112, 160, 110, palette.teal, '黏膜屏障', '黏液、碳酸氫鹽、血流與上皮緊密連結共同保護黏膜。');
+    arrow(ctx, { x: 204, y: 118 }, { x: 232, y: 118 }, palette.gray);
+    arrow(ctx, { x: 412, y: 118 }, { x: 452, y: 118 }, palette.gray);
+    connector(ctx, [{ x: 612, y: 166 }, { x: width - 214, y: 166 }], palette.gray);
+  } else if (modeId === 'reflux') {
+    circleNode(ctx, 124, height / 2, 48, palette.orange, '胃酸', 'Acid + pepsin');
+    fillCard(ctx, 232, height / 2 - 70, 186, 140, palette.red, '逆流閘門失守', '暫時性 LES 鬆弛、裂孔疝氣、腹壓上升或胃排空延遲都會讓酸性內容物上衝。');
+    fillCard(ctx, 472, 72, 170, 104, palette.blue, '食道症狀', '火燒心、逆流、胸口灼熱、吞嚥痛與夜間症狀');
+    fillCard(ctx, 472, 214, 170, 104, palette.purple, '食道外表現', '咳嗽、聲音沙啞、喉球感與牙蝕不是每次都來自 GERD。');
+    arrow(ctx, { x: 172, y: height / 2 }, { x: 232, y: height / 2 }, palette.gray);
+    arrow(ctx, { x: 418, y: height / 2 - 12 }, { x: 472, y: 124 }, palette.gray);
+    arrow(ctx, { x: 418, y: height / 2 + 12 }, { x: 472, y: 266 }, palette.gray);
+    pill(ctx, 42, 40, '症狀相近不代表都是 GERD，ACS 與膽胰疾病要排除', palette.red);
+  } else {
+    fillCard(ctx, 42, 72, 170, 112, palette.blue, 'H. pylori', '尿素酶、黏膜黏附與慢性發炎讓菌在胃黏膜環境長住。');
+    fillCard(ctx, 242, 72, 170, 112, palette.orange, 'NSAID', '抑制 COX 後 prostaglandin 下降，黏膜血流與保護黏液一起下滑。');
+    fillCard(ctx, 442, 72, 170, 112, palette.red, '酸-pepsin 傷害', '當攻擊力超過黏膜防禦，胃與十二指腸就可能形成潰瘍。');
+    fillCard(ctx, width - 202, 72, 160, 112, palette.green, '結果', '出血、穿孔、胃出口阻塞與慢性缺鐵性貧血');
+    arrow(ctx, { x: 212, y: 128 }, { x: 242, y: 128 }, palette.gray);
+    arrow(ctx, { x: 412, y: 128 }, { x: 442, y: 128 }, palette.gray);
+    arrow(ctx, { x: 612, y: 128 }, { x: width - 202, y: 128 }, palette.gray);
+    pill(ctx, width / 2 - 116, height - 82, 'PPI 抑酸能加速癒合，但 H. pylori 要確認 eradication', palette.purple);
+  }
+}
+
+function drawIbdImmuneMap(ctx: CanvasRenderingContext2D, width: number, height: number, modeId: string) {
+  if (modeId === 'barrier-break') {
+    fillCard(ctx, 50, 68, 170, 114, palette.blue, '上皮屏障', '緊密連結、黏液層與 Paneth cell 防線失衡後，細菌產物更容易穿入黏膜。');
+    fillCard(ctx, width / 2 - 90, 52, 180, 146, palette.orange, '基因與菌相', 'NOD2、IL23R、ATG16L1 等易感背景與菌相失衡把免疫警報門檻下修。');
+    fillCard(ctx, width - 220, 68, 170, 114, palette.red, '免疫放大', 'TNF、IL-12/23、整合素與 JAK 訊號讓局部發炎變成慢性迴圈。');
+    arrow(ctx, { x: 220, y: 125 }, { x: width / 2 - 90, y: 125 }, palette.gray);
+    arrow(ctx, { x: width / 2 + 90, y: 125 }, { x: width - 220, y: 125 }, palette.gray);
+    pill(ctx, width / 2 - 122, height - 82, 'IBD 是宿主、菌相與免疫互相放大的疾病，不是單純感染', palette.purple);
+  } else if (modeId === 'uc-cd') {
+    fillCard(ctx, 54, 66, 220, 126, palette.blue, '潰瘍性結腸炎 UC', '從直腸往近端連續擴展，主要侷限黏膜與黏膜下層，常見血便、急迫感與 tenesmus。');
+    fillCard(ctx, width - 274, 66, 220, 126, palette.orange, '克隆氏症 Crohn', '跳躍性分布，從口到肛都可能受累，偏向全層發炎、狹窄、瘻管與肛門周邊病變。');
+    connector(ctx, [{ x: 274, y: 130 }, { x: width - 274, y: 130 }], palette.gray);
+    fillCard(ctx, width / 2 - 126, 228, 252, 96, palette.green, '共同點', '都可能造成貧血、體重下降、營養缺乏、VTE 風險與關節、皮膚、眼部等腸外表現。');
+  } else {
+    circleNode(ctx, 118, height / 2, 48, palette.green, '5-ASA', '較偏 UC');
+    circleNode(ctx, 264, height / 2, 48, palette.orange, 'Steroid', 'Induction');
+    circleNode(ctx, 410, height / 2, 48, palette.blue, 'Biologic', 'TNF / integrin / IL');
+    circleNode(ctx, 556, height / 2, 48, palette.purple, 'Small molecule', 'JAK / S1P');
+    arrow(ctx, { x: 166, y: height / 2 }, { x: 216, y: height / 2 }, palette.gray);
+    arrow(ctx, { x: 312, y: height / 2 }, { x: 362, y: height / 2 }, palette.gray);
+    arrow(ctx, { x: 458, y: height / 2 }, { x: 508, y: height / 2 }, palette.gray);
+    pill(ctx, 42, 44, '先分 induction 與 maintenance，再談 escalate 或 de-escalate', palette.red);
+  }
+}
+
+function drawHepatologyPortalMap(ctx: CanvasRenderingContext2D, width: number, height: number, modeId: string) {
+  if (modeId === 'lobule') {
+    fillCard(ctx, 42, 72, 170, 112, palette.red, '肝動脈', '提供高氧血流，是急性缺血與休克時的最後保底之一。');
+    fillCard(ctx, width / 2 - 90, 48, 180, 156, palette.orange, '肝小葉與竇狀隙', '門脈血與肝動脈血在竇狀隙混合，肝細胞在這裡完成代謝、解毒、蛋白製造與膽汁生成。');
+    fillCard(ctx, width - 212, 72, 170, 112, palette.blue, '門靜脈', '帶來腸道與脾臟回流血，是營養與內毒素同時進入肝臟的高速公路。');
+    fillCard(ctx, width / 2 - 120, 228, 240, 96, palette.green, '膽汁系統', '膽小管、膽管與膽汁酸循環連結脂肪吸收、膽汁鬱積與黃疸。');
+  } else if (modeId === 'portal-hypertension') {
+    circleNode(ctx, 120, height / 2, 50, palette.purple, '纖維化', 'Resistance');
+    circleNode(ctx, 296, height / 2, 50, palette.blue, '門脈高壓', 'Portal pressure');
+    circleNode(ctx, 472, height / 2 - 76, 50, palette.red, '食道胃靜脈曲張', 'Bleeding');
+    circleNode(ctx, 472, height / 2 + 76, 50, palette.teal, '腹水 / HRS', 'Decompensation');
+    arrow(ctx, { x: 170, y: height / 2 }, { x: 246, y: height / 2 }, palette.gray);
+    arrow(ctx, { x: 346, y: height / 2 - 10 }, { x: 422, y: height / 2 - 60 }, palette.gray);
+    arrow(ctx, { x: 346, y: height / 2 + 10 }, { x: 422, y: height / 2 + 60 }, palette.gray);
+    pill(ctx, 42, 44, 'NSBB、內視鏡、限鹽與 albumin 都是在不同節點降低失代償風險', palette.orange);
+  } else {
+    fillCard(ctx, 42, 62, 170, 122, palette.blue, '代償期', '病人可能只有血小板下降、脾大或影像粗糙，但臨床上還沒出現腹水或出血。');
+    fillCard(ctx, 244, 62, 170, 122, palette.orange, '失代償期', '腹水、肝腦病變、靜脈曲張出血、自發性腹膜炎或黃疸代表病程轉折。');
+    fillCard(ctx, 446, 62, 170, 122, palette.green, '監測', 'HCC 監測、營養狀態、肌少症、感染與腎功能必須持續追蹤。');
+    fillCard(ctx, width / 2 - 110, 228, 220, 98, palette.red, '轉植評估', '一旦反覆失代償、MELD-Na 上升或生活品質持續下降，就要提早思考肝移植路徑。');
+    arrow(ctx, { x: 212, y: 124 }, { x: 244, y: 124 }, palette.gray);
+    arrow(ctx, { x: 414, y: 124 }, { x: 446, y: 124 }, palette.gray);
+  }
+}
+
+function drawPancreatitisEnzymeMap(ctx: CanvasRenderingContext2D, width: number, height: number, modeId: string) {
+  if (modeId === 'autodigestion') {
+    fillCard(ctx, 42, 72, 170, 112, palette.orange, '膽石 / 酒精 / TG', '膽道阻塞、酒精毒性、超高三酸甘油酯與藥物等都是常見誘因。');
+    fillCard(ctx, width / 2 - 90, 56, 180, 144, palette.red, 'trypsinogen 提前活化', '酵素在胰內提早啟動後，自體消化與局部發炎就開始放大。');
+    fillCard(ctx, width - 212, 72, 170, 112, palette.blue, '局部後腹腔傷害', '水腫、脂肪壞死、壞死與液體外滲是疼痛與併發症來源。');
+    arrow(ctx, { x: 212, y: 128 }, { x: width / 2 - 90, y: 128 }, palette.gray);
+    arrow(ctx, { x: width / 2 + 90, y: 128 }, { x: width - 212, y: 128 }, palette.gray);
+  } else if (modeId === 'severity') {
+    circleNode(ctx, 120, height / 2, 48, palette.orange, '局部發炎', 'Pain + edema');
+    circleNode(ctx, 292, height / 2, 48, palette.red, 'SIRS', 'Systemic spillover');
+    circleNode(ctx, 464, height / 2, 48, palette.purple, '器官衰竭', 'Shock / AKI / ARDS');
+    circleNode(ctx, 612, height / 2, 40, palette.blue, '壞死感染', 'Late phase');
+    arrow(ctx, { x: 168, y: height / 2 }, { x: 244, y: height / 2 }, palette.gray);
+    arrow(ctx, { x: 340, y: height / 2 }, { x: 416, y: height / 2 }, palette.gray);
+    arrow(ctx, { x: 512, y: height / 2 }, { x: 572, y: height / 2 }, palette.gray);
+    pill(ctx, 44, 44, '重症與否主要看器官衰竭與持續時間，而不是 lipase 高低', palette.red);
+  } else {
+    fillCard(ctx, 42, 62, 170, 122, palette.green, '急性期', '早期重點是適度輸液、止痛、早期 enteral nutrition 與處理病因。');
+    fillCard(ctx, 244, 62, 170, 122, palette.blue, '中期', '觀察壞死、感染、膽道阻塞與營養風險，影像常在 48 到 72 小時後更有意義。');
+    fillCard(ctx, 446, 62, 170, 122, palette.orange, '慢性化', '反覆發炎後可能進入慢性胰臟炎、外分泌不足、糖尿病與慢性疼痛。');
+    fillCard(ctx, width / 2 - 112, 228, 224, 96, palette.purple, '關鍵提醒', '預防性抗生素不是 routine；有膽管炎或持續阻塞時才積極考慮 ERCP。');
+  }
+}
+
+function drawBowelSymptomTriage(ctx: CanvasRenderingContext2D, width: number, height: number, modeId: string) {
+  if (modeId === 'diarrhea') {
+    fillCard(ctx, 42, 72, 150, 112, palette.blue, '滲透性', '吃進去的溶質留在腸腔拉水，禁食後常改善。');
+    fillCard(ctx, 222, 72, 150, 112, palette.orange, '分泌性', '腸道主動分泌水分與電解質，夜間與禁食時也可能持續。');
+    fillCard(ctx, 402, 72, 150, 112, palette.red, '發炎性', '血便、發燒、黏液、calprotectin 升高與腸黏膜破壞常一起出現。');
+    fillCard(ctx, width - 192, 72, 150, 112, palette.green, '脂肪吸收不良', '脂肪便、體重下降與脂溶性維生素缺乏提示吸收問題。');
+    pill(ctx, width / 2 - 132, height - 82, '先分危險度，再分機轉，最後才選止瀉藥', palette.purple);
+  } else if (modeId === 'constipation') {
+    circleNode(ctx, 120, height / 2, 48, palette.blue, '纖維 / 水分不足', '');
+    circleNode(ctx, 274, height / 2, 48, palette.orange, '慢傳輸', '');
+    circleNode(ctx, 428, height / 2, 48, palette.green, '出口協調障礙', '');
+    fillCard(ctx, 542, height / 2 - 60, 130, 120, palette.red, '藥物與糞便嵌塞', 'opioid、抗膽鹼、鐵劑、鈣離子與臥床常把便秘推向惡性循環。');
+    arrow(ctx, { x: 168, y: height / 2 }, { x: 226, y: height / 2 }, palette.gray);
+    arrow(ctx, { x: 322, y: height / 2 }, { x: 380, y: height / 2 }, palette.gray);
+    arrow(ctx, { x: 476, y: height / 2 }, { x: 542, y: height / 2 }, palette.gray);
+  } else {
+    fillCard(ctx, 42, 70, 180, 118, palette.red, '紅旗', '血便、黑便、體重下降、夜間痛醒、發燒、貧血、脫水、腹膜刺激或新發年長症狀。');
+    fillCard(ctx, width / 2 - 90, 70, 180, 118, palette.orange, '藥物盤點', '瀉藥、metformin、PPI、magnesium、antibiotics、opioid、鐵劑與草藥是高頻原因。');
+    fillCard(ctx, width - 222, 70, 180, 118, palette.blue, '先做的事', 'hydration、停危險藥、排除感染或阻塞、再選擇對症藥物。');
+    fillCard(ctx, width / 2 - 110, 228, 220, 96, palette.green, '最常被漏掉', '糞便嵌塞造成的 overflow diarrhea、C. difficile、IBD 與大腸癌警訊。');
+  }
+}
+
+function drawEndocrineGlucoseMap(ctx: CanvasRenderingContext2D, width: number, height: number, modeId: string) {
+  if (modeId === 'insulin-axis') {
+    circleNode(ctx, 118, height / 2, 48, palette.orange, '胰島 β 細胞', 'Insulin');
+    circleNode(ctx, 294, height / 2 - 66, 48, palette.green, '肝臟', 'Hepatic glucose output');
+    circleNode(ctx, 294, height / 2 + 66, 48, palette.red, '骨骼肌', 'GLUT4 uptake');
+    circleNode(ctx, 492, height / 2, 54, palette.purple, '脂肪組織', 'Lipolysis / adipokines');
+    fillCard(ctx, width - 224, height / 2 - 60, 170, 120, palette.blue, '腎臟 SGLT2', '近端小管會回收大部分濾過葡萄糖，SGLT2 抑制劑就是在這一站切入。');
+    arrow(ctx, { x: 166, y: height / 2 - 8 }, { x: 246, y: height / 2 - 56 }, palette.gray);
+    arrow(ctx, { x: 166, y: height / 2 + 8 }, { x: 246, y: height / 2 + 56 }, palette.gray);
+    arrow(ctx, { x: 342, y: height / 2 - 42 }, { x: 438, y: height / 2 - 8 }, palette.gray);
+    arrow(ctx, { x: 342, y: height / 2 + 42 }, { x: 438, y: height / 2 + 8 }, palette.gray);
+    arrow(ctx, { x: 546, y: height / 2 }, { x: width - 224, y: height / 2 }, palette.gray);
+    pill(ctx, 42, 44, '糖尿病是器官間燃料分工失衡，不只是胰臟單點故障', palette.orange);
+  } else if (modeId === 'decompensation') {
+    fillCard(ctx, 42, 68, 172, 118, palette.red, '胰島素不足', '絕對缺乏偏向 DKA；相對缺乏合併嚴重脫水與感染時可走向 HHS。');
+    fillCard(ctx, width / 2 - 86, 48, 172, 158, palette.orange, '反調節荷爾蒙上升', '升糖素、皮質醇、兒茶酚胺與生長激素一起拉高肝糖輸出與脂解。');
+    fillCard(ctx, width - 214, 68, 172, 118, palette.purple, '代謝崩解', '高血糖、滲透壓上升、酮酸中毒、脫水與電解質流失彼此放大。');
+    arrow(ctx, { x: 214, y: 127 }, { x: width / 2 - 86, y: 127 }, palette.gray);
+    arrow(ctx, { x: width / 2 + 86, y: 127 }, { x: width - 214, y: 127 }, palette.gray);
+    fillCard(ctx, width / 2 - 112, 230, 224, 96, palette.blue, '臨床決策', 'DKA / HHS 處理重點是液體、胰島素、鉀離子與誘因控制，不能只盯住血糖數字。');
+  } else {
+    fillCard(ctx, 42, 70, 156, 112, palette.blue, 'Metformin', '先壓低肝糖輸出，是多數 type 2 diabetes 常見起點。');
+    fillCard(ctx, 228, 70, 156, 112, palette.green, 'GLP-1 RA / tirzepatide', '增加 glucose-dependent insulin、抑制胃排空與食慾。');
+    fillCard(ctx, 414, 70, 156, 112, palette.orange, 'SGLT2 inhibitor', '把葡萄糖與鈉一起送出尿中，並帶來心腎保護。');
+    fillCard(ctx, width - 194, 70, 152, 112, palette.red, 'Insulin', '當 catabolic symptoms、很高 A1C 或 type 1 diabetes 出現時直接補回。');
+    pill(ctx, width / 2 - 140, height - 84, '選藥先看 ASCVD、HF、CKD、體重與低血糖風險，再看 A1C', palette.purple);
+  }
+}
+
+function drawEndocrineThyroidMap(ctx: CanvasRenderingContext2D, width: number, height: number, modeId: string) {
+  if (modeId === 'hpt-axis') {
+    circleNode(ctx, width * 0.16, height / 2, 46, palette.purple, '下視丘', 'TRH');
+    circleNode(ctx, width * 0.38, height / 2, 48, palette.blue, '垂體前葉', 'TSH');
+    circleNode(ctx, width * 0.62, height / 2, 54, palette.orange, '甲狀腺', 'T4 / T3');
+    fillCard(ctx, width - 216, height / 2 - 60, 164, 120, palette.green, '周邊組織', 'deiodinase 把 T4 轉成較活躍的 T3，讓心血管、腸胃、神經與骨骼系統一起感受到「代謝速度」。');
+    arrow(ctx, { x: width * 0.22, y: height / 2 }, { x: width * 0.32, y: height / 2 }, palette.gray);
+    arrow(ctx, { x: width * 0.44, y: height / 2 }, { x: width * 0.56, y: height / 2 }, palette.gray);
+    arrow(ctx, { x: width * 0.68, y: height / 2 }, { x: width - 216, y: height / 2 }, palette.gray);
+    arrow(ctx, { x: width * 0.62, y: height / 2 + 66 }, { x: width * 0.38, y: height / 2 + 66 }, palette.red);
+    arrow(ctx, { x: width * 0.38, y: height / 2 + 90 }, { x: width * 0.16, y: height / 2 + 90 }, palette.red);
+    pill(ctx, 42, 44, 'TSH 高低常是第一個定位線索，但必須放回 free T4 / T3 與臨床情境', palette.orange);
+  } else if (modeId === 'hypo-hyper') {
+    fillCard(ctx, 42, 62, 190, 122, palette.blue, '甲狀腺低下', '怕冷、便秘、浮腫、疲倦、心跳慢、月經變化與 LDL 上升常一起出現。');
+    fillCard(ctx, width / 2 - 95, 62, 190, 122, palette.orange, '甲狀腺亢進', '怕熱、心悸、手抖、體重下降、腹瀉、焦躁與骨流失風險增加。');
+    fillCard(ctx, width - 232, 62, 190, 122, palette.purple, '甲狀腺炎 / 結節', 'thyrotoxicosis 不一定代表 Graves；破壞性釋放、毒性結節與藥物也都可能。');
+    fillCard(ctx, width / 2 - 124, 228, 248, 96, palette.red, '危急情境', '甲狀腺風暴 (Thyroid storm) 與黏液性昏迷 (Myxedema coma) 都是全身代謝失控，不是單純數值異常。');
+  } else {
+    fillCard(ctx, 50, 70, 164, 112, palette.green, 'Levothyroxine', '補回 T4，需注意空腹服用與鐵鈣製劑干擾吸收。');
+    fillCard(ctx, 244, 70, 164, 112, palette.orange, 'Methimazole / PTU', '減少新荷爾蒙合成；PTU 還能抑制周邊 T4 -> T3。');
+    fillCard(ctx, 438, 70, 164, 112, palette.blue, 'Beta-blocker / iodine', '前者先處理症狀，後者在特定時機暫時阻斷釋放。');
+    fillCard(ctx, width / 2 - 114, 228, 228, 96, palette.purple, 'RAI / 手術', '當 Graves、毒性結節或大型甲狀腺腫需要 definitive therapy 時，才會進到放射碘或甲狀腺切除。');
+  }
+}
+
+function drawEndocrineHpaMap(ctx: CanvasRenderingContext2D, width: number, height: number, modeId: string) {
+  if (modeId === 'cortisol-axis') {
+    circleNode(ctx, width * 0.18, height / 2, 46, palette.purple, '下視丘', 'CRH');
+    circleNode(ctx, width * 0.4, height / 2, 50, palette.blue, '垂體', 'ACTH');
+    circleNode(ctx, width * 0.66, height * 0.36, 50, palette.orange, '腎上腺皮質', 'Cortisol');
+    circleNode(ctx, width * 0.66, height * 0.68, 50, palette.green, '球狀帶', 'Aldosterone');
+    fillCard(ctx, width - 214, height / 2 - 70, 164, 140, palette.red, '終端效應', 'cortisol 影響血壓、葡萄糖、免疫與壓力耐受；aldosterone 主要改寫鈉鉀與容量。');
+    arrow(ctx, { x: width * 0.24, y: height / 2 }, { x: width * 0.34, y: height / 2 }, palette.gray);
+    arrow(ctx, { x: width * 0.46, y: height / 2 - 10 }, { x: width * 0.6, y: height * 0.4 }, palette.gray);
+    arrow(ctx, { x: width * 0.46, y: height / 2 + 10 }, { x: width * 0.6, y: height * 0.64 }, palette.gray);
+    arrow(ctx, { x: width * 0.66, y: height * 0.28 }, { x: width * 0.4, y: height * 0.18 }, palette.red);
+    arrow(ctx, { x: width * 0.4, y: height * 0.18 }, { x: width * 0.18, y: height * 0.18 }, palette.red);
+    pill(ctx, 42, 42, 'cortisol 有負回饋，aldosterone 主要看 renin-angiotensin 與 K+', palette.orange);
+  } else if (modeId === 'hypertension-endocrine') {
+    fillCard(ctx, 42, 62, 174, 122, palette.orange, '原發性醛固酮增多症', '高血壓、低鉀、代謝性鹼中毒與早發心血管事件風險增加。');
+    fillCard(ctx, width / 2 - 87, 62, 174, 122, palette.red, '嗜鉻細胞瘤', '陣發性頭痛、盜汗、心悸與劇烈血壓波動來自 catecholamine surge。');
+    fillCard(ctx, width - 216, 62, 174, 122, palette.blue, '庫欣症候群', '脂肪重分布、高血糖、肌無力、皮膚脆弱與高血壓其實來自慢性 cortisol 過量。');
+    fillCard(ctx, width / 2 - 124, 228, 248, 96, palette.green, '共同決策點', '內分泌性高血壓不是比誰數字高，而是看有無低鉀、陣發性症狀、典型外觀與多藥難治。');
+  } else {
+    fillCard(ctx, 42, 70, 150, 112, palette.green, 'Hydrocortisone', '腎上腺危象先給；在 primary adrenal insufficiency 長期補回缺乏的 cortisol。');
+    fillCard(ctx, 222, 70, 150, 112, palette.orange, 'Fludrocortisone / MRA', '前者補礦物皮質素，後者阻斷 aldosterone 對 resistant hypertension 的作用。');
+    fillCard(ctx, 402, 70, 150, 112, palette.blue, 'Alpha blockade', 'pheochromocytoma 術前先 α 再 β，順序錯了可能讓高血壓失控。');
+    fillCard(ctx, width - 192, 70, 150, 112, palette.purple, 'Cabergoline / somatostatin analog', '垂體腫瘤常先走藥物或手術，依 prolactin、GH 與影像型態決定。');
+    pill(ctx, width / 2 - 120, height - 84, '先定位哪一條軸線失衡，再談手術或藥物', palette.red);
+  }
+}
+
+function drawEndocrineAdiposityMap(ctx: CanvasRenderingContext2D, width: number, height: number, modeId: string) {
+  if (modeId === 'visceral-fat') {
+    circleNode(ctx, 122, height / 2, 48, palette.orange, '內臟脂肪', 'Visceral fat');
+    circleNode(ctx, 304, height / 2 - 64, 48, palette.green, '肝臟脂肪化', 'MASLD');
+    circleNode(ctx, 304, height / 2 + 64, 48, palette.blue, '胰島阻抗', 'Hyperinsulinemia');
+    circleNode(ctx, 510, height / 2, 56, palette.red, '發炎 / RAAS / SNS', 'Metabolic stress');
+    fillCard(ctx, width - 212, height / 2 - 64, 160, 128, palette.purple, '系統結果', '高血壓、高三酸甘油酯、低 HDL、OSA、PCOS 與動脈粥樣硬化風險會從這張地圖分流出去。');
+    arrow(ctx, { x: 170, y: height / 2 - 10 }, { x: 256, y: height / 2 - 54 }, palette.gray);
+    arrow(ctx, { x: 170, y: height / 2 + 10 }, { x: 256, y: height / 2 + 54 }, palette.gray);
+    arrow(ctx, { x: 352, y: height / 2 - 42 }, { x: 454, y: height / 2 - 8 }, palette.gray);
+    arrow(ctx, { x: 352, y: height / 2 + 42 }, { x: 454, y: height / 2 + 8 }, palette.gray);
+  } else if (modeId === 'syndrome-cluster') {
+    fillCard(ctx, 42, 70, 148, 112, palette.red, '腰圍增加', '中央肥胖是常見入口，但不是唯一軸線。');
+    fillCard(ctx, 220, 70, 148, 112, palette.orange, 'TG 高 / HDL 低', '脂質譜改變代表肝胰脂質處理已經失衡。');
+    fillCard(ctx, 398, 70, 148, 112, palette.blue, '血壓升高', '交感、RAAS、血管硬化與睡眠呼吸中止一起參與。');
+    fillCard(ctx, width - 188, 70, 148, 112, palette.green, '空腹血糖上升', '通常不是突然發生，而是 β 細胞補償逐步掉隊。');
+    pill(ctx, width / 2 - 142, height - 84, '代謝症候群不是單一病，而是一組共享風險的聚落', palette.purple);
+  } else {
+    fillCard(ctx, 42, 62, 174, 122, palette.green, '生活型態基座', '營養、運動、睡眠、壓力與行為治療仍是所有路徑的底板。');
+    fillCard(ctx, width / 2 - 87, 62, 174, 122, palette.orange, '減重藥物', 'GLP-1 RA、tirzepatide、phentermine-topiramate、naltrexone-bupropion、orlistat 等依病人條件選擇。');
+    fillCard(ctx, width - 216, 62, 174, 122, palette.blue, '代謝手術', '當重度肥胖或合併糖尿病、OSA、脂肪肝等風險高時，手術可能帶來病程改變。');
+    fillCard(ctx, width / 2 - 124, 228, 248, 96, palette.red, '臨床衡量', '真正該追的是腰圍、A1C、血壓、脂質、睡眠品質、肝腎功能與生活功能，不是只有體重。');
+  }
+}
+
 const diagrams: Record<string, DiagramDefinition> = {
+  'endocrine-glucose-map': {
+    title: '胰島素阻抗與高血糖整合圖',
+    caption: '把胰臟、肝臟、骨骼肌、脂肪與腎臟的葡萄糖處理放進同一張圖，幫助理解 type 1、type 2、DKA 與現代降糖藥物切點。',
+    modes: [
+      {
+        id: 'insulin-axis',
+        label: '穩態軸線',
+        summary: '血糖穩態靠胰臟分泌、肝糖輸出、肌肉攝糖與腎臟再吸收同步協調。',
+        bullets: ['空腹血糖常先被肝糖輸出拉高。', '骨骼肌是餐後葡萄糖去路主力。', 'SGLT2 在腎近端小管切入。'],
+      },
+      {
+        id: 'decompensation',
+        label: '失代償',
+        summary: '當胰島素不足與反調節荷爾蒙一起偏向升糖端，病人就可能從高血糖一路掉進 DKA 或 HHS。',
+        bullets: ['感染、停藥、MI、類固醇都可能觸發。', '鉀離子管理和胰島素一樣重要。', '滲透壓與脫水決定病情嚴重度。'],
+      },
+      {
+        id: 'therapy-nodes',
+        label: '治療節點',
+        summary: '不同降糖藥其實是在不同器官節點切入，而不是單純「降糖強弱」比較。',
+        bullets: ['Metformin 多從肝臟著手。', 'GLP-1 RA / tirzepatide 兼顧血糖與體重。', 'SGLT2 inhibitor 常先看心腎共病。'],
+      },
+    ],
+    render: drawEndocrineGlucoseMap,
+  },
+  'endocrine-thyroid-map': {
+    title: '甲狀腺軸與甲低甲亢整合圖',
+    caption: '用 HPT axis 串起 TSH、T4/T3、周邊轉換與典型症候群，方便理解 Graves、Hashimoto、thyroiditis 與治療順序。',
+    modes: [
+      {
+        id: 'hpt-axis',
+        label: 'HPT 軸',
+        summary: '甲狀腺不是獨立作業，必須放在下視丘與垂體的負回饋中理解。',
+        bullets: ['TSH 是高敏感定位點。', 'T4 分泌多，T3 活性高。', '藥物與重症狀態都可干擾判讀。'],
+      },
+      {
+        id: 'hypo-hyper',
+        label: '症候群',
+        summary: '甲低與甲亢其實是全身代謝速度被向下或向上重設，影響的不只心跳而已。',
+        bullets: ['症狀方向常相反。', 'thyrotoxicosis 不等於一定是 Graves。', '危重症是全身系統失衡。'],
+      },
+      {
+        id: 'treatment',
+        label: '治療工具',
+        summary: '補回缺乏、壓低合成、阻斷釋放與 definitive treatment 各自對應不同情境。',
+        bullets: ['Levothyroxine 要注意吸收。', 'Methimazole 通常優於 PTU，孕早期除外。', 'RAI / 手術是 definitive therapy。'],
+      },
+    ],
+    render: drawEndocrineThyroidMap,
+  },
+  'endocrine-hpa-map': {
+    title: '垂體-腎上腺與內分泌性高血壓圖',
+    caption: '整合 CRH-ACTH-cortisol、aldosterone 與 catecholamine 三條高頻臨床軸線，方便連結 Addison、Cushing、primary aldosteronism 與 pheochromocytoma。',
+    modes: [
+      {
+        id: 'cortisol-axis',
+        label: 'Cortisol 軸',
+        summary: '垂體與腎上腺的回饋是診斷 adrenal insufficiency 與 Cushing syndrome 的核心。',
+        bullets: ['ACTH 有助分 primary vs secondary。', 'Aldosterone 不是單看 ACTH。', 'stress dose steroid 是救命觀念。'],
+      },
+      {
+        id: 'hypertension-endocrine',
+        label: '內分泌高血壓',
+        summary: '碰到多藥難治高血壓、低鉀或陣發性症狀時，應主動把內分泌病因拉進鑑別。',
+        bullets: ['低鉀要想到 aldosterone excess。', '頭痛盜汗心悸要想 pheo。', '紫紋與肌無力要想到 Cushing。'],
+      },
+      {
+        id: 'treatment',
+        label: '治療順序',
+        summary: '這一章很多錯誤不是藥名背錯，而是順序錯，例如 adrenal crisis 沒先補 steroid，或 pheo 先上 β-blocker。',
+        bullets: ['先救命，再定位。', '藥物與手術常是搭配而非互斥。', '垂體腫瘤治療取決於 hormone phenotype。'],
+      },
+    ],
+    render: drawEndocrineHpaMap,
+  },
+  'endocrine-adiposity-map': {
+    title: '肥胖、內臟脂肪與代謝症候群圖',
+    caption: '把內臟脂肪、脂肪肝、胰島阻抗與代謝症候群聚落畫在一起，讓減重不再只被理解成「意志力管理」。',
+    modes: [
+      {
+        id: 'visceral-fat',
+        label: '內臟脂肪',
+        summary: '真正代謝危險的常不是總脂肪量，而是內臟脂肪與異位脂肪的分布。',
+        bullets: ['腰圍常比 BMI 更貼近代謝風險。', '脂肪肝是高價值警訊。', 'adipokines 會改寫胰島素敏感性。'],
+      },
+      {
+        id: 'syndrome-cluster',
+        label: '症候群聚落',
+        summary: '代謝症候群是多個風險因子共享底層病理，所以常成群出現。',
+        bullets: ['腰圍、TG、HDL、血壓、血糖互相拉高風險。', '不是每個胖的人都有相同代謝風險。', '睡眠與用藥也會參與。'],
+      },
+      {
+        id: 'treatment',
+        label: '介入階梯',
+        summary: '治療已從單純衛教走向生活型態、藥物與代謝手術的慢性病策略。',
+        bullets: ['先做基座行為治療。', 'BMI 30 或 BMI 27 合併共病可考慮藥物。', '手術是代謝治療，不只是體重手術。'],
+      },
+    ],
+    render: drawEndocrineAdiposityMap,
+  },
+  'digestive-barrier-map': {
+    title: '上消化道防禦與潰瘍圖',
+    caption: '把食道胃交界、胃酸、黏膜防禦、H. pylori 與 NSAID 放進同一張圖，幫助區分 GERD 與 PUD 雖相關卻不相同。',
+    modes: [
+      {
+        id: 'anatomy',
+        label: '解剖防線',
+        summary: '食道、胃與十二指腸不是單純一條管子，而是不同防禦邏輯接在一起。',
+        bullets: ['LES 是逆流閘門。', '胃酸是生理工具，也是黏膜壓力源。', '黏膜屏障靠血流與黏液維持。'],
+      },
+      {
+        id: 'reflux',
+        label: '逆流',
+        summary: 'GERD 問的是酸性內容物上衝與食道暴露，而不是任何上腹灼熱都直接叫逆流。',
+        bullets: ['裂孔疝氣與肥胖會推高逆流風險。', '夜間症狀通常代表暴露時間更長。', '胸痛一定要記得鑑別心血管疾病。'],
+      },
+      {
+        id: 'ulcer',
+        label: '潰瘍',
+        summary: 'PUD 問的是酸-pepsin 與黏膜防禦失衡，H. pylori 與 NSAID 是最常見兩條路。',
+        bullets: ['出血與穿孔是重要轉折。', 'PPI 治癒潰瘍，eradication 根治 H. pylori。', 'testing after treatment 很重要。'],
+      },
+    ],
+    render: drawDigestiveBarrierMap,
+  },
+  'ibd-immune-map': {
+    title: 'IBD 屏障、免疫與治療圖',
+    caption: '串起腸道屏障破口、UC/Crohn 差異與現代免疫治療階梯，讓病理層次與藥理節點對起來。',
+    modes: [
+      {
+        id: 'barrier-break',
+        label: '屏障破口',
+        summary: 'IBD 的起點不是單一病菌，而是腸道屏障、菌相與易感免疫系統彼此放大的結果。',
+        bullets: ['基因易感改變閾值。', '菌相失衡讓警報更容易被拉響。', '上皮不是被動受害者。'],
+      },
+      {
+        id: 'uc-cd',
+        label: 'UC vs Crohn',
+        summary: '辨認受累層次與分布型態，比背定義更能幫助臨床決策。',
+        bullets: ['UC 偏黏膜連續。', 'Crohn 偏全層跳躍。', '併發症因此不同。'],
+      },
+      {
+        id: 'treat-to-target',
+        label: '治療節點',
+        summary: 'IBD 治療不是止瀉而已，而是把腸黏膜發炎與病程進展壓下來。',
+        bullets: ['steroid 不該是長期 maintenance。', 'biologic 前要先做感染篩檢。', '客觀黏膜與生化指標要追蹤。'],
+      },
+    ],
+    render: drawIbdImmuneMap,
+  },
+  'hepatology-portal-map': {
+    title: '肝炎、肝硬化與門脈高壓圖',
+    caption: '把肝小葉功能、門脈壓力與失代償併發症整合成同一畫面，便於理解 cirrhosis 其實是血流與代謝雙重重寫。',
+    modes: [
+      {
+        id: 'lobule',
+        label: '肝小葉',
+        summary: '先知道正常肝流入、代謝與膽汁輸出，才知道慢性肝病到底破壞了什麼。',
+        bullets: ['門脈與肝動脈共同供應肝臟。', '肝細胞承擔代謝與合成功能。', '膽汁鬱積與肝細胞傷害不是同一件事。'],
+      },
+      {
+        id: 'portal-hypertension',
+        label: '門脈高壓',
+        summary: '肝硬化後真正危險的不只是酵素，而是血流阻力與側枝循環重建。',
+        bullets: ['靜脈曲張與腹水同根同源。', '腎功能惡化常是 hemodynamic 結果。', '藥物與內視鏡各切不同節點。'],
+      },
+      {
+        id: 'decompensation',
+        label: '失代償',
+        summary: '一旦進入腹水、出血、肝腦病變或感染，照護重心就不再只是追 AST/ALT。',
+        bullets: ['每次失代償都會改變預後。', '移植評估不該等到最後一刻。', '營養與肌少症要一起處理。'],
+      },
+    ],
+    render: drawHepatologyPortalMap,
+  },
+  'pancreatitis-enzyme-map': {
+    title: '胰臟炎酵素與嚴重度圖',
+    caption: '把誘因、酵素提前活化、局部壞死與全身反應做成同一張圖，幫助理解為何胰臟炎常從局部痛變成系統病。',
+    modes: [
+      {
+        id: 'autodigestion',
+        label: '自體消化',
+        summary: '胰臟炎的共同語言是消化酵素在錯的時間、錯的地點被打開。',
+        bullets: ['膽石與酒精是最常見起點。', '高 TG 與藥物不可漏。', '感染通常不是最早事件。'],
+      },
+      {
+        id: 'severity',
+        label: '嚴重度',
+        summary: '真正的重症評估要看器官衰竭、持續時間與局部壞死，而不是只看 lipase 倍數。',
+        bullets: ['早期 SIRS 是壞訊號。', '器官衰竭比影像更先改變處置。', '無菌壞死不等於一定要抗生素。'],
+      },
+      {
+        id: 'clinical-course',
+        label: '病程',
+        summary: '從急性期支撐、營養、疼痛到慢性化後的外分泌不足與糖尿病，管理時間軸不同。',
+        bullets: ['enteral feeding 越早越好。', 'ERCP 只給適應症明確者。', '慢性疼痛管理不能只靠反覆住院止痛。'],
+      },
+    ],
+    render: drawPancreatitisEnzymeMap,
+  },
+  'bowel-symptom-triage': {
+    title: '便秘、腹瀉與 GI 症狀分流圖',
+    caption: '把便秘與腹瀉的生理分型、藥物地雷與 red flags 放進同一張圖，讓常見症狀管理不再只是經驗口訣。',
+    modes: [
+      {
+        id: 'diarrhea',
+        label: '腹瀉機轉',
+        summary: '先分清機轉，才知道什麼時候可以對症止瀉、什麼時候必須立刻找病因。',
+        bullets: ['血便與發燒會改變整張策略。', '滲透性與分泌性腹瀉對禁食反應不同。', '藥物與感染是高頻原因。'],
+      },
+      {
+        id: 'constipation',
+        label: '便秘機轉',
+        summary: '便秘不是單一病名，常是纖維不足、慢傳輸、出口協調障礙與藥物堆疊的結果。',
+        bullets: ['糞便嵌塞常偽裝成腹瀉。', 'stimulant 與 osmotic laxative 角色不同。', '出口問題要想到骨盆底。'],
+      },
+      {
+        id: 'alarm-features',
+        label: '警訊',
+        summary: '真正高風險的 GI 症狀管理，是在下藥前先看見哪些人不能只做 symptom relief。',
+        bullets: ['大腸癌與 IBD 警訊不能漏。', 'C. difficile 不適合隨便用止瀉。', '脫水與電解質風險常先決定處置。'],
+      },
+    ],
+    render: drawBowelSymptomTriage,
+  },
+  'renal-nephron-map': {
+    title: '腎臟與腎元基礎圖',
+    caption: '把巨觀腎臟構造、腎元流向與髓質脆弱性放在一起，作為 AKI、CKD、電解質與利尿劑章節的共同底圖。',
+    modes: [
+      {
+        id: 'macro-anatomy',
+        label: '巨觀構造',
+        summary: '先分清腎皮質、腎髓質、腎盂與輸尿管，後面的病理才有空間座標。',
+        bullets: ['蛋白尿多半從皮質端開始被注意。', '缺血常先打在髓質。', '阻塞要想到腎盂與輸尿路。'],
+      },
+      {
+        id: 'micro-flow',
+        label: '腎元流向',
+        summary: '過濾、回收、濃縮與排泄沿著腎元接力，任何一站都可能成為藥物或疾病切入點。',
+        bullets: ['近端是大宗回收區。', '亨利氏環建立濃縮梯度。', '集尿管是最後微調站。'],
+      },
+      {
+        id: 'renal-reserve',
+        label: '功能儲備',
+        summary: '腎臟平常有很大儲備，因此數值晚變化不代表結構傷害晚開始。',
+        bullets: ['剩餘腎元會先代償。', '結構破壞與症狀常不同步。', '這也是 CKD 常晚期才被發現的原因。'],
+      },
+    ],
+    render: drawRenalNephronMap,
+  },
+  'aki-decision-map': {
+    title: 'AKI 診斷與處置圖',
+    caption: '把 prerenal / intrinsic / postrenal、尿液線索與 AEIOU 透析指徵整理成一張圖，幫助建立實戰流程。',
+    modes: [
+      {
+        id: 'triple-bucket',
+        label: '三大桶',
+        summary: 'AKI 的第一步仍是先問灌流、腎實質還是阻塞，而不是先背 FENa。',
+        bullets: ['同一位病人可同時跨兩桶以上。', '敗血症 AKI 不只是一桶。', '問時間軸很重要。'],
+      },
+      {
+        id: 'urine-clues',
+        label: '尿液線索',
+        summary: '尿沉渣與尿蛋白/血尿型態常比單次影像更快把機轉縮小。',
+        bullets: ['顯微鏡是高價值工具。', '藥物性 AIN 線索常被低估。', 'GN 看到血尿蛋白尿要快。'],
+      },
+      {
+        id: 'aeiou',
+        label: '透析指徵',
+        summary: '真正需要透析的是失去生理控制的場景，而不是 creatinine 數字本身。',
+        bullets: ['AEIOU 是支持性框架。', 'RRT 時機要結合整體病況。', '別把透析當成延後決策的藉口。'],
+      },
+    ],
+    render: drawAkiDecisionMap,
+  },
+  'electrolyte-balance': {
+    title: '電解質與體液平衡圖',
+    caption: '把鈉水軸、鉀風險與鈣鎂磷關係放在同一畫布，避免把每個電解質當成互不相干的獨立題庫。',
+    modes: [
+      {
+        id: 'sodium-water',
+        label: '鈉水軸',
+        summary: '血鈉主要反映水相對於溶質的關係，不是單純總鈉多寡。',
+        bullets: ['先看 tonicity。', 'ADH 與口渴共同控制水。', '尿滲透壓是分類核心。'],
+      },
+      {
+        id: 'potassium-risk',
+        label: '鉀風險',
+        summary: '高血鉀最怕的是致命心律風險，處置順序比病因學名更重要。',
+        bullets: ['先穩膜，再移鉀，再排鉀。', 'ECG 正常不保證安全。', 'Mg 與酸中毒常一起干擾判讀。'],
+      },
+      {
+        id: 'ca-mg-phos',
+        label: '鈣鎂磷',
+        summary: '鈣、鎂、磷與 PTH、維生素 D、ATP 與腎排泄連成一張網，常一個出錯帶著另一個一起亂。',
+        bullets: ['低鎂會讓低鉀難補。', '高磷常與 CKD 捆在一起。', '症狀要連到神經肌肉與 ECG。'],
+      },
+    ],
+    render: drawElectrolyteBalance,
+  },
+  'acid-base-roadmap': {
+    title: '酸鹼失衡判讀圖',
+    caption: '用步驟化圖像把 pH、陰離子間隙、代償與混合性失衡的判讀順序固定下來。',
+    modes: [
+      {
+        id: 'stepwise',
+        label: '步驟化',
+        summary: '酸鹼判讀最怕跳步，固定順序會大幅降低漏掉混合性失衡的機率。',
+        bullets: ['pH 永遠是第一步。', '主要失衡與代償分開看。', '最後才看 gap 與 delta。'],
+      },
+      {
+        id: 'anion-gap',
+        label: 'Anion Gap',
+        summary: '高陰離子間隙與正常陰離子間隙代謝性酸中毒問的是不同病因世界。',
+        bullets: ['別忘了 albumin 校正。', 'lactate 與 ketone 很常見。', '高氯性酸中毒也很常出現在住院病人。'],
+      },
+      {
+        id: 'compensation',
+        label: '代償',
+        summary: '代償永遠不會把 pH 完全帶回正常；若超出預期，就要主動找第二個失衡。',
+        bullets: ['Winter formula 很實用。', '呼吸性失衡要分急慢性。', '混合性失衡比想像中常見。'],
+      },
+    ],
+    render: drawAcidBaseRoadmap,
+  },
+  'diuretic-nephron': {
+    title: '利尿劑與腎小管靶點圖',
+    caption: '把各類利尿劑打在哪一段、何時併用以及為何會失效整理在同一張圖上。',
+    modes: [
+      {
+        id: 'sites',
+        label: '作用部位',
+        summary: '利尿劑不是一類藥，而是一群在不同腎小管段改寫鈉與水流向的工具。',
+        bullets: ['loop 最強，但不是萬能。', 'thiazide-like 常在遠端補刀。', 'MRA 問的是醛固酮驅動。'],
+      },
+      {
+        id: 'combination',
+        label: '併用策略',
+        summary: 'Sequential nephron blockade 在鬱血、利尿阻抗與高醛固酮狀態常很關鍵。',
+        bullets: ['加藥前先問病人是否真的有到藥。', '併用通常也等於電解質風險上升。', '藥理互補比盲目加量更重要。'],
+      },
+      {
+        id: 'resistance',
+        label: '利尿阻抗',
+        summary: '利尿失敗常來自藥沒進去、腎沒看到藥、遠端代償或驅動因子根本沒被處理。',
+        bullets: ['尿鈉能幫助你看見反應。', 'NSAID 是常見暗樁。', '目標是去鬱血，不是追求空泛的高尿量。'],
+      },
+    ],
+    render: drawDiureticNephron,
+  },
+  'resp-airway-defense': {
+    title: '呼吸道防禦與氣體交換圖',
+    caption: '把導氣區、宿主防線與肺泡交換放進同一張圖，建立呼吸系統疾病最重要的共同底圖。',
+    modes: [
+      {
+        id: 'airway-tree',
+        label: '氣道樹',
+        summary: '先分清楚導氣區與交換區，之後才知道病變落在哪一層。',
+        bullets: ['氣喘與 COPD 問的是導氣區。', '肺炎與 ARDS 更直接打到交換區。', '小氣道病變常比症狀更早開始。'],
+      },
+      {
+        id: 'airway-defense',
+        label: '防線',
+        summary: '鼻腔、纖毛、黏液與巨噬細胞是肺部日常防守主力。',
+        bullets: ['抽菸與病毒會同時削弱這些防線。', '插管與吞嚥障礙會改寫風險。', '免疫缺陷會讓病原譜整張換掉。'],
+      },
+      {
+        id: 'gas-exchange',
+        label: '交換',
+        summary: '低氧不是只有一種原因，必須回到通氣、交換面與灌流一起看。',
+        bullets: ['V/Q mismatch 與 shunt 在床邊意義不同。', '肺泡膜與灌流都很重要。', '氧氣支持與病因治療要一起做。'],
+      },
+    ],
+    render: drawRespAirwayDefense,
+  },
+  'asthma-inflammatory': {
+    title: '氣喘發炎與控制圖',
+    caption: '串起 Type 2 發炎、氣道狹窄與 stepwise controller 思維，幫助讀者把症狀、機轉與藥物接回同一張地圖。',
+    modes: [
+      {
+        id: 'type2-cascade',
+        label: '發炎軸',
+        summary: '過敏原、病毒與上皮 alarmin 會把 Th2、IgE 與 eosinophil 一路帶起來。',
+        bullets: ['不是每個病人都純 Type 2，但這是高頻主軸。', 'Biologic 正是在這條鏈上切節點。', '上皮不是旁觀者。'],
+      },
+      {
+        id: 'bronchospasm',
+        label: '狹窄',
+        summary: '痙攣、水腫與黏液同時存在時，氣道半徑會快速縮小。',
+        bullets: ['急性期靠 bronchodilation，慢性期要抗發炎。', 'silent chest 是壞訊號。', '症狀與結構變化不總是同步。'],
+      },
+      {
+        id: 'control-plan',
+        label: '控制',
+        summary: '真正成熟的氣喘治療是 reliever、controller 與 inhaler technique 一起工作。',
+        bullets: ['所有成人與青少年都應有 ICS 底座。', '升藥前先查技巧與依從性。', '行動計畫會直接影響急診率。'],
+      },
+    ],
+    render: drawAsthmaInflammatory,
+  },
+  'copd-remodeling': {
+    title: 'COPD 重塑與惡化圖',
+    caption: '比較慢性支氣管炎與肺氣腫兩條主軸，並把 air trapping、惡化與呼吸衰竭接起來。',
+    modes: [
+      {
+        id: 'phenotypes',
+        label: '表型',
+        summary: 'COPD 很少是單一純型，臨床上多半是支氣管炎與肺氣腫混合。',
+        bullets: ['咳痰與過度充氣可同時存在。', '影像與症狀不一定同方向。', '年輕或基底病灶時要想 alpha-1 antitrypsin。'],
+      },
+      {
+        id: 'air-trapping',
+        label: '困氣',
+        summary: '小氣道在呼氣期過早塌陷，是呼吸做功暴增的關鍵。',
+        bullets: ['病人不是吸不進去，而是吐不乾淨。', '動態過度充氣會壓垮橫膈。', '這也是 NIV 能幫忙的原因之一。'],
+      },
+      {
+        id: 'exacerbation',
+        label: '惡化',
+        summary: '感染、污染與心肺共病都能把原本勉強平衡的系統推向衰竭。',
+        bullets: ['不是每次都只有感染。', '惡化次數本身會改變預後。', '急性處置與長期預防同樣重要。'],
+      },
+    ],
+    render: drawCopdRemodeling,
+  },
+  'pneumonia-gas-exchange': {
+    title: '肺炎與低氧圖',
+    caption: '把病原進入路徑、肺泡實變與經驗性抗生素決策放進同一張圖，避免把肺炎只看成一張 X 光。',
+    modes: [
+      {
+        id: 'entry-routes',
+        label: '進入路徑',
+        summary: '病原能怎麼進入肺，常由病人場景與防線弱點決定。',
+        bullets: ['微吸入是高頻路徑。', '病毒與飛沫傳播常從上呼吸道一路下來。', '特殊場景要想不同病原譜。'],
+      },
+      {
+        id: 'consolidation',
+        label: '實變',
+        summary: '肺炎的低氧核心，是原本該充滿空氣的肺泡被滲出液占據。',
+        bullets: ['這是 shunt-like physiology，而不只是肺片變白。', '病灶愈大，氧合通常愈不穩。', '敗血症會讓局部病變變成全身問題。'],
+      },
+      {
+        id: 'empiric-therapy',
+        label: '抗生素',
+        summary: '抗生素廣度要跟場景、嚴重度與耐藥風險一起走。',
+        bullets: ['不是每個 CAP 都要 broad-spectrum。', 'HAP / VAP 的想像不能直接搬到門診肺炎。', '最重要的是能夠去升級。'],
+      },
+    ],
+    render: drawPneumoniaGasExchange,
+  },
+  'tb-granuloma': {
+    title: '結核與特殊感染圖',
+    caption: '把 latent / active TB、檢體策略與長療程藥理放在同一張圖上，方便建立完整診療邏輯。',
+    modes: [
+      {
+        id: 'latent-active',
+        label: '潛伏與活化',
+        summary: '肉芽腫是宿主圍堵結核的結果，但不是永久保證。',
+        bullets: ['Latent 與 active TB 不能用同一種腦袋處理。', '空洞代表高菌量與傳播風險。', '免疫抑制是圍牆破口。'],
+      },
+      {
+        id: 'diagnostics',
+        label: '診斷',
+        summary: '活動性 TB 的核心是痰液、NAAT、culture 與藥敏，而不是單一免疫檢查。',
+        bullets: ['先想隔離，再想檢體。', 'IGRA 回答的是 latent，不是 contagious。', 'Culture 雖慢，但治療方向最終靠它校正。'],
+      },
+      {
+        id: 'regimens',
+        label: '療程',
+        summary: '多藥與長療程不是形式，而是為了降低復發與耐藥。',
+        bullets: ['RIPE 是起點，不是終點。', 'rifamycin 交互作用一定要系統性檢查。', '特殊感染要依宿主缺陷調整整張策略。'],
+      },
+    ],
+    render: drawTbGranuloma,
+  },
+  'mechanical-ventilation': {
+    title: '呼吸衰竭與機械通氣圖',
+    caption: '從 failure type、支持梯子到呼吸機參數，一張圖統整氧合、通氣與肺保護思維。',
+    modes: [
+      {
+        id: 'failure-types',
+        label: '衰竭類型',
+        summary: '低氧與高碳酸不是同一種失敗模式，但兩者經常重疊。',
+        bullets: ['通氣與氧合要分開判斷。', '病人外觀常比數字更早示警。', '病因不同，支持策略也不同。'],
+      },
+      {
+        id: 'support-ladder',
+        label: '支持梯子',
+        summary: '氧氣、HFNC、NIV 與插管並非高低之分，而是不同問題的不同工具。',
+        bullets: ['NIV 對 COPD 與心因性肺水腫特別有力。', 'HFNC 提升舒適度與氧合，但不是萬能。', '延遲插管有時比過早插管更危險。'],
+      },
+      {
+        id: 'vent-parameters',
+        label: '參數',
+        summary: '潮氣量、PEEP、FiO2 與壓力監測共同決定肺保護與同步性。',
+        bullets: ['潮氣量用 PBW 算。', 'Plateau 與 auto-PEEP 回答不同問題。', '漂亮 ABG 不值得拿 VILI 交換。'],
+      },
+    ],
+    render: drawMechanicalVentilation,
+  },
   'cv-hemodynamics': {
     title: '高血壓與血流動力學圖',
     caption: '把血壓形成、RAAS 惡性循環與器官傷害放進同一張圖，幫助理解為什麼高血壓是系統性疾病。',
