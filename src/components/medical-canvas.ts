@@ -904,7 +904,312 @@ function drawAntithromboticTherapy(ctx: CanvasRenderingContext2D, width: number,
   }
 }
 
+function drawRespAirwayDefense(ctx: CanvasRenderingContext2D, width: number, height: number, modeId: string) {
+  if (modeId === 'airway-tree') {
+    circleNode(ctx, width * 0.18, height / 2, 48, palette.blue, '氣管', 'Trachea');
+    circleNode(ctx, width * 0.38, height / 2, 48, palette.teal, '支氣管', 'Bronchi');
+    circleNode(ctx, width * 0.58, height / 2, 48, palette.green, '細支氣管', 'Bronchioles');
+    circleNode(ctx, width * 0.8, height / 2, 54, palette.purple, '肺泡', 'Gas exchange');
+    arrow(ctx, { x: width * 0.24, y: height / 2 }, { x: width * 0.32, y: height / 2 }, palette.gray);
+    arrow(ctx, { x: width * 0.44, y: height / 2 }, { x: width * 0.52, y: height / 2 }, palette.gray);
+    arrow(ctx, { x: width * 0.64, y: height / 2 }, { x: width * 0.73, y: height / 2 }, palette.gray);
+    pill(ctx, 40, 46, '導氣區 -> 交換區', palette.indigo);
+  } else if (modeId === 'airway-defense') {
+    fillCard(ctx, 54, 62, 190, 118, palette.blue, '上呼吸道過濾', '鼻腔、會厭與咳嗽反射先攔下大顆粒與誤吸。');
+    fillCard(ctx, width / 2 - 95, 62, 190, 118, palette.green, '黏液纖毛清除', '纖毛把沾附病原的黏液一路往上推。');
+    fillCard(ctx, width - 244, 62, 190, 118, palette.purple, '肺泡巨噬細胞', '在終端交換區吞噬病原並啟動局部免疫。');
+    arrow(ctx, { x: 244, y: 121 }, { x: width / 2 - 95, y: 121 }, palette.gray);
+    arrow(ctx, { x: width / 2 + 95, y: 121 }, { x: width - 244, y: 121 }, palette.gray);
+    fillCard(ctx, width / 2 - 120, 228, 240, 102, palette.orange, '防線失衡後', '病毒、菸害、脫水、抽痰、插管與免疫缺陷都會讓下呼吸道更容易被突破。');
+  } else {
+    fillCard(ctx, 46, 70, 180, 110, palette.teal, '通氣', '空氣進得去，肺泡才有原料做交換。');
+    fillCard(ctx, width / 2 - 90, 70, 180, 110, palette.blue, '肺泡膜', '交換面要夠薄、夠完整、面積夠大。');
+    fillCard(ctx, width - 226, 70, 180, 110, palette.green, '灌流', '血液要送得到交換面，氧才能真正進入循環。');
+    arrow(ctx, { x: 226, y: 125 }, { x: width / 2 - 90, y: 125 }, palette.gray);
+    arrow(ctx, { x: width / 2 + 90, y: 125 }, { x: width - 226, y: 125 }, palette.gray);
+    fillCard(ctx, width / 2 - 130, 226, 260, 104, palette.red, '低氧常見來源', '肺炎、肺水腫、ARDS、誤吸與肺栓塞，都是從不同角度打斷這條鏈。');
+  }
+}
+
+function drawAsthmaInflammatory(ctx: CanvasRenderingContext2D, width: number, height: number, modeId: string) {
+  if (modeId === 'type2-cascade') {
+    circleNode(ctx, width * 0.16, height / 2, 44, palette.orange, '觸發', 'Allergen / virus');
+    circleNode(ctx, width * 0.36, height / 2, 48, palette.blue, '上皮 / 樹突細胞', 'TSLP / IL-33');
+    circleNode(ctx, width * 0.58, height / 2, 50, palette.purple, 'Th2 軸線', 'IL-4 / IL-5 / IL-13');
+    circleNode(ctx, width * 0.82, height / 2, 54, palette.green, 'IgE / Eosinophil', 'Airway inflammation');
+    arrow(ctx, { x: width * 0.22, y: height / 2 }, { x: width * 0.3, y: height / 2 }, palette.gray);
+    arrow(ctx, { x: width * 0.42, y: height / 2 }, { x: width * 0.52, y: height / 2 }, palette.gray);
+    arrow(ctx, { x: width * 0.64, y: height / 2 }, { x: width * 0.75, y: height / 2 }, palette.gray);
+  } else if (modeId === 'bronchospasm') {
+    fillCard(ctx, 54, 70, 170, 112, palette.orange, '平滑肌收縮', '幾分鐘內縮小氣道半徑，快速造成喘鳴與胸悶。');
+    fillCard(ctx, width / 2 - 85, 70, 170, 112, palette.blue, '黏膜水腫', '血管通透性與發炎讓管壁變厚。');
+    fillCard(ctx, width - 224, 70, 170, 112, palette.green, '黏液栓塞', '尤其在重度發作時，黏液會讓部分氣道近乎堵死。');
+    arrow(ctx, { x: 224, y: 126 }, { x: width / 2 - 85, y: 126 }, palette.gray);
+    arrow(ctx, { x: width / 2 + 85, y: 126 }, { x: width - 224, y: 126 }, palette.gray);
+    fillCard(ctx, width / 2 - 125, 228, 250, 104, palette.red, '臨床結果', '呼氣延長、air trapping、喘鳴、講話斷句，嚴重時可出現 silent chest 與高碳酸血症。');
+  } else {
+    fillCard(ctx, 44, 70, 180, 112, palette.blue, 'Reliever', '優先考慮含 ICS-formoterol 的 reliever 架構，而不是單純 SABA-only。');
+    fillCard(ctx, width / 2 - 90, 70, 180, 112, palette.green, 'Controller', 'ICS 與 ICS-LABA 負責長期壓低發炎與急性惡化風險。');
+    fillCard(ctx, width - 224, 70, 180, 112, palette.purple, 'Add-on', 'LAMA、LTRA、biologic 依表型與未控制風險加入。');
+    arrow(ctx, { x: 224, y: 126 }, { x: width / 2 - 90, y: 126 }, palette.gray);
+    arrow(ctx, { x: width / 2 + 90, y: 126 }, { x: width - 224, y: 126 }, palette.gray);
+    pill(ctx, width / 2 - 132, height - 82, '先檢查吸入技巧，再升藥', palette.orange);
+  }
+}
+
+function drawCopdRemodeling(ctx: CanvasRenderingContext2D, width: number, height: number, modeId: string) {
+  if (modeId === 'phenotypes') {
+    fillCard(ctx, 52, 66, 200, 122, palette.blue, '慢性支氣管炎', '咳痰與黏液分泌上升，氣道壁發炎厚化。');
+    fillCard(ctx, width - 252, 66, 200, 122, palette.red, '肺氣腫', '肺泡隔與彈性纖維破壞，回縮力下降。');
+    fillCard(ctx, width / 2 - 120, 226, 240, 104, palette.purple, '真實世界', '多數病人兩條軸線同時存在，只是比例不同。');
+    connector(ctx, [{ x: 252, y: 127 }, { x: width / 2, y: 226 }], palette.gray);
+    connector(ctx, [{ x: width - 252, y: 127 }, { x: width / 2, y: 226 }], palette.gray);
+  } else if (modeId === 'air-trapping') {
+    circleNode(ctx, width * 0.24, height / 2, 48, palette.orange, '小氣道狹窄', '');
+    circleNode(ctx, width * 0.5, height / 2, 50, palette.red, '呼氣塌陷', '');
+    circleNode(ctx, width * 0.78, height / 2, 54, palette.purple, '氣體滯留', 'Dynamic hyperinflation');
+    arrow(ctx, { x: width * 0.3, y: height / 2 }, { x: width * 0.44, y: height / 2 }, palette.gray);
+    arrow(ctx, { x: width * 0.56, y: height / 2 }, { x: width * 0.71, y: height / 2 }, palette.gray);
+    pill(ctx, 40, 48, '病人最累的是每一口呼吸都要從高肺容積開始', palette.red);
+  } else {
+    fillCard(ctx, 46, 64, 170, 112, palette.green, '感染 / 污染', '常是 exacerbation 觸發點，但不是唯一原因。');
+    fillCard(ctx, 242, 64, 170, 112, palette.orange, '發炎增強', '痰量增加、氣道更窄、支氣管反應性上升。');
+    fillCard(ctx, 438, 64, 170, 112, palette.red, '做功暴增', '病人開始 tachypnea、air trapping、CO2 retention。');
+    fillCard(ctx, width - 212, 64, 170, 112, palette.purple, '呼吸衰竭', '若不卸載通氣與處理病因，就會快速失代償。');
+    arrow(ctx, { x: 216, y: 122 }, { x: 242, y: 122 }, palette.gray);
+    arrow(ctx, { x: 412, y: 122 }, { x: 438, y: 122 }, palette.gray);
+    arrow(ctx, { x: 608, y: 122 }, { x: width - 212, y: 122 }, palette.gray);
+  }
+}
+
+function drawPneumoniaGasExchange(ctx: CanvasRenderingContext2D, width: number, height: number, modeId: string) {
+  if (modeId === 'entry-routes') {
+    fillCard(ctx, 44, 72, 180, 112, palette.blue, '微吸入', '最常見路徑之一，吞嚥與意識狀態是關鍵。');
+    fillCard(ctx, width / 2 - 90, 72, 180, 112, palette.teal, '飛沫 / 氣溶膠', '病毒與部分細菌病原沿空氣進入下呼吸道。');
+    fillCard(ctx, width - 224, 72, 180, 112, palette.orange, '血行播散', '較少見，但在特定重症與免疫抑制病人重要。');
+    arrow(ctx, { x: 224, y: 128 }, { x: width / 2 - 90, y: 128 }, palette.gray);
+    arrow(ctx, { x: width / 2 + 90, y: 128 }, { x: width - 224, y: 128 }, palette.gray);
+  } else if (modeId === 'consolidation') {
+    fillCard(ctx, 56, 64, 190, 118, palette.green, '肺泡充滿滲出液', '原本可交換的空氣空間被液體與發炎細胞占據。');
+    fillCard(ctx, width / 2 - 95, 64, 190, 118, palette.blue, '局部 shunt-like physiology', '血流到了，但通氣明顯不足。');
+    fillCard(ctx, width - 246, 64, 190, 118, palette.red, '低氧與呼吸做功上升', '病人需要更快呼吸才能維持氧合。');
+    arrow(ctx, { x: 246, y: 123 }, { x: width / 2 - 95, y: 123 }, palette.gray);
+    arrow(ctx, { x: width / 2 + 95, y: 123 }, { x: width - 246, y: 123 }, palette.gray);
+  } else {
+    fillCard(ctx, 44, 72, 180, 112, palette.blue, '病人在哪個場景', '門診 CAP、住院 CAP、HAP、VAP 或免疫抑制。');
+    fillCard(ctx, width / 2 - 90, 72, 180, 112, palette.purple, '嚴重度多高', '需不需要住院、ICU、器官支持。');
+    fillCard(ctx, width - 224, 72, 180, 112, palette.green, '耐藥風險在哪', 'MRSA / Pseudomonas 不是每個人都要覆蓋。');
+    arrow(ctx, { x: 224, y: 128 }, { x: width / 2 - 90, y: 128 }, palette.gray);
+    arrow(ctx, { x: width / 2 + 90, y: 128 }, { x: width - 224, y: 128 }, palette.gray);
+    pill(ctx, width / 2 - 140, height - 84, '抗生素廣度要跟風險走，不要跟焦慮走', palette.orange);
+  }
+}
+
+function drawTbGranuloma(ctx: CanvasRenderingContext2D, width: number, height: number, modeId: string) {
+  if (modeId === 'latent-active') {
+    circleNode(ctx, width * 0.18, height / 2, 48, palette.blue, '吸入', 'Droplet nuclei');
+    circleNode(ctx, width * 0.42, height / 2, 50, palette.purple, '肉芽腫', 'Containment');
+    circleNode(ctx, width * 0.68, height / 2, 50, palette.orange, '潛伏', 'Latent TB');
+    circleNode(ctx, width * 0.86, height / 2, 54, palette.red, '活化 / 空洞', 'Active TB');
+    arrow(ctx, { x: width * 0.24, y: height / 2 }, { x: width * 0.35, y: height / 2 }, palette.gray);
+    arrow(ctx, { x: width * 0.49, y: height / 2 }, { x: width * 0.61, y: height / 2 }, palette.gray);
+    arrow(ctx, { x: width * 0.74, y: height / 2 }, { x: width * 0.8, y: height / 2 }, palette.gray);
+  } else if (modeId === 'diagnostics') {
+    fillCard(ctx, 48, 70, 170, 112, palette.blue, '臨床與影像', '慢性咳嗽、夜汗、體重下降、空洞或 tree-in-bud。');
+    fillCard(ctx, width / 2 - 85, 70, 170, 112, palette.green, '痰檢體', 'AFB smear、NAAT、culture 是活動性 TB 核心。');
+    fillCard(ctx, width - 218, 70, 170, 112, palette.orange, '藥敏與追蹤', '最終要靠 culture / susceptibility 重新校正策略。');
+    arrow(ctx, { x: 218, y: 126 }, { x: width / 2 - 85, y: 126 }, palette.gray);
+    arrow(ctx, { x: width / 2 + 85, y: 126 }, { x: width - 218, y: 126 }, palette.gray);
+    pill(ctx, width / 2 - 128, height - 82, 'IGRA / TST 主要回答 latent，不是 active', palette.red);
+  } else {
+    fillCard(ctx, 42, 66, 160, 116, palette.green, '強化期', 'RIPE 多藥先快速壓低菌量與耐藥風險。');
+    fillCard(ctx, 232, 66, 160, 116, palette.blue, '續治期', '依藥敏、反應與病灶型態延續療程。');
+    fillCard(ctx, 422, 66, 160, 116, palette.orange, 'LTBI', '3HP、4R、3HR 等短程方案在合適病人很有價值。');
+    fillCard(ctx, width - 202, 66, 160, 116, palette.red, '交互作用', 'rifamycin 會把整張藥單重寫一次。');
+  }
+}
+
+function drawMechanicalVentilation(ctx: CanvasRenderingContext2D, width: number, height: number, modeId: string) {
+  if (modeId === 'failure-types') {
+    fillCard(ctx, 52, 70, 200, 118, palette.blue, 'Type 1 低氧性', '常見於肺炎、肺水腫、ARDS、肺出血與部分肺栓塞。');
+    fillCard(ctx, width - 252, 70, 200, 118, palette.red, 'Type 2 高碳酸性', '常見於 COPD、氣喘、鎮靜、中樞抑制與神經肌肉病。');
+    fillCard(ctx, width / 2 - 120, 226, 240, 100, palette.purple, '臨床上可重疊', '同一位病人完全可能同時低氧、高碳酸又高做功。');
+    connector(ctx, [{ x: 252, y: 129 }, { x: width / 2 - 60, y: 226 }], palette.gray);
+    connector(ctx, [{ x: width - 252, y: 129 }, { x: width / 2 + 60, y: 226 }], palette.gray);
+  } else if (modeId === 'support-ladder') {
+    const steps = [
+      ['低流量氧氣', palette.blue],
+      ['HFNC', palette.teal],
+      ['NIV', palette.green],
+      ['插管通氣', palette.red],
+    ] as const;
+    steps.forEach(([labelText, color], index) => {
+      const x = 42 + index * 190;
+      fillCard(ctx, x, 92, 150, 112, color, labelText, index === 0 ? 'Mild support' : index === 1 ? 'High flow oxygenation' : index === 2 ? 'Unload work of breathing' : 'Full ventilatory support');
+      if (index < steps.length - 1) {
+        arrow(ctx, { x: x + 150, y: 148 }, { x: x + 190, y: 148 }, palette.gray);
+      }
+    });
+  } else {
+    fillCard(ctx, 42, 66, 160, 116, palette.blue, 'Vt', '依 predicted body weight 設定，不用實際體重。');
+    fillCard(ctx, 232, 66, 160, 116, palette.green, 'PEEP', '招募肺泡、影響氧合，也會影響血流動力。');
+    fillCard(ctx, 422, 66, 160, 116, palette.orange, 'FiO2', '是立即拉高氧合的工具，不是長期唯一解法。');
+    fillCard(ctx, width - 202, 66, 160, 116, palette.red, 'Plateau / Auto-PEEP', '一個保護肺，一個提醒你是否困氣。');
+    pill(ctx, width / 2 - 142, height - 84, '漂亮的 ABG 不值得拿肺傷害去交換', palette.purple);
+  }
+}
+
 const diagrams: Record<string, DiagramDefinition> = {
+  'resp-airway-defense': {
+    title: '呼吸道防禦與氣體交換圖',
+    caption: '把導氣區、宿主防線與肺泡交換放進同一張圖，建立呼吸系統疾病最重要的共同底圖。',
+    modes: [
+      {
+        id: 'airway-tree',
+        label: '氣道樹',
+        summary: '先分清楚導氣區與交換區，之後才知道病變落在哪一層。',
+        bullets: ['氣喘與 COPD 問的是導氣區。', '肺炎與 ARDS 更直接打到交換區。', '小氣道病變常比症狀更早開始。'],
+      },
+      {
+        id: 'airway-defense',
+        label: '防線',
+        summary: '鼻腔、纖毛、黏液與巨噬細胞是肺部日常防守主力。',
+        bullets: ['抽菸與病毒會同時削弱這些防線。', '插管與吞嚥障礙會改寫風險。', '免疫缺陷會讓病原譜整張換掉。'],
+      },
+      {
+        id: 'gas-exchange',
+        label: '交換',
+        summary: '低氧不是只有一種原因，必須回到通氣、交換面與灌流一起看。',
+        bullets: ['V/Q mismatch 與 shunt 在床邊意義不同。', '肺泡膜與灌流都很重要。', '氧氣支持與病因治療要一起做。'],
+      },
+    ],
+    render: drawRespAirwayDefense,
+  },
+  'asthma-inflammatory': {
+    title: '氣喘發炎與控制圖',
+    caption: '串起 Type 2 發炎、氣道狹窄與 stepwise controller 思維，幫助讀者把症狀、機轉與藥物接回同一張地圖。',
+    modes: [
+      {
+        id: 'type2-cascade',
+        label: '發炎軸',
+        summary: '過敏原、病毒與上皮 alarmin 會把 Th2、IgE 與 eosinophil 一路帶起來。',
+        bullets: ['不是每個病人都純 Type 2，但這是高頻主軸。', 'Biologic 正是在這條鏈上切節點。', '上皮不是旁觀者。'],
+      },
+      {
+        id: 'bronchospasm',
+        label: '狹窄',
+        summary: '痙攣、水腫與黏液同時存在時，氣道半徑會快速縮小。',
+        bullets: ['急性期靠 bronchodilation，慢性期要抗發炎。', 'silent chest 是壞訊號。', '症狀與結構變化不總是同步。'],
+      },
+      {
+        id: 'control-plan',
+        label: '控制',
+        summary: '真正成熟的氣喘治療是 reliever、controller 與 inhaler technique 一起工作。',
+        bullets: ['所有成人與青少年都應有 ICS 底座。', '升藥前先查技巧與依從性。', '行動計畫會直接影響急診率。'],
+      },
+    ],
+    render: drawAsthmaInflammatory,
+  },
+  'copd-remodeling': {
+    title: 'COPD 重塑與惡化圖',
+    caption: '比較慢性支氣管炎與肺氣腫兩條主軸，並把 air trapping、惡化與呼吸衰竭接起來。',
+    modes: [
+      {
+        id: 'phenotypes',
+        label: '表型',
+        summary: 'COPD 很少是單一純型，臨床上多半是支氣管炎與肺氣腫混合。',
+        bullets: ['咳痰與過度充氣可同時存在。', '影像與症狀不一定同方向。', '年輕或基底病灶時要想 alpha-1 antitrypsin。'],
+      },
+      {
+        id: 'air-trapping',
+        label: '困氣',
+        summary: '小氣道在呼氣期過早塌陷，是呼吸做功暴增的關鍵。',
+        bullets: ['病人不是吸不進去，而是吐不乾淨。', '動態過度充氣會壓垮橫膈。', '這也是 NIV 能幫忙的原因之一。'],
+      },
+      {
+        id: 'exacerbation',
+        label: '惡化',
+        summary: '感染、污染與心肺共病都能把原本勉強平衡的系統推向衰竭。',
+        bullets: ['不是每次都只有感染。', '惡化次數本身會改變預後。', '急性處置與長期預防同樣重要。'],
+      },
+    ],
+    render: drawCopdRemodeling,
+  },
+  'pneumonia-gas-exchange': {
+    title: '肺炎與低氧圖',
+    caption: '把病原進入路徑、肺泡實變與經驗性抗生素決策放進同一張圖，避免把肺炎只看成一張 X 光。',
+    modes: [
+      {
+        id: 'entry-routes',
+        label: '進入路徑',
+        summary: '病原能怎麼進入肺，常由病人場景與防線弱點決定。',
+        bullets: ['微吸入是高頻路徑。', '病毒與飛沫傳播常從上呼吸道一路下來。', '特殊場景要想不同病原譜。'],
+      },
+      {
+        id: 'consolidation',
+        label: '實變',
+        summary: '肺炎的低氧核心，是原本該充滿空氣的肺泡被滲出液占據。',
+        bullets: ['這是 shunt-like physiology，而不只是肺片變白。', '病灶愈大，氧合通常愈不穩。', '敗血症會讓局部病變變成全身問題。'],
+      },
+      {
+        id: 'empiric-therapy',
+        label: '抗生素',
+        summary: '抗生素廣度要跟場景、嚴重度與耐藥風險一起走。',
+        bullets: ['不是每個 CAP 都要 broad-spectrum。', 'HAP / VAP 的想像不能直接搬到門診肺炎。', '最重要的是能夠去升級。'],
+      },
+    ],
+    render: drawPneumoniaGasExchange,
+  },
+  'tb-granuloma': {
+    title: '結核與特殊感染圖',
+    caption: '把 latent / active TB、檢體策略與長療程藥理放在同一張圖上，方便建立完整診療邏輯。',
+    modes: [
+      {
+        id: 'latent-active',
+        label: '潛伏與活化',
+        summary: '肉芽腫是宿主圍堵結核的結果，但不是永久保證。',
+        bullets: ['Latent 與 active TB 不能用同一種腦袋處理。', '空洞代表高菌量與傳播風險。', '免疫抑制是圍牆破口。'],
+      },
+      {
+        id: 'diagnostics',
+        label: '診斷',
+        summary: '活動性 TB 的核心是痰液、NAAT、culture 與藥敏，而不是單一免疫檢查。',
+        bullets: ['先想隔離，再想檢體。', 'IGRA 回答的是 latent，不是 contagious。', 'Culture 雖慢，但治療方向最終靠它校正。'],
+      },
+      {
+        id: 'regimens',
+        label: '療程',
+        summary: '多藥與長療程不是形式，而是為了降低復發與耐藥。',
+        bullets: ['RIPE 是起點，不是終點。', 'rifamycin 交互作用一定要系統性檢查。', '特殊感染要依宿主缺陷調整整張策略。'],
+      },
+    ],
+    render: drawTbGranuloma,
+  },
+  'mechanical-ventilation': {
+    title: '呼吸衰竭與機械通氣圖',
+    caption: '從 failure type、支持梯子到呼吸機參數，一張圖統整氧合、通氣與肺保護思維。',
+    modes: [
+      {
+        id: 'failure-types',
+        label: '衰竭類型',
+        summary: '低氧與高碳酸不是同一種失敗模式，但兩者經常重疊。',
+        bullets: ['通氣與氧合要分開判斷。', '病人外觀常比數字更早示警。', '病因不同，支持策略也不同。'],
+      },
+      {
+        id: 'support-ladder',
+        label: '支持梯子',
+        summary: '氧氣、HFNC、NIV 與插管並非高低之分，而是不同問題的不同工具。',
+        bullets: ['NIV 對 COPD 與心因性肺水腫特別有力。', 'HFNC 提升舒適度與氧合，但不是萬能。', '延遲插管有時比過早插管更危險。'],
+      },
+      {
+        id: 'vent-parameters',
+        label: '參數',
+        summary: '潮氣量、PEEP、FiO2 與壓力監測共同決定肺保護與同步性。',
+        bullets: ['潮氣量用 PBW 算。', 'Plateau 與 auto-PEEP 回答不同問題。', '漂亮 ABG 不值得拿 VILI 交換。'],
+      },
+    ],
+    render: drawMechanicalVentilation,
+  },
   'cv-hemodynamics': {
     title: '高血壓與血流動力學圖',
     caption: '把血壓形成、RAAS 惡性循環與器官傷害放進同一張圖，幫助理解為什麼高血壓是系統性疾病。',
