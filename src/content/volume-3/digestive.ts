@@ -11,6 +11,7 @@ import {
   list,
   misconceptionList,
   p,
+  references,
   section,
   spotlight,
   summary,
@@ -20,6 +21,69 @@ import {
 } from './shared.js';
 
 export const digestiveChapters: Record<string, ChapterContent> = {};
+
+const digestiveSources: Record<string, { label: string; url: string; note: string }[]> = {
+  ch17: [
+    {
+      label: 'NIDDK Acid Reflux (GER & GERD) in Adults',
+      url: 'https://www.niddk.nih.gov/health-information/digestive-diseases/acid-reflux-ger-gerd-adults',
+      note: '整理 GERD 的症狀、危險因子與診療概念，可對照本章逆流暴露、紅旗症狀與經驗性治療邏輯。',
+    },
+    {
+      label: 'NIDDK Peptic Ulcers (Stomach Ulcers)',
+      url: 'https://www.niddk.nih.gov/health-information/digestive-diseases/peptic-ulcers-stomach-ulcers',
+      note: '補足 H. pylori、NSAID 與潰瘍併發症的官方整理，適合作為本章 PUD 與出血風險的基礎來源。',
+    },
+  ],
+  ch18: [
+    {
+      label: 'NIDDK Crohn’s Disease',
+      url: 'https://www.niddk.nih.gov/health-information/digestive-diseases/crohns-disease',
+      note: '可對照 Crohn 病程、症狀、併發症與長期照護重點，支撐本章對 transmural inflammation 的描述。',
+    },
+    {
+      label: 'NIDDK Ulcerative Colitis',
+      url: 'https://www.niddk.nih.gov/health-information/digestive-diseases/ulcerative-colitis',
+      note: '補上 UC 的黏膜型發炎、症狀與治療概念，適合對照本章 UC 與 Crohn 的臨床辨識。',
+    },
+  ],
+  ch19: [
+    {
+      label: 'CDC Viral Hepatitis',
+      url: 'https://www.cdc.gov/hepatitis/index.html',
+      note: '整合病毒性肝炎的流行病學、檢驗、預防與治療方向，可對照本章病因分類與公共衛生面向。',
+    },
+    {
+      label: 'NIDDK Cirrhosis',
+      url: 'https://www.niddk.nih.gov/health-information/liver-disease/cirrhosis',
+      note: '提供肝硬化、腹水、肝性腦病變與長期併發症的官方說明，與本章失代償照護架構高度相符。',
+    },
+  ],
+  ch20: [
+    {
+      label: 'NIDDK Pancreatitis',
+      url: 'https://www.niddk.nih.gov/health-information/digestive-diseases/pancreatitis',
+      note: '整理急性與慢性胰臟炎的病因、診斷與治療，適合作為本章酵素活化與重症監測的基礎來源。',
+    },
+    {
+      label: 'MedlinePlus Pancreatitis',
+      url: 'https://medlineplus.gov/pancreatitis.html',
+      note: '補上病人教育與症狀辨識角度，可對照本章臨床場景、酒精與高三酸甘油脂相關風險。',
+    },
+  ],
+  ch21: [
+    {
+      label: 'NIDDK Constipation',
+      url: 'https://www.niddk.nih.gov/health-information/digestive-diseases/constipation',
+      note: '可對照本章便秘機轉、出口障礙與藥物相關便秘的處理脈絡。',
+    },
+    {
+      label: 'NIDDK Diarrhea',
+      url: 'https://www.niddk.nih.gov/health-information/digestive-diseases/diarrhea',
+      note: '補足腹瀉分類、脫水風險與警訊症狀，適合作為本章常見 GI 症狀分流的官方來源。',
+    },
+  ],
+};
 
 digestiveChapters.ch17 = chapter(
   '胃食道逆流與消化性潰瘍 (GERD & PUD)',
@@ -213,6 +277,7 @@ digestiveChapters.ch17 = chapter(
       p('這類病人很容易在門診被當成「胃酸 + 胃藥加一顆」處理，但真正危險的是 NSAID 相關潰瘍已經開始出血。上腹不適一旦合併黑便與貧血，整個優先順序就改了。'),
     ),
   ),
+  references('章內來源註記', digestiveSources.ch17),
 );
 
 digestiveChapters.ch18 = chapter(
@@ -407,6 +472,7 @@ digestiveChapters.ch18 = chapter(
       p('這位病人不只是「發炎性腹瀉」，她已經進入需要病程管理的免疫疾病軌道。真正的治療重點是把未來住院、反覆 flare 與結腸長期風險一起降下來。'),
     ),
   ),
+  references('章內來源註記', digestiveSources.ch18),
 );
 
 digestiveChapters.ch19 = chapter(
@@ -609,6 +675,7 @@ digestiveChapters.ch19 = chapter(
       p('這類病人最需要的不是更多「保肝藥」想像，而是系統性管理：腹水一定要抽、HE 要找誘因、HBV 要控制、酒精要介入、移植路徑要提早討論。'),
     ),
   ),
+  references('章內來源註記', digestiveSources.ch19),
 );
 
 digestiveChapters.ch20 = chapter(
@@ -803,6 +870,7 @@ digestiveChapters.ch20 = chapter(
       p('這位病人真正需要的不是「胰臟指數降下來」而已，而是病因控制與重症監測同步進行。若只治完急性期痛感，下一次復發很可能更重。'),
     ),
   ),
+  references('章內來源註記', digestiveSources.ch20),
 );
 
 digestiveChapters.ch21 = chapter(
@@ -1003,4 +1071,5 @@ digestiveChapters.ch21 = chapter(
       '症狀管理的前提是先確認這樣做不會掩蓋危險病因。',
     ]),
   ),
+  references('章內來源註記', digestiveSources.ch21),
 );

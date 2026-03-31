@@ -469,6 +469,125 @@ function drawOncology(ctx: CanvasRenderingContext2D, width: number, height: numb
   }
 }
 
+function drawHematopoiesisMap(ctx: CanvasRenderingContext2D, width: number, height: number, modeId: string) {
+  if (modeId === 'lineage') {
+    circleNode(ctx, width * 0.18, height * 0.5, 52, palette.blue, 'HSC', 'stem cell');
+    circleNode(ctx, width * 0.4, height * 0.3, 48, palette.purple, 'Myeloid', '');
+    circleNode(ctx, width * 0.4, height * 0.7, 48, palette.green, 'Lymphoid', '');
+    fillCard(ctx, width * 0.58, 48, 174, 94, palette.red, '紅血球 / 血小板', '造血材料不足、EPO 不足或骨髓受抑都會先在這端露出 anemia / thrombocytopenia。');
+    fillCard(ctx, width * 0.58, height - 142, 174, 94, palette.orange, '淋巴 / 骨髓惡性', '急慢性白血病與淋巴瘤多沿著這端分化失衡與擴張。');
+    arrow(ctx, { x: width * 0.24, y: height * 0.46 }, { x: width * 0.34, y: height * 0.34 }, palette.gray);
+    arrow(ctx, { x: width * 0.24, y: height * 0.54 }, { x: width * 0.34, y: height * 0.66 }, palette.gray);
+    arrow(ctx, { x: width * 0.46, y: height * 0.3 }, { x: width * 0.58, y: 92 }, palette.gray);
+    arrow(ctx, { x: width * 0.46, y: height * 0.7 }, { x: width * 0.58, y: height - 96 }, palette.gray);
+  } else if (modeId === 'iron-dna') {
+    fillCard(ctx, 44, 62, 170, 118, palette.orange, '鐵路徑', '腸道吸收、transferrin 運送、骨髓 heme 合成，缺一環都可能 microcytosis。');
+    fillCard(ctx, width / 2 - 85, 48, 170, 148, palette.green, 'DNA 合成', 'Vitamin B12 與 folate 缺乏時，核成熟延遲，形成 macrocytosis 與 megaloblastic change。');
+    fillCard(ctx, width - 214, 62, 170, 118, palette.purple, 'EPO / 骨髓', '腎臟與骨髓一起決定產量，CKD 與 marrow failure 常走向 normocytic anemia。');
+    arrow(ctx, { x: 214, y: 122 }, { x: width / 2 - 85, y: 122 }, palette.gray);
+    arrow(ctx, { x: width / 2 + 85, y: 122 }, { x: width - 214, y: 122 }, palette.gray);
+    pill(ctx, width / 2 - 144, height - 82, 'MCV 是入口，不是答案', palette.red);
+  } else if (modeId === 'hemolysis-marrow') {
+    fillCard(ctx, 44, 70, 170, 112, palette.red, '周邊破壞', 'AIHA、MAHA、膜病與酵素缺陷會讓紅血球壽命顯著縮短。');
+    fillCard(ctx, width / 2 - 85, 70, 170, 112, palette.orange, '實驗室線索', 'LDH 上升、indirect bilirubin 上升、haptoglobin 下降與 retic 上升常一起出現。');
+    fillCard(ctx, width - 214, 70, 170, 112, palette.green, '骨髓補償', '若骨髓能反應，reticulocyte 會上升；若骨髓也失敗，病情通常更重。');
+    arrow(ctx, { x: 214, y: 126 }, { x: width / 2 - 85, y: 126 }, palette.gray);
+    arrow(ctx, { x: width / 2 + 85, y: 126 }, { x: width - 214, y: 126 }, palette.gray);
+  } else {
+    fillCard(ctx, 52, 66, 170, 112, palette.blue, 'Step 1', '先看 Hb、MCV、RDW，決定 micro / normo / macrocytic。');
+    fillCard(ctx, 242, 66, 170, 112, palette.green, 'Step 2', '看 reticulocyte，判斷骨髓有沒有在適當反應。');
+    fillCard(ctx, 432, 66, 170, 112, palette.orange, 'Step 3', '結合 ferritin、B12、hemolysis panel、smear 與出血史找根因。');
+    fillCard(ctx, width - 202, 66, 160, 112, palette.purple, 'Step 4', '病因治療 + 支持治療，避免只補數字。');
+    arrow(ctx, { x: 222, y: 122 }, { x: 242, y: 122 }, palette.gray);
+    arrow(ctx, { x: 412, y: 122 }, { x: 432, y: 122 }, palette.gray);
+    arrow(ctx, { x: 602, y: 122 }, { x: width - 202, y: 122 }, palette.gray);
+  }
+}
+
+function drawCoagulationCascadeMap(ctx: CanvasRenderingContext2D, width: number, height: number, modeId: string) {
+  if (modeId === 'primary-hemostasis') {
+    fillCard(ctx, 42, 64, 170, 112, palette.blue, '內皮受傷', 'collagen 與 vWF 暴露，將鬆散血流轉成黏附起點。');
+    fillCard(ctx, width / 2 - 85, 64, 170, 112, palette.orange, '血小板黏附', 'GPIb-vWF 與後續聚集形成 platelet plug。');
+    fillCard(ctx, width - 212, 64, 170, 112, palette.green, '黏膜止血', '鼻血、牙齦出血與 menorrhagia 常在這層出問題。');
+    arrow(ctx, { x: 212, y: 120 }, { x: width / 2 - 85, y: 120 }, palette.gray);
+    arrow(ctx, { x: width / 2 + 85, y: 120 }, { x: width - 212, y: 120 }, palette.gray);
+  } else if (modeId === 'cascade-balance') {
+    circleNode(ctx, width * 0.18, height * 0.5, 48, palette.blue, 'TF / VII', 'extrinsic');
+    circleNode(ctx, width * 0.4, height * 0.5, 48, palette.orange, 'X -> Xa', 'common');
+    circleNode(ctx, width * 0.62, height * 0.5, 48, palette.red, 'II -> IIa', 'thrombin');
+    circleNode(ctx, width * 0.84, height * 0.5, 52, palette.purple, 'Fibrin', 'stable clot');
+    arrow(ctx, { x: width * 0.24, y: height * 0.5 }, { x: width * 0.34, y: height * 0.5 }, palette.gray);
+    arrow(ctx, { x: width * 0.46, y: height * 0.5 }, { x: width * 0.56, y: height * 0.5 }, palette.gray);
+    arrow(ctx, { x: width * 0.68, y: height * 0.5 }, { x: width * 0.76, y: height * 0.5 }, palette.gray);
+    pill(ctx, 46, 42, '抗凝、補因子與 reversal 都是在不同節點切入', palette.green);
+  } else if (modeId === 'dic-tma') {
+    fillCard(ctx, 52, 70, 170, 112, palette.red, 'DIC', '全身性 thrombin 與 fibrinolysis 失控，常見於敗血症、產科急症與 APL。');
+    fillCard(ctx, width / 2 - 85, 70, 170, 112, palette.purple, 'TTP / HUS', '富血小板微血栓造成 MAHA、器官缺血與 thrombocytopenia。');
+    fillCard(ctx, width - 214, 70, 170, 112, palette.blue, '臨床分流', '看到 schistocyte、腎傷害或神經症狀時，不能只用一般 bleeding workup 思考。');
+    pill(ctx, width / 2 - 130, height - 82, 'DIC 與 TMA 都很急，但處理路徑不同', palette.orange);
+  } else {
+    fillCard(ctx, 52, 70, 170, 112, palette.orange, 'Mucosal bleeding', '偏向 platelet / VWF disorder。');
+    fillCard(ctx, 242, 70, 170, 112, palette.purple, 'Deep tissue bleeding', '偏向 factor deficiency，如 hemophilia。');
+    fillCard(ctx, 432, 70, 170, 112, palette.red, 'DIC / TMA', '可能同時出血與器官缺血。');
+    fillCard(ctx, width - 202, 70, 160, 112, palette.blue, 'Drug-related', 'warfarin、DOAC、antiplatelet 需沿機轉思考逆轉。');
+  }
+}
+
+function drawOncologyTreatmentMap(ctx: CanvasRenderingContext2D, width: number, height: number, modeId: string) {
+  if (modeId === 'local-systemic') {
+    fillCard(ctx, 42, 64, 170, 112, palette.blue, 'Local therapy', '手術與放療優先處理可見病灶與局部控制。');
+    fillCard(ctx, width / 2 - 85, 64, 170, 112, palette.orange, 'Micrometastasis', '影像看不到的系統性風險常決定 adjuvant 的價值。');
+    fillCard(ctx, width - 212, 64, 170, 112, palette.green, 'Systemic therapy', '化療、標靶、內分泌、免疫治療處理全身層級問題。');
+    arrow(ctx, { x: 212, y: 120 }, { x: width / 2 - 85, y: 120 }, palette.gray);
+    arrow(ctx, { x: width / 2 + 85, y: 120 }, { x: width - 212, y: 120 }, palette.gray);
+  } else if (modeId === 'biomarker-selection') {
+    circleNode(ctx, width * 0.2, height * 0.5, 50, palette.purple, 'Pathology', '');
+    circleNode(ctx, width * 0.4, height * 0.5, 50, palette.blue, 'Stage', '');
+    circleNode(ctx, width * 0.6, height * 0.5, 50, palette.green, 'Biomarker', '');
+    circleNode(ctx, width * 0.82, height * 0.5, 56, palette.orange, 'Therapy plan', '');
+    arrow(ctx, { x: width * 0.26, y: height * 0.5 }, { x: width * 0.34, y: height * 0.5 }, palette.gray);
+    arrow(ctx, { x: width * 0.46, y: height * 0.5 }, { x: width * 0.54, y: height * 0.5 }, palette.gray);
+    arrow(ctx, { x: width * 0.66, y: height * 0.5 }, { x: width * 0.74, y: height * 0.5 }, palette.gray);
+    pill(ctx, 46, 42, '不是每個 biomarker 都改變第一線，但真正重要的會整張改寫策略', palette.red);
+  } else if (modeId === 'response-goals') {
+    fillCard(ctx, 42, 70, 170, 112, palette.green, 'Curative intent', '可承受較高毒性，但前提是治療真有根治機會。');
+    fillCard(ctx, width / 2 - 85, 70, 170, 112, palette.orange, 'Disease control', '目標是延長存活與減少症狀，常需反覆重估療效與負擔。');
+    fillCard(ctx, width - 212, 70, 170, 112, palette.purple, 'Symptom relief', '當收益有限時，局部放療、止痛與 supportive care 可能比升級 systemic therapy 更有價值。');
+    arrow(ctx, { x: 212, y: 126 }, { x: width / 2 - 85, y: 126 }, palette.gray);
+    arrow(ctx, { x: width / 2 + 85, y: 126 }, { x: width - 212, y: 126 }, palette.gray);
+  } else {
+    fillCard(ctx, 42, 72, 170, 112, palette.orange, 'Neoadjuvant', '先縮腫瘤、改善可切除性、觀察反應。');
+    fillCard(ctx, width / 2 - 85, 72, 170, 112, palette.blue, 'Curative local control', '手術 / 放療把局部病灶拿掉或壓住。');
+    fillCard(ctx, width - 212, 72, 170, 112, palette.green, 'Adjuvant / maintenance', '處理復發風險或長期控制病程。');
+    pill(ctx, width / 2 - 138, height - 82, '治療排序常比藥名本身更重要', palette.purple);
+  }
+}
+
+function drawOncologyToxicityMap(ctx: CanvasRenderingContext2D, width: number, height: number, modeId: string) {
+  if (modeId === 'cinv-fn-tls') {
+    fillCard(ctx, 42, 62, 170, 120, palette.orange, 'CINV', '高致吐方案要在第一天就做多機轉預防，而不是等病人吐了再補。');
+    fillCard(ctx, width / 2 - 85, 62, 170, 120, palette.red, 'Febrile neutropenia', '發燒可能是唯一線索，先當時間敏感急症處理。');
+    fillCard(ctx, width - 212, 62, 170, 120, palette.purple, 'Tumor lysis syndrome', '高尿酸、高鉀、高磷與急性腎傷害，風險常可在治療前預測。');
+  } else if (modeId === 'immune-toxicity') {
+    fillCard(ctx, 52, 72, 160, 112, palette.blue, 'Lung', 'pneumonitis');
+    fillCard(ctx, 242, 72, 160, 112, palette.green, 'Liver', 'hepatitis');
+    fillCard(ctx, 432, 72, 160, 112, palette.orange, 'Gut', 'colitis');
+    fillCard(ctx, width - 202, 72, 160, 112, palette.red, 'Endocrine', 'thyroid / pituitary / adrenal');
+    pill(ctx, width / 2 - 120, height - 82, '免疫毒性本質是自體發炎，不只是感染', palette.purple);
+  } else if (modeId === 'organ-triage') {
+    fillCard(ctx, 42, 70, 170, 112, palette.red, 'Hold / admit now', '低氧、胸痛、sepsis、Grade 3-4 diarrhea、心肌炎疑慮都要快速升級。');
+    fillCard(ctx, width / 2 - 85, 70, 170, 112, palette.orange, 'Dose modify', '中度骨髓抑制、黏膜炎、neuropathy 常需延後或減量。');
+    fillCard(ctx, width - 212, 70, 170, 112, palette.green, 'Resume carefully', '毒性改善後是否重啟，要看器官、grade、替代方案與治療目標。');
+    pill(ctx, width / 2 - 134, height - 82, '毒性管理本質上是風險再分層', palette.blue);
+  } else {
+    fillCard(ctx, 42, 70, 170, 112, palette.blue, 'Bone marrow', 'anemia、neutropenia、thrombocytopenia');
+    fillCard(ctx, width / 2 - 85, 70, 170, 112, palette.orange, 'Mucosa / GI', 'mucositis、diarrhea、nutrition loss');
+    fillCard(ctx, width - 212, 70, 170, 112, palette.red, 'Heart / nerve / kidney', '器官選擇性毒性決定監測與停藥門檻');
+    arrow(ctx, { x: 212, y: 126 }, { x: width / 2 - 85, y: 126 }, palette.gray);
+    arrow(ctx, { x: width / 2 + 85, y: 126 }, { x: width - 212, y: 126 }, palette.gray);
+  }
+}
+
 function drawMetabolism(ctx: CanvasRenderingContext2D, width: number, height: number, modeId: string) {
   if (modeId === 'fed-fast') {
     fillCard(ctx, 54, 62, 220, 128, palette.green, '進食狀態 Fed state', '胰島素上升，促進 glycogenesis、lipogenesis、protein synthesis');
@@ -2256,6 +2375,68 @@ const diagrams: Record<string, DiagramDefinition> = {
     ],
     render: drawImmunity,
   },
+  'hematopoiesis-map': {
+    title: '造血、原料與貧血分類圖',
+    caption: '把造血幹細胞分化、鐵與 DNA 合成、以及 anemia workup 放在同一張圖上，讓貧血與血液腫瘤有共同底圖可回看。',
+    modes: [
+      {
+        id: 'lineage',
+        label: '細胞譜系',
+        summary: '先建立 HSC 往 myeloid 與 lymphoid 分化的直覺，後續才能理解 anemia、leukemia 與 lymphoma 其實在同一棵樹上出問題。',
+        bullets: ['骨髓問題常不只影響一條血球線。', 'myeloid 與 lymphoid 疾病治療思維不同。', '骨髓微環境會影響正常與惡性細胞。'],
+      },
+      {
+        id: 'iron-dna',
+        label: '原料與 DNA',
+        summary: '鐵缺乏、B12 / folate 缺乏與 EPO 不足會在不同層次造成造血失敗，不能只用一個檢驗值概括。',
+        bullets: ['缺鐵偏 microcytosis。', 'B12 / folate 偏 macrocytosis。', 'CKD 常造成 normocytic anemia。'],
+      },
+      {
+        id: 'hemolysis-marrow',
+        label: '溶血回應',
+        summary: '把周邊破壞與骨髓補償放回同一張圖後，retic、bilirubin 與 haptoglobin 的邏輯會更清楚。',
+        bullets: ['溶血看的是周邊壽命縮短。', 'retic 上升代表骨髓還在追。', '若骨髓也失敗，病情會更複雜。'],
+      },
+      {
+        id: 'anemia-workup',
+        label: '貧血路徑',
+        summary: '真正實用的 anemia workup 是 MCV、retic、smear、缺乏指標與病因追查的順序化流程。',
+        bullets: ['MCV 是入口，不是終點。', 'retic 幫你看骨髓是否在反應。', '不要只補 Hb 不找病因。'],
+      },
+    ],
+    render: drawHematopoiesisMap,
+  },
+  'coagulation-cascade-map': {
+    title: '止血、凝血與出血表型圖',
+    caption: '用 primary hemostasis、凝血瀑布與 bleeding phenotype 三個模式，把 VWD、hemophilia、DIC 與藥物逆轉的邏輯串起來。',
+    modes: [
+      {
+        id: 'primary-hemostasis',
+        label: '初級止血',
+        summary: '先看內皮、VWF 與血小板如何黏附聚集，這是理解鼻血、牙齦出血與月經過多的核心地圖。',
+        bullets: ['VWF 同時連接內皮與血小板。', 'platelet disorder 常走 mucosal phenotype。', '常規 PT / aPTT 不一定抓得到。'],
+      },
+      {
+        id: 'cascade-balance',
+        label: '凝血瀑布',
+        summary: '把凝血因子、thrombin 與 fibrin 放回 sequential activation，才看得懂補因子、抗凝與 reversal 在哪裡切入。',
+        bullets: ['factor deficiency 偏深部出血。', '藥物與疾病會在不同節點改寫路徑。', '不是所有 aPTT 延長都等於會出血。'],
+      },
+      {
+        id: 'dic-tma',
+        label: 'DIC / TMA',
+        summary: '把消耗性凝血與微血管病變分開看，是住院臨床處置能不能走對路的關鍵。',
+        bullets: ['兩者都可能 thrombocytopenia。', 'schistocyte 會大幅改變優先順序。', '病因與治療路徑不同。'],
+      },
+      {
+        id: 'bleeding-patterns',
+        label: '出血表型',
+        summary: '不同出血樣貌其實對應不同機轉層次，這比死背單一檢驗更適合床邊分流。',
+        bullets: ['mucosal vs deep bleeding 是第一分流。', 'DIC 與 TMA 是系統病，不只是出血病。', '藥物史一定要前移。'],
+      },
+    ],
+    render: drawCoagulationCascadeMap,
+  },
   'oncology-hallmarks': {
     title: '腫瘤生物學關鍵圖',
     caption: '癌症是演化中的疾病，需要同時看分子層級、微環境與臨床分期。',
@@ -2280,6 +2461,68 @@ const diagrams: Record<string, DiagramDefinition> = {
       },
     ],
     render: drawOncology,
+  },
+  'oncology-treatment-map': {
+    title: '實體腫瘤治療排序圖',
+    caption: '把 local control、systemic therapy、biomarker 分層與治療排序放進同一張圖，讓「先做什麼」比藥名更清楚。',
+    modes: [
+      {
+        id: 'local-systemic',
+        label: '局部與全身',
+        summary: '手術與放療瞄準局部病灶，全身治療瞄準微轉移與遠端病灶，兩者不是互斥，而是常常互補。',
+        bullets: ['局部治療不代表病程就結束。', 'systemic risk 常決定 adjuvant 價值。', '可切除性是第一個大分叉。'],
+      },
+      {
+        id: 'biomarker-selection',
+        label: 'Biomarker 路由',
+        summary: 'Pathology、stage 與 biomarker 必須合併解讀，才會知道 targeted、endocrine、immunotherapy 是否真的該前移。',
+        bullets: ['不是每個 marker 都改寫第一線。', '真正重要的 marker 會整張改變策略。', '檢體品質會影響可用資訊。'],
+      },
+      {
+        id: 'response-goals',
+        label: '治療目標',
+        summary: '同一個腫瘤在不同病人與不同時點，可能分別追求根治、疾病控制或症狀緩解，治療強度不應一刀切。',
+        bullets: ['intent 先決定毒性容忍度。', '療效與負擔要同步評估。', 'shared decision making 會直接改變排序。'],
+      },
+      {
+        id: 'therapy-sequencing',
+        label: '治療排序',
+        summary: 'Neoadjuvant、curative local control、adjuvant 與 maintenance 在不同時間點回答不同問題。',
+        bullets: ['順序錯了，效果可能就差很多。', '病人目標會改變排序。', '不是所有人都需要最強烈的下一步。'],
+      },
+    ],
+    render: drawOncologyTreatmentMap,
+  },
+  'oncology-toxicity-map': {
+    title: '支持性治療與腫瘤毒性圖',
+    caption: '把 CINV、febrile neutropenia、TLS、器官毒性與免疫治療 irAE 做成同一張圖，方便把支持性治療放回腫瘤學主線。',
+    modes: [
+      {
+        id: 'cinv-fn-tls',
+        label: '高頻急症',
+        summary: '止吐、FN 與 TLS 是最常直接改變住院率與死亡率的支持性主題，關鍵在於預防與早期辨認。',
+        bullets: ['止吐策略依 emetogenicity 決定。', 'FN 先當時間敏感感染處理。', 'TLS 風險常可預測。'],
+      },
+      {
+        id: 'immune-toxicity',
+        label: '免疫毒性',
+        summary: 'Checkpoint inhibitor 讓很多器官都可能變成發炎靶點，因此鑑別診斷不能只停在感染與腫瘤進展。',
+        bullets: ['肺、肝、腸、內分泌都常見。', '類固醇時機很重要。', 'grade 會直接改變停藥與住院策略。'],
+      },
+      {
+        id: 'organ-triage',
+        label: '毒性分流',
+        summary: '支持性照護最專科的部分，是知道哪些毒性必須立刻停藥住院，哪些可以減量或延後，哪些能在改善後安全重啟。',
+        bullets: ['grade 與器官一起看。', 'rescue 與 restart 是不同決策。', '治療目標會改變容忍度。'],
+      },
+      {
+        id: 'organ-hotspots',
+        label: '器官熱點',
+        summary: '骨髓、黏膜、心臟、腎臟與周邊神經是最常決定 dose reduction 或 therapy interruption 的器官。',
+        bullets: ['化療偏高週轉組織毒性。', '標靶與免疫治療更常器官選擇性。', '支持性治療是在守住這些熱點。'],
+      },
+    ],
+    render: drawOncologyToxicityMap,
   },
   'metabolism-map': {
     title: '代謝與能量流向',

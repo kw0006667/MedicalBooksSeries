@@ -107,7 +107,94 @@ const summary = (title: string, text: string, bullets: string[]) => `
   </div>
 `;
 
+const references = (title: string, items: { label: string; url: string; note: string }[]) => `
+  <div class="source-list">
+    <h3>${title}</h3>
+    ${items.map(item => `
+      <div class="source-item">
+        <a href="${item.url}" target="_blank" rel="noopener noreferrer">${item.label}</a>
+        <p>${item.note}</p>
+      </div>
+    `).join('')}
+  </div>
+`;
+
 export const volume3Chapters: Record<string, ChapterContent> = {};
+
+const cardiovascularSources: Record<string, { label: string; url: string; note: string }[]> = {
+  ch01: [
+    {
+      label: 'American Heart Association: Understanding Blood Pressure Readings',
+      url: 'https://www.heart.org/en/health-topics/high-blood-pressure/understanding-blood-pressure-readings',
+      note: '提供血壓分類、量測解讀與居家血壓教育重點，可對照本章對正確量測與風險分層的討論。',
+    },
+    {
+      label: 'NHLBI High Blood Pressure',
+      url: 'https://www.nhlbi.nih.gov/health/high-blood-pressure',
+      note: '補足高血壓的病因、診斷與器官影響，是本章血流動力與長期器官保護架構的重要來源。',
+    },
+  ],
+  ch02: [
+    {
+      label: 'NHLBI Coronary Heart Disease',
+      url: 'https://www.nhlbi.nih.gov/health/coronary-heart-disease',
+      note: '整理冠心病、缺血、危險因子與治療概念，可對照本章供需失衡與 ACS / CCS 思維。',
+    },
+    {
+      label: 'American Heart Association: Heart Attack',
+      url: 'https://www.heart.org/en/health-topics/heart-attack',
+      note: '補足心肌梗塞症狀、緊急處置與二級預防觀點，適合作為本章真實胸痛場景的官方來源。',
+    },
+  ],
+  ch03: [
+    {
+      label: 'NHLBI Heart Failure',
+      url: 'https://www.nhlbi.nih.gov/health/heart-failure',
+      note: '提供心衰竭病理、症狀與治療總覽，可對照本章前負荷、後負荷與鬱血-灌流分層。',
+    },
+    {
+      label: 'American Heart Association: Heart Failure',
+      url: 'https://www.heart.org/en/health-topics/heart-failure',
+      note: '補上臨床照護、病人教育與慢性病程管理視角，適合對照本章 GDMT 與再住院預防。',
+    },
+  ],
+  ch04: [
+    {
+      label: 'NHLBI Arrhythmias',
+      url: 'https://www.nhlbi.nih.gov/health/arrhythmias',
+      note: '整理心律不整的成因、診斷與治療，是本章節律分類與 hemodynamic 思維的重要背景來源。',
+    },
+    {
+      label: 'American Heart Association: Arrhythmia',
+      url: 'https://www.heart.org/en/health-topics/arrhythmia',
+      note: '補足 AF、SVT、VT 等臨床表現與監測架構，可對照本章 ECG 分流與抗凝決策。',
+    },
+  ],
+  ch05: [
+    {
+      label: 'NHLBI High Blood Cholesterol',
+      url: 'https://www.nhlbi.nih.gov/health/high-blood-cholesterol',
+      note: '提供 LDL、生活型態與藥物治療的官方說明，可對照本章 ApoB 負荷與風險導向降脂架構。',
+    },
+    {
+      label: 'NHLBI Atherosclerosis',
+      url: 'https://www.nhlbi.nih.gov/health-topics/atherosclerosis',
+      note: '補足動脈粥樣硬化病理、內皮傷害與事件風險，適合作為本章脂質-血管連結的來源。',
+    },
+  ],
+  ch06: [
+    {
+      label: 'NHLBI Blood Clotting Disorders: How Blood Clots',
+      url: 'https://www.nhlbi.nih.gov/health/clotting-disorders/how-blood-clots',
+      note: '整理凝血與血栓形成的基本生理，是本章區分動脈與靜脈血栓以及藥理靶點的重要官方來源。',
+    },
+    {
+      label: 'American Heart Association: Types of Heart Medications',
+      url: 'https://www.heart.org/en/health-topics/heart-attack/treatment-of-a-heart-attack/cardiac-medications',
+      note: '其中包含 anticoagulant 與 antiplatelet 基本定位，適合作為本章藥物類別與出血風險衛教來源。',
+    },
+  ],
+};
 
 volume3Chapters.ch01 = chapter(
   '高血壓 (Hypertension)',
@@ -339,6 +426,7 @@ volume3Chapters.ch01 = chapter(
       '生活型態處理與固定複方策略，常比一顆一顆慢慢加更有效。',
     ]),
   ),
+  references('章內來源註記', cardiovascularSources.ch01),
 );
 
 volume3Chapters.ch02 = chapter(
@@ -542,6 +630,7 @@ volume3Chapters.ch02 = chapter(
       '再灌流、抗血栓與出血風險要同步考量。',
     ]),
   ),
+  references('章內來源註記', cardiovascularSources.ch02),
 );
 
 volume3Chapters.ch03 = chapter(
@@ -734,6 +823,7 @@ volume3Chapters.ch03 = chapter(
       '每次惡化都要追誘因，否則只是把病人送回下一次住院。'
     ]),
   ),
+  references('章內來源註記', cardiovascularSources.ch03),
 );
 
 volume3Chapters.ch04 = chapter(
@@ -928,6 +1018,7 @@ volume3Chapters.ch04 = chapter(
       '藥物選擇必須尊重結構性心臟病與腎功能。'
     ]),
   ),
+  references('章內來源註記', cardiovascularSources.ch04),
 );
 
 volume3Chapters.ch05 = chapter(
@@ -1108,6 +1199,7 @@ volume3Chapters.ch05 = chapter(
       '降脂是長期累積戰，不是抽一次血就結束。'
     ]),
   ),
+  references('章內來源註記', cardiovascularSources.ch05),
 );
 
 volume3Chapters.ch06 = chapter(
@@ -1293,4 +1385,5 @@ volume3Chapters.ch06 = chapter(
       '真正的高品質治療，需要病人理解為什麼不能自己任意停藥。'
     ]),
   ),
+  references('章內來源註記', cardiovascularSources.ch06),
 );

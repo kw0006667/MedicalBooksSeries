@@ -11,6 +11,7 @@ import {
   misconceptionList,
   p,
   pulmonaryViewer,
+  references,
   section,
   spotlight,
   summary,
@@ -20,6 +21,69 @@ import {
 } from './shared.js';
 
 export const respiratoryChapters: Record<string, ChapterContent> = {};
+
+const respiratorySources: Record<string, { label: string; url: string; note: string }[]> = {
+  ch07: [
+    {
+      label: 'NHLBI Asthma',
+      url: 'https://www.nhlbi.nih.gov/health/asthma',
+      note: '整理氣喘的病理生理、診斷、誘發因子與治療概念，可對照本章氣道發炎與控制策略的主軸。',
+    },
+    {
+      label: 'GINA Reports',
+      url: 'https://ginasthma.org/reports/',
+      note: '提供全球氣喘管理策略與更新文件，對 ICS-based reliever、升階治療與急性惡化處置特別重要。',
+    },
+  ],
+  ch08: [
+    {
+      label: 'NHLBI COPD',
+      url: 'https://www.nhlbi.nih.gov/health/copd',
+      note: '涵蓋 COPD 的定義、症狀、風險因子與治療方向，適合作為本章慢性氣流受限與急性惡化的背景來源。',
+    },
+    {
+      label: 'GOLD',
+      url: 'https://goldcopd.org/',
+      note: 'GOLD 為 COPD 國際策略文件來源，可回扣本章對吸入藥物分層、急性惡化與非藥物照護的安排。',
+    },
+  ],
+  ch09: [
+    {
+      label: 'ATS/IDSA CAP Guideline Tools',
+      url: 'https://www.thoracic.org/statements/guideline-implementation-tools/diagnosis-and-treatment-of-cap.php',
+      note: '提供成人社區型肺炎的診斷、分流與經驗性抗生素建議，是本章肺炎治療架構的重要對照來源。',
+    },
+    {
+      label: 'CDC About Pneumonia',
+      url: 'https://www.cdc.gov/pneumonia/about/index.html',
+      note: '補足常見病原、臨床表現與預防觀點，特別適合對照本章對疫苗、風險族群與公共衛生層面的描述。',
+    },
+  ],
+  ch10: [
+    {
+      label: 'CDC Tuberculosis',
+      url: 'https://www.cdc.gov/tb/index.html',
+      note: '整合 TB 的檢驗、治療、潛伏感染與公衛管理，可支撐本章對隔離、採檢與治療依從性的討論。',
+    },
+    {
+      label: 'CDC About Tuberculosis',
+      url: 'https://www.cdc.gov/tb/about/index.html',
+      note: '說明 active TB 與 latent TB 的差異、傳播途徑與常見症狀，適合對照本章的臨床分流與宿主風險概念。',
+    },
+  ],
+  ch11: [
+    {
+      label: 'NHLBI Respiratory Failure',
+      url: 'https://www.nhlbi.nih.gov/health/respiratory-failure',
+      note: '說明低氧與高碳酸血症型呼吸衰竭的基礎生理與診斷，是本章 ABG 與病因分類的重要官方來源。',
+    },
+    {
+      label: 'NHLBI Respiratory Failure Treatment',
+      url: 'https://www.nhlbi.nih.gov/health/respiratory-failure/treatment',
+      note: '提供氧氣治療、NIV、侵襲性通氣與支持策略的整理，可對照本章機械通氣入門架構。',
+    },
+  ],
+};
 
 respiratoryChapters.ch07 = chapter(
   '氣喘 (Asthma)',
@@ -220,6 +284,7 @@ respiratoryChapters.ch07 = chapter(
       '真正高價值的介入常是技術、依從性與 trigger 管理。',
     ]),
   ),
+  references('章內來源註記', respiratorySources.ch07),
 );
 
 respiratoryChapters.ch08 = chapter(
@@ -410,6 +475,7 @@ respiratoryChapters.ch08 = chapter(
       'NIV 在合適病人能改變結局。',
     ]),
   ),
+  references('章內來源註記', respiratorySources.ch08),
 );
 
 respiratoryChapters.ch09 = chapter(
@@ -599,6 +665,7 @@ respiratoryChapters.ch09 = chapter(
       '抗生素廣度應隨風險與結果動態調整。',
     ]),
   ),
+  references('章內來源註記', respiratorySources.ch09),
 );
 
 respiratoryChapters.ch10 = chapter(
@@ -789,6 +856,7 @@ respiratoryChapters.ch10 = chapter(
       'Rifamycin 交互作用與長療程依從性是治療成敗核心。',
     ]),
   ),
+  references('章內來源註記', respiratorySources.ch10),
 );
 
 respiratoryChapters.ch11 = chapter(
@@ -987,4 +1055,5 @@ respiratoryChapters.ch11 = chapter(
       '呼吸機是橋樑，病因治療才是目的地。',
     ]),
   ),
+  references('章內來源註記', respiratorySources.ch11),
 );
