@@ -11,6 +11,7 @@ import {
   misconceptionList,
   p,
   renalViewer,
+  references,
   section,
   spotlight,
   summary,
@@ -20,6 +21,69 @@ import {
 } from './shared.js';
 
 export const renalChapters: Record<string, ChapterContent> = {};
+
+const renalSources: Record<string, { label: string; url: string; note: string }[]> = {
+  ch12: [
+    {
+      label: 'KDIGO Acute Kidney Injury',
+      url: 'https://kdigo.org/guidelines/acute-kidney-injury/',
+      note: 'AKI 的分期、風險評估與腎臟支持治療大框架，可作為本章前腎性、腎實質性與後腎性分流的專業依據。',
+    },
+    {
+      label: 'MedlinePlus Acute Kidney Failure',
+      url: 'https://medlineplus.gov/ency/article/000501.htm',
+      note: '補足 AKI 常見病因、症狀、檢查與臨床警訊，適合對照本章的真實場景與初始評估流程。',
+    },
+  ],
+  ch13: [
+    {
+      label: 'NIDDK Kidney Disease',
+      url: 'https://www.niddk.nih.gov/health-information/kidney-disease',
+      note: '提供 CKD 全貌與病人教育主軸，可對照本章對 albuminuria、腎功能下降與全身併發症的整合描述。',
+    },
+    {
+      label: 'KDIGO CKD Evaluation and Management',
+      url: 'https://kdigo.org/guidelines/ckd-evaluation-and-management/',
+      note: 'CKD 分期、風險分層與長期照護策略的重要指引來源，對本章風險導向管理特別關鍵。',
+    },
+  ],
+  ch14: [
+    {
+      label: 'MedlinePlus Fluid and Electrolyte Balance',
+      url: 'https://medlineplus.gov/fluidandelectrolytebalance.html',
+      note: '從官方病人教育角度整理電解質與體液平衡，適合作為本章低鈉、高鉀與多離子異常的共同底圖。',
+    },
+    {
+      label: 'MedlinePlus Potassium',
+      url: 'https://medlineplus.gov/potassium.html',
+      note: '補足鉀離子在神經肌肉與心律上的臨床意義，可對照本章高鉀、低鉀與 ECG 風險的重點。',
+    },
+  ],
+  ch15: [
+    {
+      label: 'MedlinePlus Acidosis',
+      url: 'https://medlineplus.gov/ency/article/001181.htm',
+      note: '整理代謝性與呼吸性酸中毒的核心概念，可作為本章 ABG 與陰離子間隙思維的基礎對照。',
+    },
+    {
+      label: 'MedlinePlus Alkalosis',
+      url: 'https://medlineplus.gov/ency/article/001183.htm',
+      note: '補上鹼中毒分類與常見病因，對照本章代謝性鹼中毒、混合性失衡與補償判讀的內容。',
+    },
+  ],
+  ch16: [
+    {
+      label: 'MedlinePlus Furosemide',
+      url: 'https://medlineplus.gov/druginfo/meds/a682858.html',
+      note: '可直接對照 loop 利尿劑的用途、副作用、交互作用與病人教育，是本章利尿藥理的實用官方來源。',
+    },
+    {
+      label: 'NIDDK Kidney Disease',
+      url: 'https://www.niddk.nih.gov/health-information/kidney-disease',
+      note: '提供腎臟疾病與體液管理的大框架，可支撐本章心腎鬱血、利尿反應與腎功能監測的臨床脈絡。',
+    },
+  ],
+};
 
 renalChapters.ch12 = chapter(
   '急性腎損傷 (Acute Kidney Injury, AKI)',
@@ -223,6 +287,7 @@ renalChapters.ch12 = chapter(
       p('這種病人最容易被落入「AKI 所以停藥、補液、觀察」的單一路徑。但真正成熟的做法，是把敗血症 hemodynamics、腎毒性暴露、鬱血、藥物交互作用與高血鉀一起處理。AKI 通常不是單一器官出事，而是整個生理系統失序的第一個警報器。'),
     ),
   ),
+  references('章內來源註記', renalSources.ch12),
 );
 
 renalChapters.ch13 = chapter(
@@ -403,6 +468,7 @@ renalChapters.ch13 = chapter(
       p('這類病人往往還沒有尿毒症外觀，因此最容易被拖延。真正高品質的 CKD 管理，是在病人「看起來還沒有很嚴重」時就把保護策略完整建立。'),
     ),
   ),
+  references('章內來源註記', renalSources.ch13),
 );
 
 renalChapters.ch14 = chapter(
@@ -572,6 +638,7 @@ renalChapters.ch14 = chapter(
       p('這類病人最危險的地方不是數字低本身，而是如果只看到「低鈉」就大量亂補，可能在 24 小時內從跌倒風險變成 ODS 風險。'),
     ),
   ),
+  references('章內來源註記', renalSources.ch14),
 );
 
 renalChapters.ch15 = chapter(
@@ -732,6 +799,7 @@ renalChapters.ch15 = chapter(
       p('這是最典型的「pH 幾乎正常但其實不正常」案例。真正成熟的 acid-base 思維，不是看 pH 安心，而是能在正常 pH 下面看見正在互相掩蓋的兩個問題。'),
     ),
   ),
+  references('章內來源註記', renalSources.ch15),
 );
 
 renalChapters.ch16 = chapter(
@@ -890,4 +958,5 @@ renalChapters.ch16 = chapter(
       p('這類病人把利尿藥理、體液病理與心腎交互作用全部放在同一張桌上。真正成熟的利尿思維，不是把藥越加越多，而是知道何時該換路徑、何時該加另一段、何時該承認主因不是鈉水。'),
     ),
   ),
+  references('章內來源註記', renalSources.ch16),
 );

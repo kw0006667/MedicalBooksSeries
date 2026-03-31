@@ -105,6 +105,7 @@ export const pulmonaryViewer = (initialScene: string) => `<pulmonary-3d-viewer i
 export const renalViewer = (initialScene: string) => `<renal-3d-viewer initial-scene="${initialScene}"></renal-3d-viewer>`;
 export const digestiveViewer = (initialScene: string) => `<digestive-3d-viewer initial-scene="${initialScene}"></digestive-3d-viewer>`;
 export const endocrineViewer = (initialScene: string) => `<endocrine-3d-viewer initial-scene="${initialScene}"></endocrine-3d-viewer>`;
+export const hematologyViewer = (initialScene: string) => `<hematology-3d-viewer initial-scene="${initialScene}"></hematology-3d-viewer>`;
 
 export const spotlight = (title: string, text: string) => `
   <div class="spotlight">
@@ -118,5 +119,20 @@ export const summary = (title: string, text: string, bullets: string[]) => `
     <h3>${title}</h3>
     <p>${text}</p>
     ${list(bullets)}
+  </div>
+`;
+
+export const references = (
+  title: string,
+  items: { label: string; url: string; note: string }[],
+) => `
+  <div class="source-list">
+    <h3>${title}</h3>
+    ${items.map(item => `
+      <div class="source-item">
+        <a href="${item.url}" target="_blank" rel="noopener noreferrer">${item.label}</a>
+        <p>${item.note}</p>
+      </div>
+    `).join('')}
   </div>
 `;

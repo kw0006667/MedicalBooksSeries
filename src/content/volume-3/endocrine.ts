@@ -11,6 +11,7 @@ import {
   list,
   misconceptionList,
   p,
+  references,
   section,
   spotlight,
   summary,
@@ -20,6 +21,57 @@ import {
 } from './shared.js';
 
 export const endocrineChapters: Record<string, ChapterContent> = {};
+
+const endocrineSources: Record<string, { label: string; url: string; note: string }[]> = {
+  ch22: [
+    {
+      label: 'NIDDK What Is Diabetes?',
+      url: 'https://www.niddk.nih.gov/health-information/diabetes/overview/what-is-diabetes',
+      note: '提供糖尿病病型、症狀與併發症的官方總覽，可對照本章多器官失衡與病型分類。',
+    },
+    {
+      label: 'ADA Standards of Care',
+      url: 'https://professional.diabetes.org/standards-of-care',
+      note: '現代糖尿病治療、心腎保護、降糖藥排序與監測策略的重要官方專業來源。',
+    },
+  ],
+  ch23: [
+    {
+      label: 'NIDDK Hypothyroidism',
+      url: 'https://www.niddk.nih.gov/health-information/endocrine-diseases/hypothyroidism',
+      note: '補足甲狀腺低下的病因、症狀與治療，可對照本章 HPT axis 與 replacement therapy 的內容。',
+    },
+    {
+      label: 'NIDDK Hyperthyroidism',
+      url: 'https://www.niddk.nih.gov/health-information/endocrine-diseases/hyperthyroidism',
+      note: '涵蓋 Graves disease、甲狀腺功能亢進與治療方式，是本章甲亢分流與處置的重要背景來源。',
+    },
+  ],
+  ch24: [
+    {
+      label: 'NIDDK Adrenal Insufficiency',
+      url: 'https://www.niddk.nih.gov/health-information/endocrine-diseases/adrenal-insufficiency-addisons-disease',
+      note: '提供腎上腺功能不全的病理、症狀與治療，可對照本章 adrenal crisis 與 glucocorticoid replacement 的段落。',
+    },
+    {
+      label: 'NIDDK Prolactinoma',
+      url: 'https://www.niddk.nih.gov/health-information/endocrine-diseases/prolactinoma',
+      note: '補上垂體腫瘤、乳漏、月經異常與視野症狀的診療脈絡，適合作為本章 pituitary axis 的代表性來源。',
+    },
+  ],
+  ch25: [
+    {
+      label: 'NIDDK Prescription Medications to Treat Overweight & Obesity',
+      url: 'https://www.niddk.nih.gov/health-information/weight-management/prescription-medications-treat-overweight-obesity',
+      note: '提供減重藥使用條件、效果與副作用整理，可對照本章 GLP-1 RA / GIP-GLP-1 治療策略。',
+    },
+    {
+      label: 'NHLBI Metabolic Syndrome',
+      url: 'https://www.nhlbi.nih.gov/health/metabolic-syndrome',
+      note: '補足腰圍、血壓、血脂與血糖聚落風險的官方說明，適合作為本章代謝症候群架構來源。',
+    },
+  ],
+};
 
 endocrineChapters.ch22 = chapter(
   '糖尿病 (Diabetes Mellitus)',
@@ -218,6 +270,7 @@ endocrineChapters.ch22 = chapter(
       p(`這位病人的治療不該只回答「A1C 太高要用幾種藥」，而是要同時回答三件事：如何安全降糖、如何降低心血管與腎臟事件、以及如何讓病人實際做得到。這正是現代糖尿病治療和舊式單純 glucose-centric 思維最大的差別。`),
     ),
   ),
+  references('章內來源註記', endocrineSources.ch22),
 );
 
 endocrineChapters.ch23 = chapter(
@@ -410,6 +463,7 @@ endocrineChapters.ch23 = chapter(
       p(`這類病人最怕被拆成很多碎片：心悸去心臟科、焦躁去身心科、眼睛乾去眼科、月經亂去婦科，最後沒有人把 HPT axis 放回原點。甲狀腺疾病的診斷價值，很大一部分來自把跨系統表現重新串起來。`),
     ),
   ),
+  references('章內來源註記', endocrineSources.ch23),
 );
 
 endocrineChapters.ch24 = chapter(
@@ -612,6 +666,7 @@ endocrineChapters.ch24 = chapter(
       p(`這三位病人若被拆開看，都像常見門診問題；但當你用內分泌軸線重新組織資訊，檢查順序、用藥與轉介策略就會立刻改變。這就是這一章最想訓練的核心能力。`),
     ),
   ),
+  references('章內來源註記', endocrineSources.ch24),
 );
 
 endocrineChapters.ch25 = chapter(
@@ -809,4 +864,5 @@ endocrineChapters.ch25 = chapter(
       p(`這位病人最需要的不是再被告知少吃多動，而是被當成慢性代謝病病人處理。當治療目標被重新定義成腰圍、睡眠、肝臟、血壓、血糖與生活功能的改善，病人才比較可能願意進入長期照護。`),
     ),
   ),
+  references('章內來源註記', endocrineSources.ch25),
 );

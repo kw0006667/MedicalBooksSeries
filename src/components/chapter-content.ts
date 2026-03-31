@@ -5,6 +5,7 @@ import { appStore } from '../store.js';
 import { getVolume, getChapter } from '../books.js';
 import { setupScrollSync, scrollToSection } from '../router.js';
 import type { ChapterContent, Section } from '../types.js';
+import { enhanceFormulaBlocks } from '../utils/formula-format.js';
 import './nav-footer.js';
 import './medical-canvas.js';
 import './medical-3d-viewer.js';
@@ -12,6 +13,7 @@ import './pulmonary-3d-viewer.js';
 import './renal-3d-viewer.js';
 import './digestive-3d-viewer.js';
 import './endocrine-3d-viewer.js';
+import './hematology-3d-viewer.js';
 
 // ── Vite glob imports (statically analyzable → proper code splitting) ──────
 
@@ -140,6 +142,13 @@ export class ChapterContentEl extends LitElement {
       table.parentNode?.insertBefore(wrapper, table);
       wrapper.appendChild(table);
     });
+
+    const interactiveFigures = this.querySelectorAll(
+      '.chapter-body medical-canvas, .chapter-body medical-3d-viewer, .chapter-body pulmonary-3d-viewer, .chapter-body renal-3d-viewer, .chapter-body digestive-3d-viewer, .chapter-body endocrine-3d-viewer, .chapter-body hematology-3d-viewer',
+    );
+    interactiveFigures.forEach(figure => figure.classList.add('interactive-figure'));
+
+    enhanceFormulaBlocks(this);
   }
 
   override disconnectedCallback() {

@@ -225,7 +225,8 @@
 .chapter-body .checklist-card,
 .chapter-body .formula-block,
 .chapter-body .spotlight,
-.chapter-body .chapter-summary {
+.chapter-body .chapter-summary,
+.chapter-body .source-list {
   border: 1px solid var(--color-border);
   border-radius: 18px;
   background: color-mix(in srgb, var(--color-bg) 92%, var(--color-bg-subtle));
@@ -237,7 +238,8 @@
 .chapter-body .comparison-card h3,
 .chapter-body .checklist-card h3,
 .chapter-body .spotlight h3,
-.chapter-body .chapter-summary h3 {
+.chapter-body .chapter-summary h3,
+.chapter-body .source-list h3 {
   margin-top: 0;
 }
 
@@ -246,7 +248,8 @@
 .chapter-body .checklist-card p:last-child,
 .chapter-body .spotlight p:last-child,
 .chapter-body .chapter-summary p:last-child,
-.chapter-body .formula-block p:last-child {
+.chapter-body .formula-block p:last-child,
+.chapter-body .source-item p:last-child {
   margin-bottom: 0;
 }
 
@@ -293,6 +296,103 @@
   margin: 10px 0;
   padding: 10px 12px;
   font-size: 0.96rem;
+}
+
+.chapter-body .formula-expression {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.12rem;
+  margin: 10px 0;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--color-bg) 84%, white);
+  border: 1px solid color-mix(in srgb, var(--volume-color) 18%, var(--color-border));
+  color: var(--color-code-text);
+  font-family: var(--font-mono);
+  font-size: clamp(1rem, 0.96rem + 0.24vw, 1.16rem);
+  line-height: 1.72;
+  overflow-wrap: anywhere;
+}
+
+.chapter-body .formula-expression--chemical {
+  gap: 0.18rem;
+}
+
+.chapter-body .formula-expression .formula-token,
+.chapter-body .formula-expression .formula-paren,
+.chapter-body .formula-expression .formula-dot,
+.chapter-body .formula-expression .formula-coefficient {
+  display: inline-flex;
+  align-items: baseline;
+}
+
+.chapter-body .formula-expression .formula-element {
+  font-weight: 700;
+  color: var(--color-reading-heading);
+}
+
+.chapter-body .formula-expression sub,
+.chapter-body .formula-expression sup {
+  font-size: 0.7em;
+  line-height: 0;
+  position: relative;
+}
+
+.chapter-body .formula-expression sub {
+  bottom: -0.25em;
+}
+
+.chapter-body .formula-expression sup {
+  top: -0.48em;
+}
+
+.chapter-body .formula-expression .formula-dot {
+  padding: 0 0.14rem;
+  color: var(--color-reading-muted);
+}
+
+.chapter-body .formula-expression .formula-coefficient {
+  margin-right: 0.04rem;
+  color: var(--color-reading-muted);
+}
+
+.chapter-body .formula-breakdown {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 2px 0 14px;
+}
+
+.chapter-body .formula-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 10px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--volume-color) 9%, var(--color-bg));
+  border: 1px solid color-mix(in srgb, var(--volume-color) 18%, var(--color-border));
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  line-height: 1.35;
+}
+
+.chapter-body .formula-chip--charge {
+  background: color-mix(in srgb, #f59e0b 10%, var(--color-bg));
+}
+
+.chapter-body .formula-chip__name {
+  font-weight: 700;
+  color: var(--color-reading-heading);
+}
+
+.chapter-body .formula-chip__symbol {
+  font-family: var(--font-mono);
+  color: var(--color-reading-muted);
+}
+
+.chapter-body .formula-chip__count {
+  color: var(--color-reading-text);
 }
 
 .chapter-body .tag-row {
@@ -429,8 +529,56 @@
   margin-top: 28px;
 }
 
-.chapter-body endocrine-3d-viewer + medical-canvas {
-  margin-top: 42px;
+.chapter-body .source-list {
+  margin-top: 28px;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--volume-color) 6%, var(--color-bg)), var(--color-bg)),
+    var(--color-bg);
+}
+
+.chapter-body .source-item {
+  padding: 12px 0;
+  border-top: 1px solid var(--color-border-subtle);
+}
+
+.chapter-body .source-item:first-of-type {
+  border-top: none;
+  padding-top: 6px;
+}
+
+.chapter-body .source-item a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-sans);
+  font-size: 0.92rem;
+  font-weight: 700;
+  line-height: 1.55;
+}
+
+.chapter-body .source-item p {
+  margin: 8px 0 0;
+  font-size: 0.96rem;
+  line-height: 1.82;
+  color: var(--color-reading-muted);
+}
+
+.chapter-body {
+  --interactive-figure-gap: clamp(28px, 3.2vw, 40px);
+  --interactive-figure-stack-gap: clamp(34px, 3.8vw, 48px);
+}
+
+.chapter-body .interactive-figure {
+  display: block;
+  margin-block: var(--interactive-figure-gap);
+}
+
+.chapter-body .interactive-figure + .interactive-figure {
+  margin-top: var(--interactive-figure-stack-gap);
+}
+
+.chapter-body .interactive-figure + .figure-note {
+  margin-top: calc(var(--interactive-figure-gap) * -0.45);
 }
 
 .chapter-body .figure-note {
